@@ -52,6 +52,6 @@ Because I use [http://google-web-toolkit.googlecode.com/svn/javadoc/2.2/com/goog
 }}}
 I need spring return "Success" message when user login success.<br/>
 So I define "always-use-default-target=true" let sprnig always redirect to "default-target-url"<br/>
-when user is certificated. and fail to return error message from "authentication-failure-url".
+when user is certificated. and return error message from "authentication-failure-url" when authenticated failed.
 
-Alternative, you can activate [http://code.google.com/webtoolkit/doc/latest/DevGuideCodingBasicsHistory.html history] management direct return to the original access path when user is authenticated.
+Alternative approach, you can activate [http://code.google.com/webtoolkit/doc/latest/DevGuideCodingBasicsHistory.html history] management and direct return to the original access path when user is authenticated.
