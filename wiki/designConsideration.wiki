@@ -54,4 +54,4 @@ I need spring return "Success" message when user login success.<br/>
 So I define "always-use-default-target=true" let sprnig always redirect to "default-target-url"<br/>
 when user is certificated. and fail to return error message from "authentication-failure-url".
 
-Alternative, you can activate [http://code.google.com/webtoolkit/doc/latest/DevGuideCodingBasicsHistory.html history] management direct return to the original access path when user is authoried.
+Alternative, you can activate [http://code.google.com/webtoolkit/doc/latest/DevGuideCodingBasicsHistory.html history] management direct return to the original access path when user is authenticated.
