@@ -3,10 +3,10 @@
 = Introduction =
 [http://static.springsource.org/spring-security/site/ Spring Security ] always require a login entry, 
 In Gwt, you have two choices, 
-  # provide a stand alone loing page, 
+  # provide a stand alone login page, 
   # handle by gwt itself 
 
-Gwtsecurity secure requret path only, when security exception occure, <br/>
+Gwtsecurity secure request path only, when security exception occurs, <br/>
 gwtsecury distinguish whether request path offer by RemoteService or not.<br/>
 If true, gwtsecurity direct report [http://code.google.com/p/gwtsecurity/source/browse/trunk/gwtsecurity/src/main/java/com/gwt/ss/client/GwtSecurityException.java GwtSecurityException] to front end gwt app, <br/>otherwise gwtsecurity bypass to spring's mechanism.
 
@@ -14,12 +14,12 @@ If true, gwtsecurity direct report [http://code.google.com/p/gwtsecurity/source/
 = Details =
 Gwtsecurity propose two type [http://code.google.com/p/gwtsecurity/source/browse/trunk/gwtsecurity/src/main/java/com/gwt/ss/client/GwtSecurityException.java GwtSecurityException].
 || [http://code.google.com/p/gwtsecurity/source/browse/trunk/gwtsecurity/src/main/java/com/gwt/ss/client/GwtAuthenticationException.java GwtAuthenticationException] || means user not yet authenticated.<br>, gwt app has duty to provide a login entry for user singin. ||
-|| [http://code.google.com/p/gwtsecurity/source/browse/trunk/gwtsecurity/src/main/java/com/gwt/ss/client/GwtAccessDeniedException.java GwtAccessDeniedException] || means user has not enought authority to acess then path.<br/>user shoud get a wranning this time. ||
+|| [http://code.google.com/p/gwtsecurity/source/browse/trunk/gwtsecurity/src/main/java/com/gwt/ss/client/GwtAccessDeniedException.java GwtAccessDeniedException] || means user has not enough authority to acess then path.<br/>user should get a wraning this time. ||
 
 The demo app, I intent to handle security exception by gwt app itself.
 [http://sites.google.com/site/gwtmemo/gssdemoSimpleLogin.png]
 
-I config login like this
+I configure login like this
 {{{
    <form-login always-use-default-target="true" 
                              default-target-url="/loginSuccess.jsp" 
@@ -52,6 +52,6 @@ Because I use [http://google-web-toolkit.googlecode.com/svn/javadoc/2.2/com/goog
 }}}
 I need spring return "Success" message when user login success.<br/>
 So I define "always-use-default-target=true" let sprnig always redirect to "default-target-url"<br/>
-when user is certificated. and fial to return error message from "authentication-failure-url".
+when user is certificated. and fail to return error message from "authentication-failure-url".
 
-Alternative, you can activate [http://code.google.com/webtoolkit/doc/latest/DevGuideCodingBasicsHistory.html history] management direct return to the original access path .
+Alternative, you can activate [http://code.google.com/webtoolkit/doc/latest/DevGuideCodingBasicsHistory.html history] management direct return to the original access path when user is authoried.
