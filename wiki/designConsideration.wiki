@@ -1,0 +1,57 @@
+#summary Design consideration
+
+= Introduction =
+[http://static.springsource.org/spring-security/site/ Spring Security ] always require a login entry, 
+In Gwt, you have two choices, 
+  # provide a stand alone loing page, 
+  # handle by gwt itself 
+
+Gwtsecurity secure requret path only, when security exception occure, <br/>
+gwtsecury distinguish whether request path offer by RemoteService or not.<br/>
+If true, gwtsecurity direct report [http://code.google.com/p/gwtsecurity/source/browse/trunk/gwtsecurity/src/main/java/com/gwt/ss/client/GwtSecurityException.java GwtSecurityException] to front end gwt app, <br/>otherwise gwtsecurity bypass to spring's mechanism.
+
+
+= Details =
+Gwtsecurity propose two type [http://code.google.com/p/gwtsecurity/source/browse/trunk/gwtsecurity/src/main/java/com/gwt/ss/client/GwtSecurityException.java GwtSecurityException].
+|| [http://code.google.com/p/gwtsecurity/source/browse/trunk/gwtsecurity/src/main/java/com/gwt/ss/client/GwtAuthenticationException.java GwtAuthenticationException] || means user not yet authenticated.<br>, gwt app has duty to provide a login entry for user singin. ||
+|| [http://code.google.com/p/gwtsecurity/source/browse/trunk/gwtsecurity/src/main/java/com/gwt/ss/client/GwtAccessDeniedException.java GwtAccessDeniedException] || means user has not enought authority to acess then path.<br/>user shoud get a wranning this time. ||
+
+The demo app, I intent to handle security exception by gwt app itself.
+[http://sites.google.com/site/gwtmemo/gssdemoSimpleLogin.png]
+
+I config login like this
+{{{
+   <form-login always-use-default-target="true" 
+                             default-target-url="/loginSuccess.jsp" 
+                             authentication-failure-url="/loginFail.jsp"/>
+}}}
+Because I use [http://google-web-toolkit.googlecode.com/svn/javadoc/2.2/com/google/gwt/http/client/RequestBuilder.html RequestBuilder] to login
+{{{
+  RequestBuilder builder = new RequestBuilder(RequestBuilder.POST, 
+          URL.encode(GWT.getHostPageBaseURL()+getLoginUrl()));
+  builder.setHeader("Content-Type", "application/x-www-form-urlencoded");
+  String query = "j_username=" + userName + "&j_password=" + password;
+  builder.setRequestData(query);
+  builder.setCallback(new RequestCallback() {
+
+      @Override
+      public void onResponseReceived(Request request, Response response) {
+          /*Must return Success when login success*/
+          if ("Success".equals(response.getText())) {
+              hide();
+          } else {
+            //fail notify
+          }
+      }
+
+      @Override
+      public void onError(Request request, Throwable exception) {
+          //fail notify
+      }
+  });
+}}}
+I need spring return "Success" message when user login success.<br/>
+So I define "always-use-default-target=true" let sprnig always redirect to "default-target-url"<br/>
+when user is certificated. and fial to return error message from "authentication-failure-url".
+
+Alternative, you can activate [http://code.google.com/webtoolkit/doc/latest/DevGuideCodingBasicsHistory.html history] management direct return to the original access path .
