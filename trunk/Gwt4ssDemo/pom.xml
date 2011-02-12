@@ -38,7 +38,7 @@
         <repository>
             <id>gwtrepo</id>
             <name>Gwt Repository</name>
-            <url>https://gwtrepo.googlecode.com/svn/repo</url>
+            <url>http://gwtrepo.googlecode.com/svn/repo</url>
         </repository>
     </repositories>
     <dependencyManagement>
