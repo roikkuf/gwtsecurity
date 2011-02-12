@@ -1,0 +1,59 @@
+#summary Design consideration
+
+= 前言 =
+[http://static.springsource.org/spring-security/site/ Spring Security ] 要求要有一個登錄點, 
+以GWT來說, 有兩種處理方式, 
+  # 提供一個獨立的登錄頁面, 
+  # 或者直接在GWT內處理 
+
+Gwtsecurity 對Sprign Security的事件加以監聽, 當安全錯誤發生時, <br/>
+gwtsecury 會判斷對事件發生的主體是不是來自RemoteService，<br/>
+如果是, gwtsecurity 會直接回報[http://code.google.com/p/gwtsecurity/source/browse/trunk/gwtsecurity/src/main/java/com/gwt/ss/client/GwtSecurityException.java GwtSecurityException]給GWT程式, 
+<br/>否則按照原來的Spring Security機制處置。
+
+
+= 說明 =
+Gwtsecurity 提供兩類錯誤 [http://code.google.com/p/gwtsecurity/source/browse/trunk/gwtsecurity/src/main/java/com/gwt/ss/client/GwtSecurityException.java GwtSecurityException].
+|| [http://code.google.com/p/gwtsecurity/source/browse/trunk/gwtsecurity/src/main/java/com/gwt/ss/client/GwtAuthenticationException.java GwtAuthenticationException] || 意謂尚未對用戶加以認證.<br>, GWT程式有責任引導用戶登錄。 ||
+|| [http://code.google.com/p/gwtsecurity/source/browse/trunk/gwtsecurity/src/main/java/com/gwt/ss/client/GwtAccessDeniedException.java GwtAccessDeniedException] || 意謂用戶權限不足以存取該資源.<br/>此時必須對用戶加以警告。 ||
+
+在範例程式中, 我的處理方式是交由GWT程式本身來處理：
+[http://sites.google.com/site/gwtmemo/gssdemoSimpleLogin.png]
+
+我的設定如下：
+{{{
+   <form-login always-use-default-target="true" 
+                             default-target-url="/loginSuccess.jsp" 
+                             authentication-failure-url="/loginFail.jsp"/>
+}}}
+我用了[http://google-web-toolkit.googlecode.com/svn/javadoc/2.2/com/google/gwt/http/client/RequestBuilder.html RequestBuilder] 進行登錄
+{{{
+  RequestBuilder builder = new RequestBuilder(RequestBuilder.POST, 
+          URL.encode(GWT.getHostPageBaseURL()+getLoginUrl()));
+  builder.setHeader("Content-Type", "application/x-www-form-urlencoded");
+  String query = "j_username=" + userName + "&j_password=" + password;
+  builder.setRequestData(query);
+  builder.setCallback(new RequestCallback() {
+
+      @Override
+      public void onResponseReceived(Request request, Response response) {
+          /*登錄成功時必須回傳 Success 加以比對*/
+          if ("Success".equals(response.getText())) {
+              hide();
+          } else {
+            //告知用戶錯誤
+          }
+      }
+
+      @Override
+      public void onError(Request request, Throwable exception) {
+          //告知用戶錯誤
+      }
+  });
+}}}
+用戶登錄成功時，需要Spring回傳"Success" 訊息.<br/>
+所以我設定 "always-use-default-target=true" 讓登錄成功時永遠導向"default-target-url"<br/>
+以便取回成功訊息。 <br/>
+至於登錄失敗時則導向"authentication-failure-url" 。
+
+另外一種可行的方式, 就是利用[http://code.google.com/webtoolkit/doc/latest/DevGuideCodingBasicsHistory.html 歷程] 管理，那麼用戶登錄成功後，再回轉到用戶原來存取的頁面。
