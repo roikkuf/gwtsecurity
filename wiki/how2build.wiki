@@ -14,8 +14,8 @@ All prebuild for download links available here after:
 = Details =
 
  Because this project develop by [http://maven.apache.org/ Maven],
- you should download [http://code.google.com/p/gwtsecurity/downloads/detail?name=GwtSecurity.zip&can=2&q= sources], unpack to directory and run command
+ you should download [http://code.google.com/p/gwtsecurity/downloads/detail?name=GwtSecurity-1.0.zip&can=2&q= sources], unpack to directory and run command
   'mvn install'
  to install library to your local repository.
 
- Then, [http://code.google.com/p/gwtsecurity/downloads/detail?name=gwt-sl-1.2.zip&can=2&q= download] , unpack and execute "mvn package" to build the demostration app.
+ Then, [http://code.google.com/p/gwtsecurity/downloads/detail?name=Gwt4ssDemo-1.0.zip&can=2&q= download] , unpack and execute "mvn package" to build the demostration app.
