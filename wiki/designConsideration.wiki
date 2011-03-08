@@ -1,58 +1,95 @@
-#summary Design consideration
+#summary Design guide
 
 = Introduction =
-[http://static.springsource.org/spring-security/site/ Spring Security ] always require a login entry, 
-In Gwt, you have two choices, 
+[http://static.springsource.org/spring-security/site/ Spring Security ] always require a login entry when security exception occur, 
+In Gwt, you have two choices to handle security exception, 
   # provide a stand alone login page, 
-  # handle by gwt itself 
+  # or handle by gwt itself. 
 
-Gwtsecurity detect Sprign Security exception event, when security exception occurs, <br/>
+Gwtsecurity detect handle exception affair(using AOP) when security exception occurs, <br/>
 gwtsecury distinguish whether request offer by RemoteService or not.<br/>
-If true, gwtsecurity direct report [http://code.google.com/p/gwtsecurity/source/browse/trunk/gwtsecurity/src/main/java/com/gwt/ss/client/GwtSecurityException.java GwtSecurityException] to front end gwt app,
- <br/>otherwise gwtsecurity bypass to spring's mechanism.
+If true, gwtsecurity direct report [http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0/com/gwt/ss/client/GwtSecurityException.html GwtSecurityException] to front end gwt app,
+<br/>otherwise gwtsecurity bypass to spring's mechanism.
 
 
 = Details =
-Gwtsecurity propose two type [http://code.google.com/p/gwtsecurity/source/browse/trunk/gwtsecurity/src/main/java/com/gwt/ss/client/GwtSecurityException.java GwtSecurityException].
-|| [http://code.google.com/p/gwtsecurity/source/browse/trunk/gwtsecurity/src/main/java/com/gwt/ss/client/GwtAuthenticationException.java GwtAuthenticationException] || means user not yet authenticated.<br>, gwt app has duty to provide a login entry for user singin. ||
-|| [http://code.google.com/p/gwtsecurity/source/browse/trunk/gwtsecurity/src/main/java/com/gwt/ss/client/GwtAccessDeniedException.java GwtAccessDeniedException] || means user has not enough authority to acess then resource.<br/>user should get a wraning this time. ||
-
-The demo app, I intent to handle security exception by gwt app itself.
-[http://gwtsecurity.googlecode.com/svn/trunk/resources/gssdemoSimpleLogin.png]
-
-I configure login like this
+First,add aop context into your configuration and add fllowing config.<br/>
+(Acitvate proxy-target-class to get a fast speed.)
 {{{
-   <form-login always-use-default-target="true" 
-                             default-target-url="/loginSuccess.jsp" 
-                             authentication-failure-url="/loginFail.jsp"/>
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
 }}}
-Because I use [http://google-web-toolkit.googlecode.com/svn/javadoc/2.2/com/google/gwt/http/client/RequestBuilder.html RequestBuilder] to login
+then add a [http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0/com/gwt/ss/GwtExceptionTranslator.html GwtExceptionTranslator] bean to handle Security Exception.
 {{{
-  RequestBuilder builder = new RequestBuilder(RequestBuilder.POST, 
-          URL.encode(GWT.getHostPageBaseURL()+getLoginUrl()));
-  builder.setHeader("Content-Type", "application/x-www-form-urlencoded");
-  String query = "j_username=" + userName + "&j_password=" + password;
-  builder.setRequestData(query);
-  builder.setCallback(new RequestCallback() {
+    <beans:bean class="com.gwt.ss.GwtExceptionTranslator"/>
+}}}
 
-      @Override
-      public void onResponseReceived(Request request, Response response) {
-          /*Must return Success when login success*/
-          if ("Success".equals(response.getText())) {
-              hide();
-          } else {
+Gwtsecurity propose two type [http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0/com/gwt/ss/client/GwtSecurityException.html GwtSecurityException].
+|| [http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0/com/gwt/ss/client/GwtAuthenticationException.html GwtAuthenticationException] || means user not yet authenticated.<br>, gwt app has duty to provide a login entry for user singin. ||
+|| [http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0/com/gwt/ss/client/GwtAccessDeniedException.html GwtAccessDeniedException] || means user has not enough authority to acess then resource.<br/>user should get a wraning this time. ||
+
+The demo app, I intent to handle security exception by gwt app itself(I also provide a stand aloe login page).
+|| Gwt RPC login when user not yet authenticated||                                                                           
+|| [http://gwtsecurity.googlecode.com/svn/trunk/resources/gssdemoSimpleLogin.png] ||
+|| or redirect to spring login entry(jsp page) ||
+|| [http://gwtsecurity.googlecode.com/svn/trunk/resources/login_jsp.png] ||
+
+
+I configure spring security config as follows:<br/> 
+First,I config spring's login entry url to handle non-gwt login event. 
+{{{
+   <form-login login-page="/login.jsp" authentication-failure-url="/login.jsp?authfailed=true"/>
+}}}
+Next, I construct a bean to handle gwt login event:
+{{{
+   <beans:bean class="com.gwt.ss.GwtUsernamePasswordAuthority">
+       <beans:property name="authenticationManager" ref="authenticationManager"/>
+   </beans:bean>
+}}}
+Finally,I need a RemoteService to process gwt login.
+{{{
+    GwtLoginAsync loginService = GwtLoginAsync.Util.getInstance(getLoginUrl());
+    loginService.j_gwt_security_check(userName, password, new AsyncCallback<Void>() {
+        @Override
+        public void onFailure(Throwable caught) {
+           //fail notify 
+        }
+        @Override                          
+        public void onSuccess(Void result) {
+           //success notify
+        }
+    }
+}}}
+In the same way,logout can process from gwt app.<br/>
+(config success-handler-ref instead of logout-success-url instead here.)
+{{{
+    <logout invalidate-session="true" success-handler-ref="logoutSuccessHandler" logout-url="/j_spring_security_logout"/>
+    <beans:bean id="logoutSuccessHandler" class="com.gwt.ss.GwtLogoutSuccessHandler" p:logoutSuccessUrl="/"/>
+}}}
+Then
+{{{
+    GwtLogoutAsync logoutService = GwtLogoutAsync.Util.getInstance(getLogoutUrl());
+    logoutService.j_gwt_security_logout(new AsyncCallback<Void>() {
+        @Override
+        public void onFailure(Throwable caught) {
             //fail notify
-          }
-      }
-
-      @Override
-      public void onError(Request request, Throwable exception) {
-          //fail notify
-      }
-  });
+        }                
+        @Override
+        public void onSuccess(Void result) {
+           //success notify
+        }
+    }
 }}}
-I need spring return "Success" message when user login success.<br/>
-So I define "always-use-default-target=true" let sprnig always redirect to "default-target-url"<br/>
-when user is certificated. and return error message from "authentication-failure-url" when authenticated failed.
+Alternative,logout also can process from url "http://context_path/j_spring_security_logout" 
 
-Alternative approach, you can activate [http://code.google.com/webtoolkit/doc/latest/DevGuideCodingBasicsHistory.html history] management and direct return to the original access path when user is authenticated.
+Sometimes, you may enabled "session-management"
+{{{
+    <session-management invalid-session-url="/login.jsp?sessionInvalid=true">
+        <concurrency-control max-sessions="1" expired-url="/login.jsp?sessionExpired=true"/>
+    </session-management>
+}}}
+Then your need to constuct a [http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0/com/gwt/ss/GwtSessionManagement.html GwtSessionManagement] bean
+to throw a [http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0/com/gwt/ss/client/GwtAccessDeniedException.html GwtAccessDeniedException] when session is invalid.
+<br/><span color="red">(Notice: previous proxy-target-class must be set to "false")</span>
+{{{
+    <beans:bean class="com.gwt.ss.GwtSessionManagement"/>
+}}}
