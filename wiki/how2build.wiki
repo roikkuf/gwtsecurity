@@ -6,10 +6,10 @@ This project develop under [http://maven.apache.org/ Maven].
 So you need to setup maven first.
 
 All prebuild for download links available here after:
-|| [http://code.google.com/p/gwtsecurity/downloads/detail?name=GwtSecurity-1.0-SNAPSHOT.jar&can=2&q= GwtSecurity-1.0-SNAPSHOT.jar] || Primary Library  ||
-|| [http://code.google.com/p/gwtsecurity/downloads/detail?name=GssDemo-Simple-1.0-SNAPSHOT.war&can=2&q= GssDemo-Simple-1.0-SNAPSHOT.war] || Simple demostration using spring security for security only without integration with any spring bean .||
-|| [http://code.google.com/p/gwtsecurity/downloads/detail?name=GssDemo-GwtSL-1.0-SNAPSHOT.war&can=2&q= GssDemo-GwtSL-1.0-SNAPSHOT.war] || Secure demostration  if you're using  [http://code.google.com/p/gwt-sl/ gwt-sl] with spring integration .  ||
-|| [http://code.google.com/p/gwtsecurity/downloads/detail?name=GssDemo-spring4gwt-1.0-SNAPSHOT.war&can=2&q= GssDemo-spring4gwt-1.0-SNAPSHOT.war] || Secure demostration  if you're using  [http://code.google.com/p/spring4gwt/ spring4gwt] with spring integration .  ||
+|| [http://code.google.com/p/gwtsecurity/downloads/detail?name=GwtSecurity-1.0.jar&can=2&q= GwtSecurity-1.0.jar] || Primary Library  ||
+|| [http://code.google.com/p/gwtsecurity/downloads/detail?name=GssDemo-Simple-1.0.war&can=2&q= GssDemo-Simple-1.0.war] || Simple demostration using spring security for security only without integration with any spring bean .||
+|| [http://code.google.com/p/gwtsecurity/downloads/detail?name=GssDemo-GwtSL-1.0.war&can=2&q= GssDemo-GwtSL-1.0.war] || Secure demostration  if you're using  [http://code.google.com/p/gwt-sl/ gwt-sl] with spring integration .  ||
+|| [http://code.google.com/p/gwtsecurity/downloads/detail?name=GssDemo-spring4gwt-1.0.war&can=2&q= GssDemo-spring4gwt-1.0.war] || Secure demostration  if you're using  [http://code.google.com/p/spring4gwt/ spring4gwt] with spring integration .  ||
 
 = Details =
 
@@ -18,7 +18,4 @@ All prebuild for download links available here after:
   'mvn install'
  to install library to your local repository.
 
- [http://code.google.com/p/gwt-sl/ gwt-sl] and [http://code.google.com/p/spring4gwt/ spring4gwt] dosn't provide by public maven respository,<br/>so I reorganized their sources to fit as maven project , 
- you also need to download relative maven project [http://code.google.com/p/gwtsecurity/downloads/detail?name=gwt-sl-1.2.zip&can=2&q= here] and [http://code.google.com/p/gwtsecurity/downloads/detail?name=gwt-sl-1.2.zip&can=2&q= here], <br/>unpack and install them.
-
- Finally, [http://code.google.com/p/gwtsecurity/downloads/detail?name=gwt-sl-1.2.zip&can=2&q= download] , unpack and execute "mvn package" to build the demostration app.
+ Then, [http://code.google.com/p/gwtsecurity/downloads/detail?name=gwt-sl-1.2.zip&can=2&q= download] , unpack and execute "mvn package" to build the demostration app.
