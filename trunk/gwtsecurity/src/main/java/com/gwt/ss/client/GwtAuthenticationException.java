@@ -1,7 +1,8 @@
 package com.gwt.ss.client;
 
 /**
- * Denote Server side occur ${@link org.springframework.security.core.AuthenticationException AuthenticationException}
+ * Denote Server side occur {@link org.springframework.security.core.AuthenticationException AuthenticationException}<br/>
+ * 表示主機端發生{@link org.springframework.security.core.AuthenticationException 授權異常}
  */
 public class GwtAuthenticationException extends GwtSecurityException {
 

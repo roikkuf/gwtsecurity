@@ -2,22 +2,44 @@
 <beans:beans xmlns="http://www.springframework.org/schema/security"
             xmlns:beans="http://www.springframework.org/schema/beans"
             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xmlns:p="http://www.springframework.org/schema/p"
             xmlns:context="http://www.springframework.org/schema/context"
             xmlns:aop="http://www.springframework.org/schema/aop"
             xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
             http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
             http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
             http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
+    <!--Important:when instantate GwtSessionManagement bean,set proxy-target-class as "false" -->
     <aop:aspectj-autoproxy proxy-target-class="true"/> 
     <beans:bean class="com.gwt.ss.GwtExceptionTranslator"/>
     <global-method-security pre-post-annotations="disabled" secured-annotations="enabled" jsr250-annotations="enabled"/>
     <http auto-config="false" use-expressions="true" disable-url-rewriting="true">
         <intercept-url pattern="/**/staff" access="hasRole('ROLE_STAFF')" requires-channel="any"/>
         <intercept-url pattern="/**/demo2" filters="none"/>
-        <intercept-url pattern="/**" access="permitAll" requires-channel="any"/>
-        <form-login always-use-default-target="true" default-target-url="/gwtsl/loginSuccess" authentication-failure-url="/gwtsl/loginFail"/>
-        <logout invalidate-session="true" logout-success-url="/gwtsl/logoutSuccess" logout-url="/j_spring_security_logout"/>
+        <intercept-url pattern="/secured/**" access="hasRole('ROLE_STAFF')" requires-channel="any"/>
+        <form-login login-page="/gwtsl/login" authentication-failure-url="/gwtsl/login?authfailed=true"/>
+        <!--when using GwtLogout[Async] process Logout,must config success-handler-ref instead of logout-success-url-->
+        <logout invalidate-session="true" success-handler-ref="logoutSuccessHandler" logout-url="/j_spring_security_logout"/>
+        <!--
+        <session-management invalid-session-url="/login?sessionInvalid=true">
+            <concurrency-control max-sessions="1" expired-url="/login?sessionExpired=true"/>
+        </session-management>
+        -->
     </http>
+    
+    <!--when using GwtLogin[Async] process Login-->
+    <beans:bean class="com.gwt.ss.GwtUsernamePasswordAuthority">
+        <beans:property name="authenticationManager" ref="authenticationManager"/>
+    </beans:bean>
+                                      
+    <!--when using GwtLogout[Async] process Logout,
+        logoutSuccessUrl is specified once the user has logged out. If not specified, defaults to /.-->
+    <beans:bean id="logoutSuccessHandler" class="com.gwt.ss.GwtLogoutSuccessHandler" p:logoutSuccessUrl="/"/> 
+      
+    <!--for sessiong-management
+    <beans:bean class="com.gwt.ss.GwtSessionManagement"/>
+    -->
+    
     <authentication-manager alias="authenticationManager">
         <authentication-provider user-service-ref="userDetailService">
             <password-encoder hash="plaintext"/>

@@ -69,6 +69,11 @@
                     <td nowrap>ROLE_ADMIN,ROLE_STAFF</td>
                 </tr>
             </tbody>
+            <tfoot>
+                <tr>
+                    <td colSpan="3"><a href="./secured/SecuredDocument.jsp" target="_blank">Try another secured resource.</a></td>
+                </tr>
+            </tfoot>
         </table>
     </body>
 </html>

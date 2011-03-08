@@ -7,7 +7,7 @@
     <parent>
         <groupId>com.gwt.ss</groupId>
         <artifactId>Gwt4ssDemo</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.0</version>
     </parent>
     <dependencies>
         <dependency>
@@ -34,9 +34,9 @@
               If you want to debug in devmode,
                 1. first package shareService module
                 2. activate this comment section
-                3. execute gwt:run goal
+                3. execute gwt:run goal 
             <scope>system</scope>
-            <systemPath>${basedir}\..\sharedService\target\sharedService-${project.version}.jar</systemPath>
+            <systemPath>${basedir}\..\sharedService\target\sharedService-${project.version}.jar</systemPath>  
             -->
         </dependency>
         <dependency>
