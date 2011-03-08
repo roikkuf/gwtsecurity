@@ -4,12 +4,12 @@
     <groupId>com.gwt.ss</groupId>
     <artifactId>Gwt4ssDemo</artifactId>
     <packaging>pom</packaging>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
     <name>Gwt4SpringSecurity Demo</name>
     <url>http://code.google.com/p/gwtsecurity/</url>
     <modules>
-        <module>gssDemo1</module>
-        <module>gssDemo2</module>
+        <module>gssDemo1</module>   
+        <module>gssDemo2</module>     
         <module>gssDemo3</module>
         <module>sharedService</module>
     </modules>
@@ -38,7 +38,7 @@
         <repository>
             <id>gwtrepo</id>
             <name>Gwt Repository</name>
-            <url>http://gwtrepo.googlecode.com/svn/repo</url>
+            <url>http://gwtrepo.googlecode.com/svn/repo/</url>
         </repository>
     </repositories>
     <dependencyManagement>
@@ -73,7 +73,7 @@
             <dependency>
                 <groupId>com.gwt.ss</groupId>
                 <artifactId>GwtSecurity</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>1.0</version>
                 <exclusions>
                     <exclusion>
                         <artifactId>spring-core</artifactId>

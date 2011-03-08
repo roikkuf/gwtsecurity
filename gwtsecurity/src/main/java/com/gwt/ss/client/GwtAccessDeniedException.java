@@ -1,7 +1,8 @@
 package com.gwt.ss.client;
 
 /**
- * Denote Server side occur ${@link org.springframework.security.access.AccessDeniedException AccessDeniedException}
+ * Denote Server side occur {@link org.springframework.security.access.AccessDeniedException AccessDeniedException}<br/>
+ * 表示主機端發生{@link org.springframework.security.access.AccessDeniedException 拒絕存取}異常
  */
 public class GwtAccessDeniedException extends GwtSecurityException {
 

@@ -6,9 +6,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
     <mvc:annotation-driven/>
-    <mvc:view-controller path="/loginSuccess" view-name="loginSuccess"/>
-    <mvc:view-controller path="/logoutSuccess" view-name="loginSuccess"/>
-    <mvc:view-controller path="/loginFail" view-name="loginFail"/>
+    <mvc:view-controller path="/login" view-name="login"/>
     <mvc:default-servlet-handler default-servlet-name="springServlet"/>
     <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver" p:order="1">
         <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
@@ -17,7 +15,7 @@
     </bean>
     <bean id="urlMapping" class="org.gwtwidgets.server.spring.GWTHandler" p:order="2">
         <!--Activated if you don't want to scan by org.gwtwidgets.server.spring.GWTRequestMapping.
-    	<property name="mappings">
+    	  <property name="mappings">
     	    <map>
     	        <entry key="/greet" value-ref="greet" />
     		<entry key="/staff" value-ref="staff" />

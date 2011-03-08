@@ -6,14 +6,9 @@ import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.http.client.Request;
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.RequestCallback;
-import com.google.gwt.http.client.RequestException;
-import com.google.gwt.http.client.Response;
-import com.google.gwt.http.client.URL;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
@@ -23,6 +18,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.gwt.ss.client.GwtAccessDeniedException;
+import com.gwt.ss.client.GwtLogoutAsync;
 import com.gwt.ss.client.GwtSecurityException;
 
 public abstract class DefaultEntry implements EntryPoint {
@@ -255,33 +251,19 @@ public abstract class DefaultEntry implements EntryPoint {
 
             @Override
             public void onClick(ClickEvent event) {
-                RequestBuilder builder = new RequestBuilder(RequestBuilder.POST, URL.encode(
-                        GWT.getHostPageBaseURL() + getLogoutUrl()));
-                builder.setHeader("Content-Type", "application/x-www-form-urlencoded");
-                builder.setCallback(new RequestCallback() {
+                GwtLogoutAsync logoutService = GwtLogoutAsync.Util.getInstance(getLogoutUrl());
+                logoutService.j_gwt_security_logout(new AsyncCallback<Void>() {
 
                     @Override
-                    public void onResponseReceived(Request request, Response response) {
-                        /*Must return Success when logout success*/
-                        if ("Success".equals(response.getText())) {
-                            Window.alert(messages.logoutComplete());
-                        } else {
-                            Window.alert(messages.errorProne() + ":" + response.getStatusText());
-                        }
-                        callLogout.setEnabled(true);
+                    public void onFailure(Throwable caught) {
+                        Window.alert(messages.errorProne() + ":" + caught.getMessage());
                     }
 
                     @Override
-                    public void onError(Request request, Throwable exception) {
-                        Window.alert(messages.errorProne() + ":" + exception.getMessage());
-                        callLogout.setEnabled(true);
+                    public void onSuccess(Void result) {
+                        Window.alert(messages.logoutComplete());
                     }
                 });
-                try {
-                    callLogout.setEnabled(false);
-                    builder.send();
-                } catch (RequestException ex) {
-                }
             }
         });
 

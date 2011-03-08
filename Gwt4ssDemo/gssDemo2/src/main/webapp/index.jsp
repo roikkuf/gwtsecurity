@@ -9,7 +9,6 @@
     <head>
         <meta http-equiv="content-type" content="text/html; charset=UTF-8">
         <meta name="gwt:property" content="locale=<%=request.getLocale()%>">
-
         <!--                                                               -->
         <!-- Consider inlining CSS to reduce the number of requested files -->
         <!--                                                               -->
@@ -69,6 +68,11 @@
                     <td nowrap>ROLE_ADMIN,ROLE_STAFF</td>
                 </tr>
             </tbody>
+            <tfoot>
+                <tr>
+                    <td colSpan="3"><a href="./secured/SecuredDocument.jsp" target="_blank">Try another secured resource.</a></td>
+                </tr>
+            </tfoot>
         </table>
     </body>
 </html>

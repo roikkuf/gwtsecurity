@@ -5,13 +5,8 @@ import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.http.client.Request;
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.RequestCallback;
-import com.google.gwt.http.client.RequestException;
-import com.google.gwt.http.client.Response;
-import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -19,6 +14,7 @@ import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.TextBox;
+import com.gwt.ss.client.GwtLoginAsync;
 
 public class LoginBox extends DialogBox {
 
@@ -86,39 +82,25 @@ public class LoginBox extends DialogBox {
                     getPassworldField().setFocus(true);
                     setMsgValue(messages.password() + " " + messages.notNullValue());
                 } else {
-                    RequestBuilder builder = new RequestBuilder(RequestBuilder.POST, URL.encode(
-                            GWT.getHostPageBaseURL()+getLoginUrl()));
-                    builder.setHeader("Content-Type", "application/x-www-form-urlencoded");
-                    String query = "j_username=" + userName + "&j_password=" + password;
-                    builder.setRequestData(query);
-                    builder.setCallback(new RequestCallback() {
+                    GwtLoginAsync loginService = GwtLoginAsync.Util.getInstance(getLoginUrl());
+                    loginService.j_gwt_security_check(userName, password, new AsyncCallback<Void>() {
 
                         @Override
-                        public void onResponseReceived(Request request, Response response) {
-                            /*Must return Success when login success*/
-                            if ("Success".equals(response.getText())) {
-                                hide();
-                                fireEvent(new LoginEvent());
-                            } else {
-                                GWT.log("Error response:\n"+response.getText());
-                                setMsgValue(messages.errorProne()+":"+
-                                        (response.getText().length()>10?response.getText().substring(0,10)+"...":response.getText()));
-                            }
+                        public void onFailure(Throwable caught) {
+                            GWT.log("Error response:\n" + caught.getMessage(), caught);
+                            LoginBox.this.setMsgValue(messages.errorProne() + ":"
+                                    + (caught.getMessage().length() > 10 ? caught.getMessage().substring(0, 10) + "..." : caught.getMessage()));
                             getSubmitButton().setEnabled(true);
                         }
 
                         @Override
-                        public void onError(Request request, Throwable exception) {
-                            setMsgValue(exception.getMessage());
+                        public void onSuccess(Void result) {
+                            hide();
+                            fireEvent(new LoginEvent());
                             getSubmitButton().setEnabled(true);
+                            setMsgValue(messages.loginRequired());
                         }
                     });
-                    try {
-                        builder.send();
-                    } catch (RequestException ex) {
-                        setMsgValue(ex.getMessage());
-                        getSubmitButton().setEnabled(true);
-                    }
                 }
             }
         });
@@ -143,12 +125,13 @@ public class LoginBox extends DialogBox {
     public void show() {
         super.show();
         Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+
             @Override
             public void execute() {
                 userNameFIeld.setFocus(true);
             }
         });
-        
+
     }
 
     public String getLoginUrl() {
