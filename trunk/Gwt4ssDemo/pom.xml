@@ -8,13 +8,14 @@
     <name>Gwt4SpringSecurity Demo</name>
     <url>http://code.google.com/p/gwtsecurity/</url>
     <modules>
-        <module>gssDemo1</module>   
+        <module>gssDemo1</module>
         <module>gssDemo2</module>     
         <module>gssDemo3</module>
         <module>sharedService</module>
     </modules>
     <properties>
-        <gwtVersion>2.1.1</gwtVersion>
+        <gwtVersion>2.2.0</gwtVersion>
+        <gwtMavenPluginVersion>2.2.0</gwtMavenPluginVersion>
         <maven.compiler.source>1.6</maven.compiler.source>
         <maven.compiler.target>1.6</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -197,7 +198,7 @@
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>gwt-maven-plugin</artifactId>
-                    <version>2.1.0-1</version>
+                    <version>${gwtMavenPluginVersion}</version>
                     <executions>
                         <execution>
                             <goals>

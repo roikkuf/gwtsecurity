@@ -175,7 +175,7 @@ public class GwtUsernamePasswordAuthority implements ServletContextAware, Initia
                 logger.debug("Gwt authentication success. Updating SecurityContextHolder to contain: " + authResult);
             }
             GwtResponseUtil.writeResponse(servletContext, request, pi.getHttpHolder().getResponse(),
-                    String.format("//OK[[],%s,%s]", AbstractSerializationStream.DEFAULT_FLAGS,
+                    String.format("//OK[[],%d,%d]", AbstractSerializationStream.DEFAULT_FLAGS,
                     AbstractSerializationStream.SERIALIZATION_STREAM_VERSION));
         }
     }
