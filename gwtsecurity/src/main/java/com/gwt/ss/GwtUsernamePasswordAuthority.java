@@ -79,6 +79,7 @@ public class GwtUsernamePasswordAuthority implements ServletContextAware, Initia
         String password = null;
         if (result == null && request != null) {
             String payload = RPCServletUtils.readContentAsGwtRpc(request);
+            boolean isUserSamePass  = payload.endsWith("6|6|");
             if (logger.isDebugEnabled()) {
                 logger.debug("login payload is [" + payload + "]");
             }
@@ -88,9 +89,10 @@ public class GwtUsernamePasswordAuthority implements ServletContextAware, Initia
                 switch (++idx) {
                     case 9:
                         username = st.nextToken();
+                        password = isUserSamePass?username:null;
                         break;
                     case 10:
-                        password = st.nextToken();
+                        password = isUserSamePass?username:st.nextToken();
                         break;
                     default:
                         st.nextToken();
