@@ -1,10 +1,13 @@
 package com.gwt.ss;
 
 import com.google.gwt.user.client.rpc.impl.AbstractSerializationStream;
+import com.google.gwt.user.server.rpc.RPC;
+import com.google.gwt.user.server.rpc.RPCRequest;
 import com.google.gwt.user.server.rpc.RPCServletUtils;
+import com.google.gwt.user.server.rpc.SerializationPolicy;
+import com.google.gwt.user.server.rpc.SerializationPolicyProvider;
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.util.StringTokenizer;
 import javax.servlet.ServletException;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -35,8 +38,10 @@ import org.springframework.web.context.ServletContextAware;
  * When  &lt;form-login&gt; come from GWT RPC, return void message when success and
  * prone {@link  com.gwt.ss.client.GwtBadCredentialsException GwtBadCredentialsException} when failed.
  * Not effect with web page form-login.<br/>
+ * Note: Certification extracting code provide by Amit Khanna<br/>
  * 監控&lt;form-login&gt;登錄處理<br/>
- * 若使用GWT RPC進行登錄，本類別實例負責回應GWT RPC，否則交由Spring Security本身處理
+ * 若使用GWT RPC進行登錄，本類別實例負責回應GWT RPC，否則交由Spring Security本身處理<br/>
+ * 註:取出帳號資料之程式由Amit Khanna提供
  */
 @Aspect
 public class GwtUsernamePasswordAuthority implements ServletContextAware, InitializingBean,
@@ -47,6 +52,7 @@ public class GwtUsernamePasswordAuthority implements ServletContextAware, Initia
     private static ThreadLocal<PayloadInfo> payloadHolder = new InheritableThreadLocal<PayloadInfo>();
     private ApplicationContext applicationContext;
     private AuthenticationManager authenticationManager;
+    private SerializationPolicyProvider serializationPolicyProvider = DefaultSerializationPolicyProvider.getInstance();
 
     @Override
     public void setServletContext(ServletContext servletContext) {
@@ -71,6 +77,10 @@ public class GwtUsernamePasswordAuthority implements ServletContextAware, Initia
         this.authenticationManager = authenticationManager;
     }
 
+    /**
+     * Provide by Amit Khanna<br/>
+     * 由Amit Khanna提供
+     */
     private PayloadInfo extract(JoinPoint jp) throws IOException, ServletException {
         PayloadInfo result = payloadHolder.get();
         HttpHolder httpHolder = HttpHolder.getInstance(jp);
@@ -79,25 +89,10 @@ public class GwtUsernamePasswordAuthority implements ServletContextAware, Initia
         String password = null;
         if (result == null && request != null) {
             String payload = RPCServletUtils.readContentAsGwtRpc(request);
-            boolean isUserSamePass  = payload.endsWith("6|6|");
-            if (logger.isDebugEnabled()) {
-                logger.debug("login payload is [" + payload + "]");
-            }
-            StringTokenizer st = new StringTokenizer(payload, "|");
-            int idx = 0;
-            while (st.hasMoreTokens()) {
-                switch (++idx) {
-                    case 9:
-                        username = st.nextToken();
-                        password = isUserSamePass?username:null;
-                        break;
-                    case 10:
-                        password = isUserSamePass?username:st.nextToken();
-                        break;
-                    default:
-                        st.nextToken();
-                }
-            }
+            RPCRequest rpcRequest = RPC.decodeRequest(payload, null, serializationPolicyProvider);
+            Object[] requestParams = rpcRequest.getParameters();
+            username = (String) requestParams[0];
+            password = (String) requestParams[1];
             if (username != null && password != null) {
                 result = new PayloadInfo(username, password, httpHolder);
                 payloadHolder.set(result);
@@ -177,7 +172,7 @@ public class GwtUsernamePasswordAuthority implements ServletContextAware, Initia
                 logger.debug("Gwt authentication success. Updating SecurityContextHolder to contain: " + authResult);
             }
             GwtResponseUtil.writeResponse(servletContext, request, pi.getHttpHolder().getResponse(),
-                    String.format("//OK[[],%d,%d]", AbstractSerializationStream.DEFAULT_FLAGS,
+                    String.format("//OK[[],%s,%s]", AbstractSerializationStream.DEFAULT_FLAGS,
                     AbstractSerializationStream.SERIALIZATION_STREAM_VERSION));
         }
     }
@@ -208,6 +203,24 @@ public class GwtUsernamePasswordAuthority implements ServletContextAware, Initia
 
         public void setHttpHolder(HttpHolder httpHolder) {
             this.httpHolder = httpHolder;
+        }
+    }
+
+    /**
+     * Provide by Amit Khanna<br/>
+     * 由Amit Khanna提供
+     */
+    private static class DefaultSerializationPolicyProvider implements SerializationPolicyProvider {
+
+        private static DefaultSerializationPolicyProvider instance = new DefaultSerializationPolicyProvider();
+
+        public static DefaultSerializationPolicyProvider getInstance() {
+            return instance;
+        }
+
+        @Override
+        public SerializationPolicy getSerializationPolicy(String moduleBaseURL, String serializationPolicyStrongName) {
+            return RPC.getDefaultSerializationPolicy();
         }
     }
 }
