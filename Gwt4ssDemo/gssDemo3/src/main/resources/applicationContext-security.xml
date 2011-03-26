@@ -21,8 +21,9 @@
         <logout invalidate-session="true" success-handler-ref="logoutSuccessHandler" logout-url="/mvc/j_spring_security_logout"/>
         <!--when using session-management,you need a GwtSessionManagement bean-->
         <session-management invalid-session-url="/mvc/login?sessionInvalid=true" session-fixation-protection="migrateSession">
-            <concurrency-control max-sessions="1" expired-url="/mvc/login?sessionExpired=true"/>
+            <concurrency-control max-sessions="10" expired-url="/mvc/login?sessionExpired=true"/>
         </session-management>
+        <remember-me key="gssdemo3"/>
     </http>
     <beans:bean class="com.gwt.ss.GwtUsernamePasswordAuthority">
         <beans:property name="authenticationManager" ref="authenticationManager"/>

@@ -17,5 +17,5 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
  */
 public interface GwtLogin extends RemoteService {
 
-    void j_gwt_security_check(String username, String password) throws GwtSecurityException;
+    void j_gwt_security_check(String username, String password,boolean remeberMe) throws GwtSecurityException;
 }

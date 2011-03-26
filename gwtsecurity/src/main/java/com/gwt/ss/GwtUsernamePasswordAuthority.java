@@ -11,6 +11,7 @@ import java.lang.reflect.Field;
 import javax.servlet.ServletException;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpSession;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -53,6 +54,7 @@ public class GwtUsernamePasswordAuthority implements ServletContextAware, Initia
     private ApplicationContext applicationContext;
     private AuthenticationManager authenticationManager;
     private SerializationPolicyProvider serializationPolicyProvider = DefaultSerializationPolicyProvider.getInstance();
+    private String rememberMeParameter = "_spring_security_remember_me";
 
     @Override
     public void setServletContext(ServletContext servletContext) {
@@ -77,6 +79,14 @@ public class GwtUsernamePasswordAuthority implements ServletContextAware, Initia
         this.authenticationManager = authenticationManager;
     }
 
+    public String getRememberMeParameter() {
+        return rememberMeParameter;
+    }
+
+    public void setRememberMeParameter(String rememberMeParameter) {
+        this.rememberMeParameter = rememberMeParameter;
+    }
+
     /**
      * Provide by Amit Khanna<br/>
      * 由Amit Khanna提供
@@ -87,14 +97,22 @@ public class GwtUsernamePasswordAuthority implements ServletContextAware, Initia
         HttpServletRequest request = httpHolder.getRequest();
         String username = null;
         String password = null;
+        boolean rememberMe = false;
         if (result == null && request != null) {
             String payload = RPCServletUtils.readContentAsGwtRpc(request);
             RPCRequest rpcRequest = RPC.decodeRequest(payload, null, serializationPolicyProvider);
             Object[] requestParams = rpcRequest.getParameters();
+            assert requestParams.length > 1 : "parameter count incorrect";
             username = (String) requestParams[0];
             password = (String) requestParams[1];
+            if (requestParams.length > 2) {
+                try {
+                    rememberMe = (Boolean) requestParams[2];
+                } catch (Exception e) {
+                }
+            }
             if (username != null && password != null) {
-                result = new PayloadInfo(username, password, httpHolder);
+                result = new PayloadInfo(username, password, httpHolder, rememberMe);
                 payloadHolder.set(result);
             }
         }
@@ -122,7 +140,9 @@ public class GwtUsernamePasswordAuthority implements ServletContextAware, Initia
                 authRequest.setDetails(filter.getAuthenticationDetailsSource().buildDetails(httpHolder.getRequest()));
                 Authentication authResult = getAuthenticationManager().authenticate(authRequest);
                 SecurityContextHolder.getContext().setAuthentication(authResult);
-                filter.getRememberMeServices().loginSuccess(httpHolder.getRequest(), httpHolder.getResponse(), authResult);
+                filter.getRememberMeServices().loginSuccess(pi.isRemeberMe()
+                        ? new RemeberRequestWrapper(httpHolder.getRequest(), rememberMeParameter)
+                        : httpHolder.getRequest(), httpHolder.getResponse(), authResult);
                 applicationContext.publishEvent(new InteractiveAuthenticationSuccessEvent(authResult, this.getClass()));
                 return null;
             } catch (Exception e) {
@@ -182,11 +202,13 @@ public class GwtUsernamePasswordAuthority implements ServletContextAware, Initia
         private String username;
         private String password;
         private HttpHolder httpHolder;
+        private boolean remeberMe = false;
 
-        public PayloadInfo(String username, String password, HttpHolder httpHolder) {
+        public PayloadInfo(String username, String password, HttpHolder httpHolder, boolean remeberMe) {
             this.username = username;
             this.password = password;
             this.httpHolder = httpHolder;
+            this.remeberMe = remeberMe;
         }
 
         public String getPassword() {
@@ -199,6 +221,10 @@ public class GwtUsernamePasswordAuthority implements ServletContextAware, Initia
 
         public HttpHolder getHttpHolder() {
             return httpHolder;
+        }
+
+        public boolean isRemeberMe() {
+            return remeberMe;
         }
 
         public void setHttpHolder(HttpHolder httpHolder) {
@@ -221,6 +247,23 @@ public class GwtUsernamePasswordAuthority implements ServletContextAware, Initia
         @Override
         public SerializationPolicy getSerializationPolicy(String moduleBaseURL, String serializationPolicyStrongName) {
             return RPC.getDefaultSerializationPolicy();
+        }
+    }
+
+    private class RemeberRequestWrapper extends HttpServletRequestWrapper {
+
+        private String rememberMeParameter = "_spring_security_remember_me";
+
+        public RemeberRequestWrapper(HttpServletRequest request, String rememberMeParameter) {
+            super(request);
+            if (rememberMeParameter != null && !rememberMeParameter.isEmpty()) {
+                this.rememberMeParameter = rememberMeParameter;
+            }
+        }
+
+        @Override
+        public String getParameter(String name) {
+            return name.equals(rememberMeParameter) ? "true" : super.getParameter(name);
         }
     }
 }
