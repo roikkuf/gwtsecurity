@@ -5,7 +5,7 @@
     <groupId>com.gwt.ss</groupId>
     <artifactId>GwtSecurity</artifactId>
     <packaging>jar</packaging>
-    <version>1.0</version>
+    <version>1.0.1</version>
     <name>Gwt4SpringSecurity</name>
     <url>http://code.google.com/p/gwtsecurity/</url>
     <properties>

@@ -6,7 +6,7 @@ import com.google.gwt.user.client.rpc.ServiceDefTarget;
 
 public interface GwtLoginAsync {
 
-    void j_gwt_security_check(String username, String password, AsyncCallback<Void> callback);
+    void j_gwt_security_check(String username, String password, boolean remeberMe, AsyncCallback<Void> callback);
 
     /**
      * Maintain singleton {@link GwtLoginAsync GwtLoginAsync} instance.<br/>
@@ -26,7 +26,7 @@ public interface GwtLoginAsync {
             if (!Util.processUrl.equals(processUrl)) {
                 Util.processUrl = processUrl;
                 if (instance != null) {
-                    setServiceEntryPoint(instance , processUrl);
+                    setServiceEntryPoint(instance, processUrl);
                 }
             }
         }

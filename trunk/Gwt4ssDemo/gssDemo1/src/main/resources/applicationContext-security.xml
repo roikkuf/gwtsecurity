@@ -25,6 +25,7 @@
             <concurrency-control max-sessions="1" expired-url="/login.jsp?sessionExpired=true"/>
         </session-management>
         -->
+        <remember-me key="gssdemo1"/>
     </http>
     
     <!--when using GwtLogin[Async] process Login-->

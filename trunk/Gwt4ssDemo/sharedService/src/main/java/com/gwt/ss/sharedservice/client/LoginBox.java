@@ -8,6 +8,7 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
@@ -22,6 +23,7 @@ public class LoginBox extends DialogBox {
     private String loginUrl;
     private TextBox userNameFIeld;
     private PasswordTextBox passworldField;
+    private CheckBox remeberMeField;
     private Messages messages;
     private Label msgLabel;
     private Button submitButton;
@@ -65,6 +67,10 @@ public class LoginBox extends DialogBox {
         passworldField = new PasswordTextBox();
         outer.setWidget(2, 1, passworldField);
 
+        remeberMeField = new CheckBox(messages.remeberMe());
+        outer.setWidget(3, 0, remeberMeField);
+        formatter.setColSpan(3, 0, 2);
+
         submitButton = new Button(messages.submitButton(), new ClickHandler() {
 
             @Override
@@ -83,7 +89,7 @@ public class LoginBox extends DialogBox {
                     setMsgValue(messages.password() + " " + messages.notNullValue());
                 } else {
                     GwtLoginAsync loginService = GwtLoginAsync.Util.getInstance(getLoginUrl());
-                    loginService.j_gwt_security_check(userName, password, new AsyncCallback<Void>() {
+                    loginService.j_gwt_security_check(userName, password, getRemeberMeField().getValue(), new AsyncCallback<Void>() {
 
                         @Override
                         public void onFailure(Throwable caught) {
@@ -104,8 +110,8 @@ public class LoginBox extends DialogBox {
                 }
             }
         });
-        outer.setWidget(3, 0, submitButton);
-        formatter.setHorizontalAlignment(3, 0, HasHorizontalAlignment.ALIGN_CENTER);
+        outer.setWidget(4, 0, submitButton);
+        formatter.setHorizontalAlignment(4, 0, HasHorizontalAlignment.ALIGN_CENTER);
 
         cancelButton = new Button(messages.cancelButton(), new ClickHandler() {
 
@@ -116,8 +122,8 @@ public class LoginBox extends DialogBox {
             }
         });
 
-        outer.setWidget(3, 1, cancelButton);
-        formatter.setHorizontalAlignment(3, 1, HasHorizontalAlignment.ALIGN_CENTER);
+        outer.setWidget(4, 1, cancelButton);
+        formatter.setHorizontalAlignment(4, 1, HasHorizontalAlignment.ALIGN_CENTER);
         setWidget(outer);
     }
 
@@ -156,6 +162,10 @@ public class LoginBox extends DialogBox {
 
     public Button getSubmitButton() {
         return submitButton;
+    }
+
+    public CheckBox getRemeberMeField() {
+        return remeberMeField;
     }
 
     public HandlerRegistration addLoginHandler(LoginEvent.LoginHandler handler) {

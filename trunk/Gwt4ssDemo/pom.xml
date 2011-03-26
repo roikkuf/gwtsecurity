@@ -4,7 +4,7 @@
     <groupId>com.gwt.ss</groupId>
     <artifactId>Gwt4ssDemo</artifactId>
     <packaging>pom</packaging>
-    <version>1.0</version>
+    <version>1.0.1</version>
     <name>Gwt4SpringSecurity Demo</name>
     <url>http://code.google.com/p/gwtsecurity/</url>
     <modules>
@@ -74,7 +74,7 @@
             <dependency>
                 <groupId>com.gwt.ss</groupId>
                 <artifactId>GwtSecurity</artifactId>
-                <version>1.0</version>
+                <version>1.0.1</version>
                 <exclusions>
                     <exclusion>
                         <artifactId>spring-core</artifactId>

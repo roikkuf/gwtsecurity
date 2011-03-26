@@ -40,7 +40,6 @@ public interface Messages extends com.google.gwt.i18n.client.Messages {
     @Key("close")
     String closeButton();
 
-
     @DefaultMessage("not allowed empty value.")
     @Key("notNullValue")
     String notNullValue();
@@ -57,10 +56,13 @@ public interface Messages extends com.google.gwt.i18n.client.Messages {
     @Key("logout")
     String logout();
 
-
     @DefaultMessage("User logout completed.")
     @Key("logoutComplete")
     String logoutComplete();
+
+    @DefaultMessage("Remeber Me 2 weeks.")
+    @Key("remeberMe")
+    String remeberMe();
 
     public static final class Util {
 

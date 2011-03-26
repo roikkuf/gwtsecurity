@@ -25,6 +25,17 @@
         <!-- If you add any GWT meta tags, they must   -->
         <!-- be added before this line.                -->
         <!--                                           -->
+        <script type="text/javascript"><!--
+            var _gaq = _gaq || [];
+            _gaq.push(['_setAccount', 'UA-22086822-5']);
+            _gaq.push(['_trackPageview']);
+
+            (function() {
+                var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+                ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+            })();
+            --></script>
         <script type="text/javascript" language="javascript" src="demo3/demo3.nocache.js"></script>
     </head>
 
@@ -47,6 +58,7 @@
         </noscript>
 
         <h1>Gwt for Spring Security <a href="http://code.google.com/p/spring4gwt/">spring4gwt</a> Demo</h1>
+        <h2 style="text-align:center;color:red">10 concurrency-control sessions per account loing</h2>
         <center id="showarea"></center>
         <div>&nbsp;</div>
         <table border="1" align="center">
