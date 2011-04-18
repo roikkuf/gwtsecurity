@@ -128,12 +128,12 @@ public class GwtUsernamePasswordAuthority implements ServletContextAware, Initia
             try {
                 pi = extract(pjp);
                 UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(pi.getUsername(), pi.getPassword());
-                HttpSession session = httpHolder.getRequest().getSession(false);
                 Class c = AbstractAuthenticationProcessingFilter.class;
                 Field f = c.getDeclaredField("allowSessionCreation");
                 f.setAccessible(true);
                 boolean allowSessionCreation = (Boolean) f.get(filter);
-                if (session != null || allowSessionCreation) {
+                HttpSession session = httpHolder.getRequest().getSession(allowSessionCreation);
+                if (session != null) {
                     httpHolder.getRequest().getSession().setAttribute(GwtResponseUtil.SPRING_SECURITY_LAST_USERNAME_KEY,
                             TextEscapeUtils.escapeEntities(pi.getUsername()));
                 }
