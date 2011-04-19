@@ -1,17 +1,15 @@
 package com.gwt.ss;
 
-import javax.servlet.ServletContext;
-import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationListener;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.event.AuthorizationFailureEvent;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.context.ServletContextAware;
+
+import javax.servlet.ServletContext;
 
 /**
  * Rquired
@@ -28,9 +26,9 @@ import org.springframework.web.context.ServletContextAware;
  * </ul>
  */
 @Aspect
-public class GwtExceptionTranslator implements ServletContextAware, ApplicationListener<AuthorizationFailureEvent> {
+public class GwtExceptionTranslator implements ServletContextAware, ApplicationListener<AuthorizationFailureEvent>{
 
-    protected static Logger logger = LoggerFactory.getLogger(GwtExceptionTranslator.class);
+  protected static Logger logger = LoggerFactory.getLogger(GwtExceptionTranslator.class);
     private static ThreadLocal<HttpHolder> httpHolder = new InheritableThreadLocal<HttpHolder>();
     private ServletContext servletContext;
 
