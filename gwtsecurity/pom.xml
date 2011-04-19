@@ -5,7 +5,7 @@
     <groupId>com.gwt.ss</groupId>
     <artifactId>GwtSecurity</artifactId>
     <packaging>jar</packaging>
-    <version>1.0.1</version>
+    <version>1.0.2-SNAPSHOT</version>
     <name>Gwt4SpringSecurity</name>
     <url>http://code.google.com/p/gwtsecurity/</url>
     <properties>
@@ -170,6 +170,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
+                <version>2.1.2</version>
                 <executions>
                     <execution>
                         <id>attach-sources</id>
@@ -218,6 +219,7 @@
                 <directory>src/main/java</directory>
                 <includes>
                     <include> **/client/*.java </include>
+                  <include> **/client/utils/*.java </include>
                 </includes>
             </resource>
             <resource>
