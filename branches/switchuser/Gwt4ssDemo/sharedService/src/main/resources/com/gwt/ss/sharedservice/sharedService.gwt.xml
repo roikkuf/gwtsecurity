@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+  <inherits name='com.google.gwt.user.User'/>
+  <inherits name='com.gwt.ss.GwtSecurity'/>
+  <inherits name="com.google.gwt.i18n.I18N"/>
+  <extend-property name="locale" values="en"/>
+  <extend-property name="locale" values="zh_TW"/>
+  <source path='client'/>
+</module>
