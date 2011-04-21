@@ -1,31 +1,32 @@
 #summary Design guide
 
-= Introduction =
-[http://static.springsource.org/spring-security/site/ Spring Security ] always require a login entry when security exception occur, 
-In Gwt, you have two choices to handle security exception, 
-  # provide a stand alone login page, 
-  # or handle by gwt itself. 
+= Введение =
+[http://static.springsource.org/spring-security/site/ Spring Security ] всегда требуется аутентификация, в тех случаях когда происходит исключение системы безопасности, 
+В случае работы с GWT, у вас есть два способа корректно обработать исключения системы безопасности, 
+  # предоставить стандартную страницу аутентификации, 
+  # или самостоятельно обработать исключения в GWT. 
 
-Gwtsecurity detect handle exception affair(using AOP) when security exception occurs, <br/>
-gwtsecury distinguish whether request offer by RemoteService or not.<br/>
-If true, gwtsecurity direct report [http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0/com/gwt/ss/client/GwtSecurityException.html GwtSecurityException] to front end gwt app,
-<br/>otherwise gwtsecurity bypass to spring's mechanism.
+Gwtsecurity перехватывает запросы к приложению на уровне обращений к фрэймворку Spring Security (используя AOP), <br/>
+gwtsecury определяет источник исключения, был ли это RemoteService или исключение было брошено в Spring MVC.<br/>
+Если запрос пришедший во фрэймворк был предназначен RemoteService, то gwtsecurity разбирает пришедший запрос и передает его во внутренние механизмы Spring Security. <br/>
+Если результатом является исключение то библиотека трансформирует исключение в [http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0/com/gwt/ss/client/GwtSecurityException.html GwtSecurityException] которое пробрасывается на клиенсткую сторону GWT,<br/>
+если же запрос был направлен не RemoteService gwtsecurity передает запрос через стандартный механизм Spring Security.
 
 
 = Details =
-First,add aop context into your configuration and add fllowing config.<br/>
-(Acitvate proxy-target-class to get a fast speed.)
+В первую очередь, нужно добавить AOP в конфигурацию Spring ващего приложения следующим образом.<br/>
+(Включение proxy-target-class значительно увеличивает скорость обработки запросов средствами AOP.)
 {{{
     <aop:aspectj-autoproxy proxy-target-class="true"/>
 }}}
-then add a [http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0/com/gwt/ss/GwtExceptionTranslator.html GwtExceptionTranslator] bean to handle Security Exception.
+после этого добавьте в конфигурацию бин отвечающий за трансляцию эксепшенов в стандартной модели работы Spring Security [http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0/com/gwt/ss/GwtExceptionTranslator.html GwtExceptionTranslator].
 {{{
     <beans:bean class="com.gwt.ss.GwtExceptionTranslator"/>
 }}}
 
-Gwtsecurity propose two type [http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0/com/gwt/ss/client/GwtSecurityException.html GwtSecurityException].
-|| [http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0/com/gwt/ss/client/GwtAuthenticationException.html GwtAuthenticationException] || means user not yet authenticated.<br>, gwt app has duty to provide a login entry for user singin. ||
-|| [http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0/com/gwt/ss/client/GwtAccessDeniedException.html GwtAccessDeniedException] || means user has not enough authority to acess then resource.<br/>user should get a wraning this time. ||
+Gwtsecurity предлагает два типа исключений безопасности [http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0/com/gwt/ss/client/GwtSecurityException.html GwtSecurityException].
+|| [http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0/com/gwt/ss/client/GwtAuthenticationException.html GwtAuthenticationException] || в случае если пользователь не аутентифицирован.<br>, в этом случае GWT приложение должно предоставить пользователю форсу для введение данных для аутентификации. ||
+|| [http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0/com/gwt/ss/client/GwtAccessDeniedException.html GwtAccessDeniedException] || в случае если пользователь не имеет достаточных прав для доступа к ресурсу.<br/>в этом случае, пользователь должен получить предупреждение об этом. ||
 
 The demo app, I intent to handle security exception by gwt app itself(I also provide a stand aloe login page).
 || Gwt RPC login when user not yet authenticated||                                                                           
