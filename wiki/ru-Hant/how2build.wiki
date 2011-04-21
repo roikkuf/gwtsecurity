@@ -1,20 +1,20 @@
-#summary Как собрать проект из исходного кода?
+#summary РљР°Рє СЃРѕР±СЂР°С‚СЊ РїСЂРѕРµРєС‚ РёР· РёСЃС…РѕРґРЅРѕРіРѕ РєРѕРґР°?
 
-= Введение =
+= Р’РІРµРґРµРЅРёРµ =
 
-Этот проект разработа с использованием [http://maven.apache.org/ Maven] поэтому вы должны в первую очередь установить его.
+Р­С‚РѕС‚ РїСЂРѕРµРєС‚ СЂР°Р·СЂР°Р±РѕС‚Р° СЃ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёРµРј [http://maven.apache.org/ Maven] РїРѕСЌС‚РѕРјСѓ РІС‹ РґРѕР»Р¶РЅС‹ РІ РїРµСЂРІСѓСЋ РѕС‡РµСЂРµРґСЊ СѓСЃС‚Р°РЅРѕРІРёС‚СЊ РµРіРѕ.
 
-Ниже приведены ссылки на собранные компоненты проекта:
-|| [http://code.google.com/p/gwtsecurity/downloads/detail?name=GwtSecurity-1.0.jar&can=2&q= GwtSecurity-1.0.jar] || Primary Library  ||
-|| [http://code.google.com/p/gwtsecurity/downloads/detail?name=GssDemo-Simple-1.0.war&can=2&q= GssDemo-Simple-1.0.war] || Simple demostration using spring security for security only without integration with any spring bean .||
-|| [http://code.google.com/p/gwtsecurity/downloads/detail?name=GssDemo-GwtSL-1.0.war&can=2&q= GssDemo-GwtSL-1.0.war] || Secure demostration  if you're using  [http://code.google.com/p/gwt-sl/ gwt-sl] with spring integration .  ||
-|| [http://code.google.com/p/gwtsecurity/downloads/detail?name=GssDemo-spring4gwt-1.0.war&can=2&q= GssDemo-spring4gwt-1.0.war] || Secure demostration  if you're using  [http://code.google.com/p/spring4gwt/ spring4gwt] with spring integration .  ||
+РќРёР¶Рµ РїСЂРёРІРµРґРµРЅС‹ СЃСЃС‹Р»РєРё РЅР° СЃРѕР±СЂР°РЅРЅС‹Рµ РєРѕРјРїРѕРЅРµРЅС‚С‹ РїСЂРѕРµРєС‚Р°:
+|| [http://code.google.com/p/gwtsecurity/downloads/detail?name=GwtSecurity-1.0.jar&can=2&q= GwtSecurity-1.0.jar] || РћСЃРЅРѕРІРЅР°СЏ Р±РёР±Р»РёРѕС‚РµРєР° ||
+|| [http://code.google.com/p/gwtsecurity/downloads/detail?name=GssDemo-Simple-1.0.war&can=2&q= GssDemo-Simple-1.0.war] || РџСЂРѕСЃС‚Р°СЏ РґРµРјРѕРЅСЃС‚СЂР°С†РёСЏ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёСЏ Spring Security Р±РµР· РІСЃСЏРєРёС… РёРЅС‚РµРіСЂР°С†РёР№ СЃ СЃРёСЃС‚РµРјРѕР№ Р±РµР·РѕРїР°СЃРЅРѕСЃС‚Рё.||
+|| [http://code.google.com/p/gwtsecurity/downloads/detail?name=GssDemo-GwtSL-1.0.war&can=2&q= GssDemo-GwtSL-1.0.war] || Р”РµРјРѕРЅСЃС‚СЂР°С†РёСЏ СЃРёСЃС‚РµРјС‹ Р±РµР·РѕРїР°СЃРЅРѕСЃС‚Рё РµСЃР»Рё РІС‹ РёСЃРїРѕР»СЊР·СѓРµС‚Рµ Р±РёР±Р»РёРѕС‚РµРєСѓ [http://code.google.com/p/gwt-sl/ gwt-sl] РґР»СЏ РёРЅС‚РµРіСЂР°С†РёРё СЃРѕ spring.  ||
+|| [http://code.google.com/p/gwtsecurity/downloads/detail?name=GssDemo-spring4gwt-1.0.war&can=2&q= GssDemo-spring4gwt-1.0.war] || Р”РµРјРѕРЅСЃС‚СЂР°С†РёСЏ СЃРёСЃС‚РµРјС‹ Р±РµР·РѕРїР°СЃРЅРѕСЃС‚Рё РµСЃР»Рё РІС‹ РёСЃРїРѕР»СЊР·СѓРµС‚Рµ Р±РёР±Р»РёРѕС‚РµРєСѓ [http://code.google.com/p/spring4gwt/ spring4gwt] РґР»СЏ РёРЅС‚РµРіСЂР°С†РёРё СЃРѕ spring.  ||
 
-= Подробнее =
+= РџРѕРґСЂРѕР±РЅРµРµ =
 
- Потому что проект разработан с использованием [http://maven.apache.org/ Maven],
- вы должны скачать и установить его.
- Послое этого скачайте исходные коды проекта и распакуйте в требуемую директорию [http://code.google.com/p/gwtsecurity/downloads/detail?name=GwtSecurity-1.0.zip&can=2&q= sources],
- и выполните команду  'mvn install' для инсталляции библиотеки проекта в ваш локальный порозитарий.
+ РџРѕС‚РѕРјСѓ С‡С‚Рѕ РїСЂРѕРµРєС‚ СЂР°Р·СЂР°Р±РѕС‚Р°РЅ СЃ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёРµРј [http://maven.apache.org/ Maven],
+ РІС‹ РґРѕР»Р¶РЅС‹ СЃРєР°С‡Р°С‚СЊ Рё СѓСЃС‚Р°РЅРѕРІРёС‚СЊ РµРіРѕ.
+ РџРѕСЃР»РѕРµ СЌС‚РѕРіРѕ СЃРєР°С‡Р°Р№С‚Рµ РёСЃС…РѕРґРЅС‹Рµ РєРѕРґС‹ РїСЂРѕРµРєС‚Р° Рё СЂР°СЃРїР°РєСѓР№С‚Рµ РІ С‚СЂРµР±СѓРµРјСѓСЋ РґРёСЂРµРєС‚РѕСЂРёСЋ [http://code.google.com/p/gwtsecurity/downloads/detail?name=GwtSecurity-1.0.zip&can=2&q= sources],
+ Рё РІС‹РїРѕР»РЅРёС‚Рµ РєРѕРјР°РЅРґСѓ  'mvn install' РґР»СЏ РёРЅСЃС‚Р°Р»Р»СЏС†РёРё Р±РёР±Р»РёРѕС‚РµРєРё РїСЂРѕРµРєС‚Р° РІ РІР°С€ Р»РѕРєР°Р»СЊРЅС‹Р№ РїРѕСЂРѕР·РёС‚Р°СЂРёР№.
 
- После этого, [http://code.google.com/p/gwtsecurity/downloads/detail?name=Gwt4ssDemo-1.0.zip&can=2&q= скачайте], распакуйте и выполните команду "mvn package" для сборки демонстрационного приложения.
+ РџРѕСЃР»Рµ СЌС‚РѕРіРѕ, [http://code.google.com/p/gwtsecurity/downloads/detail?name=Gwt4ssDemo-1.0.zip&can=2&q= СЃРєР°С‡Р°Р№С‚Рµ], СЂР°СЃРїР°РєСѓР№С‚Рµ Рё РІС‹РїРѕР»РЅРёС‚Рµ РєРѕРјР°РЅРґСѓ "mvn package" РґР»СЏ СЃР±РѕСЂРєРё РґРµРјРѕРЅСЃС‚СЂР°С†РёРѕРЅРЅРѕРіРѕ РїСЂРёР»РѕР¶РµРЅРёСЏ.
