@@ -1,32 +1,32 @@
 #summary Design guide
 
-= Введение =
-[http://static.springsource.org/spring-security/site/ Spring Security ] всегда требуется аутентификация, в тех случаях когда происходит исключение системы безопасности, 
-В случае работы с GWT, у вас есть два способа корректно обработать исключения системы безопасности, 
-  # предоставить стандартную страницу аутентификации, 
-  # или самостоятельно обработать исключения в GWT. 
+= Р’РІРµРґРµРЅРёРµ =
+[http://static.springsource.org/spring-security/site/ Spring Security ] РІСЃРµРіРґР° С‚СЂРµР±СѓРµС‚СЃСЏ Р°СѓС‚РµРЅС‚РёС„РёРєР°С†РёСЏ, РІ С‚РµС… СЃР»СѓС‡Р°СЏС… РєРѕРіРґР° РїСЂРѕРёСЃС…РѕРґРёС‚ РёСЃРєР»СЋС‡РµРЅРёРµ СЃРёСЃС‚РµРјС‹ Р±РµР·РѕРїР°СЃРЅРѕСЃС‚Рё, 
+Р’ СЃР»СѓС‡Р°Рµ СЂР°Р±РѕС‚С‹ СЃ GWT, Сѓ РІР°СЃ РµСЃС‚СЊ РґРІР° СЃРїРѕСЃРѕР±Р° РєРѕСЂСЂРµРєС‚РЅРѕ РѕР±СЂР°Р±РѕС‚Р°С‚СЊ РёСЃРєР»СЋС‡РµРЅРёСЏ СЃРёСЃС‚РµРјС‹ Р±РµР·РѕРїР°СЃРЅРѕСЃС‚Рё, 
+  # РїСЂРµРґРѕСЃС‚Р°РІРёС‚СЊ СЃС‚Р°РЅРґР°СЂС‚РЅСѓСЋ СЃС‚СЂР°РЅРёС†Сѓ Р°СѓС‚РµРЅС‚РёС„РёРєР°С†РёРё, 
+  # РёР»Рё СЃР°РјРѕСЃС‚РѕСЏС‚РµР»СЊРЅРѕ РѕР±СЂР°Р±РѕС‚Р°С‚СЊ РёСЃРєР»СЋС‡РµРЅРёСЏ РІ GWT. 
 
-Gwtsecurity перехватывает запросы к приложению на уровне обращений к фрэймворку Spring Security (используя AOP), <br/>
-gwtsecury определяет источник исключения, был ли это RemoteService или исключение было брошено в Spring MVC.<br/>
-Если запрос пришедший во фрэймворк был предназначен RemoteService, то gwtsecurity разбирает пришедший запрос и передает его во внутренние механизмы Spring Security. <br/>
-Если результатом является исключение то библиотека трансформирует исключение в [http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0/com/gwt/ss/client/GwtSecurityException.html GwtSecurityException] которое пробрасывается на клиенсткую сторону GWT,<br/>
-если же запрос был направлен не RemoteService gwtsecurity передает запрос через стандартный механизм Spring Security.
+Gwtsecurity РїРµСЂРµС…РІР°С‚С‹РІР°РµС‚ Р·Р°РїСЂРѕСЃС‹ Рє РїСЂРёР»РѕР¶РµРЅРёСЋ РЅР° СѓСЂРѕРІРЅРµ РѕР±СЂР°С‰РµРЅРёР№ Рє С„СЂСЌР№РјРІРѕСЂРєСѓ Spring Security (РёСЃРїРѕР»СЊР·СѓСЏ AOP), <br/>
+gwtsecury РѕРїСЂРµРґРµР»СЏРµС‚ РёСЃС‚РѕС‡РЅРёРє РёСЃРєР»СЋС‡РµРЅРёСЏ, Р±С‹Р» Р»Рё СЌС‚Рѕ RemoteService РёР»Рё РёСЃРєР»СЋС‡РµРЅРёРµ Р±С‹Р»Рѕ Р±СЂРѕС€РµРЅРѕ РІ Spring MVC.<br/>
+Р•СЃР»Рё Р·Р°РїСЂРѕСЃ РїСЂРёС€РµРґС€РёР№ РІРѕ С„СЂСЌР№РјРІРѕСЂРє Р±С‹Р» РїСЂРµРґРЅР°Р·РЅР°С‡РµРЅ RemoteService, С‚Рѕ gwtsecurity СЂР°Р·Р±РёСЂР°РµС‚ РїСЂРёС€РµРґС€РёР№ Р·Р°РїСЂРѕСЃ Рё РїРµСЂРµРґР°РµС‚ РµРіРѕ РІРѕ РІРЅСѓС‚СЂРµРЅРЅРёРµ РјРµС…Р°РЅРёР·РјС‹ Spring Security. <br/>
+Р•СЃР»Рё СЂРµР·СѓР»СЊС‚Р°С‚РѕРј СЏРІР»СЏРµС‚СЃСЏ РёСЃРєР»СЋС‡РµРЅРёРµ С‚Рѕ Р±РёР±Р»РёРѕС‚РµРєР° С‚СЂР°РЅСЃС„РѕСЂРјРёСЂСѓРµС‚ РёСЃРєР»СЋС‡РµРЅРёРµ РІ [http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0/com/gwt/ss/client/GwtSecurityException.html GwtSecurityException] РєРѕС‚РѕСЂРѕРµ РїСЂРѕР±СЂР°СЃС‹РІР°РµС‚СЃСЏ РЅР° РєР»РёРµРЅСЃС‚РєСѓСЋ СЃС‚РѕСЂРѕРЅСѓ GWT,<br/>
+РµСЃР»Рё Р¶Рµ Р·Р°РїСЂРѕСЃ Р±С‹Р» РЅР°РїСЂР°РІР»РµРЅ РЅРµ RemoteService gwtsecurity РїРµСЂРµРґР°РµС‚ Р·Р°РїСЂРѕСЃ С‡РµСЂРµР· СЃС‚Р°РЅРґР°СЂС‚РЅС‹Р№ РјРµС…Р°РЅРёР·Рј Spring Security.
 
 
 = Details =
-В первую очередь, нужно добавить AOP в конфигурацию Spring ващего приложения следующим образом.<br/>
-(Включение proxy-target-class значительно увеличивает скорость обработки запросов средствами AOP.)
+Р’ РїРµСЂРІСѓСЋ РѕС‡РµСЂРµРґСЊ, РЅСѓР¶РЅРѕ РґРѕР±Р°РІРёС‚СЊ AOP РІ РєРѕРЅС„РёРіСѓСЂР°С†РёСЋ Spring РІР°С‰РµРіРѕ РїСЂРёР»РѕР¶РµРЅРёСЏ СЃР»РµРґСѓСЋС‰РёРј РѕР±СЂР°Р·РѕРј.<br/>
+(Р’РєР»СЋС‡РµРЅРёРµ proxy-target-class Р·РЅР°С‡РёС‚РµР»СЊРЅРѕ СѓРІРµР»РёС‡РёРІР°РµС‚ СЃРєРѕСЂРѕСЃС‚СЊ РѕР±СЂР°Р±РѕС‚РєРё Р·Р°РїСЂРѕСЃРѕРІ СЃСЂРµРґСЃС‚РІР°РјРё AOP.)
 {{{
     <aop:aspectj-autoproxy proxy-target-class="true"/>
 }}}
-после этого добавьте в конфигурацию бин отвечающий за трансляцию эксепшенов в стандартной модели работы Spring Security [http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0/com/gwt/ss/GwtExceptionTranslator.html GwtExceptionTranslator].
+РїРѕСЃР»Рµ СЌС‚РѕРіРѕ РґРѕР±Р°РІСЊС‚Рµ РІ РєРѕРЅС„РёРіСѓСЂР°С†РёСЋ Р±РёРЅ РѕС‚РІРµС‡Р°СЋС‰РёР№ Р·Р° С‚СЂР°РЅСЃР»СЏС†РёСЋ СЌРєСЃРµРїС€РµРЅРѕРІ РІ СЃС‚Р°РЅРґР°СЂС‚РЅРѕР№ РјРѕРґРµР»Рё СЂР°Р±РѕС‚С‹ Spring Security [http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0/com/gwt/ss/GwtExceptionTranslator.html GwtExceptionTranslator].
 {{{
     <beans:bean class="com.gwt.ss.GwtExceptionTranslator"/>
 }}}
 
-Gwtsecurity предлагает два типа исключений безопасности [http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0/com/gwt/ss/client/GwtSecurityException.html GwtSecurityException].
-|| [http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0/com/gwt/ss/client/GwtAuthenticationException.html GwtAuthenticationException] || в случае если пользователь не аутентифицирован.<br>, в этом случае GWT приложение должно предоставить пользователю форсу для введение данных для аутентификации. ||
-|| [http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0/com/gwt/ss/client/GwtAccessDeniedException.html GwtAccessDeniedException] || в случае если пользователь не имеет достаточных прав для доступа к ресурсу.<br/>в этом случае, пользователь должен получить предупреждение об этом. ||
+Gwtsecurity РїСЂРµРґР»Р°РіР°РµС‚ РґРІР° С‚РёРїР° РёСЃРєР»СЋС‡РµРЅРёР№ Р±РµР·РѕРїР°СЃРЅРѕСЃС‚Рё [http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0/com/gwt/ss/client/GwtSecurityException.html GwtSecurityException].
+|| [http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0/com/gwt/ss/client/GwtAuthenticationException.html GwtAuthenticationException] || РІ СЃР»СѓС‡Р°Рµ РµСЃР»Рё РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ РЅРµ Р°СѓС‚РµРЅС‚РёС„РёС†РёСЂРѕРІР°РЅ.<br>, РІ СЌС‚РѕРј СЃР»СѓС‡Р°Рµ GWT РїСЂРёР»РѕР¶РµРЅРёРµ РґРѕР»Р¶РЅРѕ РїСЂРµРґРѕСЃС‚Р°РІРёС‚СЊ РїРѕР»СЊР·РѕРІР°С‚РµР»СЋ С„РѕСЂСЃСѓ РґР»СЏ РІРІРµРґРµРЅРёРµ РґР°РЅРЅС‹С… РґР»СЏ Р°СѓС‚РµРЅС‚РёС„РёРєР°С†РёРё. ||
+|| [http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0/com/gwt/ss/client/GwtAccessDeniedException.html GwtAccessDeniedException] || РІ СЃР»СѓС‡Р°Рµ РµСЃР»Рё РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ РЅРµ РёРјРµРµС‚ РґРѕСЃС‚Р°С‚РѕС‡РЅС‹С… РїСЂР°РІ РґР»СЏ РґРѕСЃС‚СѓРїР° Рє СЂРµСЃСѓСЂСЃСѓ.<br/>РІ СЌС‚РѕРј СЃР»СѓС‡Р°Рµ, РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ РґРѕР»Р¶РµРЅ РїРѕР»СѓС‡РёС‚СЊ РїСЂРµРґСѓРїСЂРµР¶РґРµРЅРёРµ РѕР± СЌС‚РѕРј. ||
 
 The demo app, I intent to handle security exception by gwt app itself(I also provide a stand aloe login page).
 || Gwt RPC login when user not yet authenticated||                                                                           
