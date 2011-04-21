@@ -1,21 +1,20 @@
-#summary How to build this project code?
+#summary  ак собрать проект из исходного кода?
 
-= Introduction =
+= ¬ведение =
 
-This project develop under [http://maven.apache.org/ Maven].
-So you need to setup maven first.
+Ётот проект разработа с использованием [http://maven.apache.org/ Maven] поэтому вы должны в первую очередь установить его.
 
-All prebuild for download links available here after:
+Ќиже приведены ссылки на собранные компоненты проекта:
 || [http://code.google.com/p/gwtsecurity/downloads/detail?name=GwtSecurity-1.0.jar&can=2&q= GwtSecurity-1.0.jar] || Primary Library  ||
 || [http://code.google.com/p/gwtsecurity/downloads/detail?name=GssDemo-Simple-1.0.war&can=2&q= GssDemo-Simple-1.0.war] || Simple demostration using spring security for security only without integration with any spring bean .||
 || [http://code.google.com/p/gwtsecurity/downloads/detail?name=GssDemo-GwtSL-1.0.war&can=2&q= GssDemo-GwtSL-1.0.war] || Secure demostration  if you're using  [http://code.google.com/p/gwt-sl/ gwt-sl] with spring integration .  ||
 || [http://code.google.com/p/gwtsecurity/downloads/detail?name=GssDemo-spring4gwt-1.0.war&can=2&q= GssDemo-spring4gwt-1.0.war] || Secure demostration  if you're using  [http://code.google.com/p/spring4gwt/ spring4gwt] with spring integration .  ||
 
-= Details =
+= ѕодробнее =
 
- Because this project develop by [http://maven.apache.org/ Maven],
- you should download [http://code.google.com/p/gwtsecurity/downloads/detail?name=GwtSecurity-1.0.zip&can=2&q= sources], unpack to directory and run command
-  'mvn install'
- to install library to your local repository.
+ ѕотому что проект разработан с использованием [http://maven.apache.org/ Maven],
+ вы должны скачать и установить его.
+ ѕослое этого скачайте исходные коды проекта и распакуйте в требуемую директорию [http://code.google.com/p/gwtsecurity/downloads/detail?name=GwtSecurity-1.0.zip&can=2&q= sources],
+ и выполните команду  'mvn install' дл€ инсталл€ции библиотеки проекта в ваш локальный порозитарий.
 
- Then, [http://code.google.com/p/gwtsecurity/downloads/detail?name=Gwt4ssDemo-1.0.zip&can=2&q= download] , unpack and execute "mvn package" to build the demostration app.
+ ѕосле этого, [http://code.google.com/p/gwtsecurity/downloads/detail?name=Gwt4ssDemo-1.0.zip&can=2&q= скачайте], распакуйте и выполните команду "mvn package" дл€ сборки демонстрационного приложени€.
