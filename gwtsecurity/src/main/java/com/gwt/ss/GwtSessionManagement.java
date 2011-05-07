@@ -9,7 +9,6 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -135,53 +134,63 @@ public class GwtSessionManagement implements ServletContextAware {
     @Around("execution(* org.springframework.security.web.session.SessionManagementFilter.doFilter(..))")
     public Object doSMFilter(ProceedingJoinPoint pjp) throws Throwable {
         HttpHolder holder = HttpHolder.getInstance(pjp);
-        if (logger.isDebugEnabled()) {
-            logger.debug("sm filter  isGwt : " + holder.isGwt());
-            if (holder.isGwt()) {
-                logger.debug("sm filter not yet applied : " + (holder.getRequest().getAttribute(FILTER_APPLIED) == null));
-                if (holder.getRequest().getAttribute(FILTER_APPLIED) == null) {
-                    logger.debug("sm filter security context contain : "
-                            + getSecurityContextRepository(getSMTarget(pjp)).containsContext(holder.getRequest()));
-                }
+        if (holder.isGwt()) {
+            if (logger.isDebugEnabled()) {
+                logger.debug("GwtSessionManagementFilter instead of  SessionManagementFilter");
             }
-        }
-        if (holder.isGwt() && holder.getRequest().getAttribute(FILTER_APPLIED) == null
-                && !getSecurityContextRepository(getSMTarget(pjp)).containsContext(holder.getRequest())) {
-            holder.getRequest().setAttribute(FILTER_APPLIED, Boolean.TRUE);
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            if (authentication != null && !GwtResponseUtil.isAnonymous(authentication)) {
-                boolean errorProne = false;
-                try {
-                    sessionStrategy.onAuthentication(authentication, holder.getRequest(), holder.getResponse());
-                } catch (SessionAuthenticationException e) {
-                    if (logger.isErrorEnabled()) {
-                        logger.error(e.getMessage(), e);
-                    }
-                    errorProne = true;
-                    GwtResponseUtil.processGwtException(servletContext, holder.getRequest(), holder.getResponse(), e);
+            if (holder.getRequest().getAttribute(FILTER_APPLIED) != null) {
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Request already filter applied.");
                 }
-                getSecurityContextRepository(getSMTarget(pjp)).saveContext(SecurityContextHolder.getContext(), holder.getRequest(), holder.getResponse());
-                if (!errorProne) {
-                    getFilterChain(pjp).doFilter(holder.getRequest(), holder.getResponse());
-                }
+                //do next filter
+                getFilterChain(pjp).doFilter(holder.getRequest(), holder.getResponse());
                 return null;
-            } else {
-                if (holder.getRequest().getRequestedSessionId() != null && !holder.getRequest().isRequestedSessionIdValid()) {
-                    String msg = "Requested session ID" + holder.getRequest().getRequestedSessionId() + " is invalid.";
-                    if (logger.isDebugEnabled()) {
-                        logger.debug(msg);
-                    }
-                    if (getInvalidSessionUrl(getSMTarget(pjp)) != null) {
-                        GwtResponseUtil.processGwtException(servletContext, holder.getRequest(), holder.getResponse(),
-                                new AuthenticationException(msg) {
-                                });
+            }
+
+            holder.getRequest().setAttribute(FILTER_APPLIED, Boolean.TRUE);
+
+            if (!getSecurityContextRepository(getSMTarget(pjp)).containsContext(holder.getRequest())) {
+                Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+                if (authentication != null && !GwtResponseUtil.isAnonymous(authentication)) {
+                    // The user has been authenticated during the current request, so call the session strategy
+                    try {
+                        sessionStrategy.onAuthentication(authentication, holder.getRequest(), holder.getResponse());
+                    } catch (SessionAuthenticationException e) {
+                        if (logger.isErrorEnabled()) {
+                            logger.error("SessionAuthenticationStrategy rejected the authentication object", e);
+                        }
+                        SecurityContextHolder.clearContext();
+                        GwtResponseUtil.processGwtException(servletContext, holder.getRequest(), holder.getResponse(), e);
                         return null;
                     }
+                    // Eagerly save the security context to make it available for any possible re-entrant
+                    // requests which may occur before the current request completes. SEC-1396.
+                    getSecurityContextRepository(getSMTarget(pjp)).saveContext(SecurityContextHolder.getContext(), holder.getRequest(), holder.getResponse());
+                } else {
+                    // No security context or authentication present. Check for a session timeout
+                    if (holder.getRequest().getRequestedSessionId() != null && !holder.getRequest().isRequestedSessionIdValid()) {
+                        if (logger.isDebugEnabled()) {
+                            logger.debug("Requested session ID" + holder.getRequest().getRequestedSessionId() + " is invalid.");
+                        }
+                        if (getInvalidSessionUrl(getSMTarget(pjp)) != null) {
+                            if (logger.isDebugEnabled()) {
+                                logger.debug("Starting new session (if required) and notify front-end user");
+                            }
+                            holder.getRequest().getSession();
+                            GwtResponseUtil.processGwtException(servletContext, holder.getRequest(), holder.getResponse(),
+                                    new AuthenticationException("Session had invalid.") {
+                                    });
+                            return null;
+                        }
+                    }
                 }
-                getFilterChain(pjp).doFilter(holder.getRequest(), holder.getResponse());
             }
+
+            getFilterChain(pjp).doFilter(holder.getRequest(), holder.getResponse());
             return null;
         } else {
+            //back to the original SessionManagementFilter
             return pjp.proceed();
         }
     }
@@ -190,8 +199,7 @@ public class GwtSessionManagement implements ServletContextAware {
     public Object doCSFilter(ProceedingJoinPoint pjp) throws Throwable {
         HttpHolder holder = HttpHolder.getInstance(pjp);
         SessionInformation info = holder.getRequest().getSession(false) != null && GwtResponseUtil.isGwt(holder.getRequest())
-                ? getSessionRegistry(getCSTarget(pjp)).getSessionInformation(
-                holder.getRequest().getSession(false).getId()) : null;
+                ? getSessionRegistry(getCSTarget(pjp)).getSessionInformation(holder.getRequest().getSession(false).getId()) : null;
         if (info != null) {
             if (info.isExpired()) {
                 if (logger.isDebugEnabled()) {
@@ -202,7 +210,9 @@ public class GwtSessionManagement implements ServletContextAware {
                     handler.logout(holder.getRequest(), holder.getResponse(), auth);
                 }
                 GwtResponseUtil.processGwtException(servletContext, holder.getRequest(), holder.getResponse(),
-                        new AccessDeniedException("Session expired!"));
+                        new AuthenticationException("This session has been expired (possibly due to multiple concurrent " +
+                                "logins being attempted as the same user)."){});
+                return null;
             } else {
                 if (logger.isDebugEnabled()) {
                     logger.debug("Concurrent info not expired");
@@ -210,8 +220,8 @@ public class GwtSessionManagement implements ServletContextAware {
                 // Non-expired - update last request date/time
                 info.refreshLastRequest();
                 getFilterChain(pjp).doFilter(holder.getRequest(), holder.getResponse());
+                return null;
             }
-            return null;
         } else {
             return pjp.proceed();
         }

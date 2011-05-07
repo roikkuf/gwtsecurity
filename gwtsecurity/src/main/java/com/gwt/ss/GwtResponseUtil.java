@@ -3,6 +3,7 @@ package com.gwt.ss;
 import com.google.gwt.user.client.rpc.SerializationException;
 import com.google.gwt.user.server.rpc.RPC;
 import com.google.gwt.user.server.rpc.RPCServletUtils;
+import com.gwt.ss.client.GWTSessionAuthenticationException;
 import com.gwt.ss.client.GwtAccessDeniedException;
 import com.gwt.ss.client.GwtAuthenticationException;
 import com.gwt.ss.client.GwtBadCredentialsException;
@@ -19,6 +20,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.session.SessionAuthenticationException;
 
 /**
  * Utility for handle GWT RPC response.<br/>
@@ -83,6 +85,9 @@ public class GwtResponseUtil {
                 }
                 writeResponse(servletContext, request, response,
                         RPC.encodeResponseForFailure(null, new GwtBadCredentialsException(ex.getMessage(), ex)));
+            } else if(ex instanceof SessionAuthenticationException){
+                writeResponse(servletContext, request, response,
+                        RPC.encodeResponseForFailure(null, new GWTSessionAuthenticationException(ex.getMessage())));
             } else if (ex instanceof AuthenticationException) {
                 if (logger.isErrorEnabled()) {
                     logger.error("Encode GwtAuthenticationException:" + ex.getMessage());
