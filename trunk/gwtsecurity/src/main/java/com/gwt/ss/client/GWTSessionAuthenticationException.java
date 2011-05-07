@@ -6,7 +6,19 @@ package com.gwt.ss.client;
  */
 public class GWTSessionAuthenticationException extends GwtSecurityException {
 
+    public GWTSessionAuthenticationException(Throwable cause) {
+        super(cause);
+    }
+
     public GWTSessionAuthenticationException(String message) {
         super(message);
     }
+
+    public GWTSessionAuthenticationException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public GWTSessionAuthenticationException() {
+    }
+
 }
