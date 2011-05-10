@@ -1,7 +1,9 @@
 package com.gwt.ss.demo2.client;
 
 import com.google.gwt.core.client.GWT;
+import com.gwt.ss.client.loginable.LoginableService;
 import com.google.gwt.user.client.rpc.ServiceDefTarget;
+import com.gwt.ss.sharedservice.client.LoginBox;
 import com.gwt.ss.sharedservice.client.RemoteAsync;
 
 public interface GwtGreetingServiceAsync extends RemoteAsync{
@@ -13,11 +15,15 @@ public interface GwtGreetingServiceAsync extends RemoteAsync{
 
         private static GwtGreetingServiceAsync instance;
 
-        public static GwtGreetingServiceAsync getInstance() {
+        public static GwtGreetingServiceAsync getInstance(String loginurl) {
             if (instance == null) {
-                instance = (GwtGreetingServiceAsync) GWT.create(GwtGreetingService.class);
-                ServiceDefTarget target = (ServiceDefTarget) instance;
+                GwtGreetingServiceAsync rs = (GwtGreetingServiceAsync) GWT.create(GwtGreetingService.class);
+                ServiceDefTarget target = (ServiceDefTarget) rs;
                 target.setServiceEntryPoint(GWT.getModuleBaseURL() + "../gwtsl/greet");
+                instance = GWT.create(GwtGreetingServiceAsync.class);
+                LoginableService<GwtGreetingServiceAsync> ls = (LoginableService<GwtGreetingServiceAsync>) instance;
+                ls.setRemoteService(rs);
+                ls.setHasLoginHandler(LoginBox.getLoginBox(loginurl));
             }
             return instance;
         }

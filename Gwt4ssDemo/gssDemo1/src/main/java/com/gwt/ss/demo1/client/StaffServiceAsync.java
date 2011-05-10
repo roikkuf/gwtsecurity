@@ -1,6 +1,8 @@
 package com.gwt.ss.demo1.client;
 
 import com.google.gwt.core.client.GWT;
+import com.gwt.ss.client.loginable.LoginableService;
+import com.gwt.ss.sharedservice.client.LoginBox;
 import com.gwt.ss.sharedservice.client.RemoteAsync;
 
 public interface StaffServiceAsync extends RemoteAsync{
@@ -11,11 +13,14 @@ public interface StaffServiceAsync extends RemoteAsync{
     { 
         private static StaffServiceAsync instance;
 
-        public static StaffServiceAsync getInstance()
+        public static StaffServiceAsync getInstance(String loginurl)
         {
             if ( instance == null )
             {
-                instance = (StaffServiceAsync) GWT.create( StaffService.class );
+                instance = GWT.create(StaffServiceAsync.class);
+                LoginableService<StaffServiceAsync> ls = (LoginableService<StaffServiceAsync>) instance;
+                ls.setRemoteService((StaffServiceAsync) GWT.create( StaffService.class ));
+                ls.setHasLoginHandler(LoginBox.getLoginBox(loginurl));
             }
             return instance;
         }

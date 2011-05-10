@@ -13,6 +13,7 @@
     <import resource="applicationContext-security.xml"/>
     <context:property-placeholder location="classpath:system.properties"/>
     <context:annotation-config/>
+    <!-- Memory DB seem has problem on GAE
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close"
           p:driverClassName="${jdbc.driverClassName}" p:url="${jdbc.url}" p:username="${jdbc.username}" p:password="${jdbc.password}"
           p:initialSize="${jdbc.initialSize}" p:maxActive="${jdbc.maxActive}" p:maxIdle="${jdbc.maxIdle}" p:minIdle="${jdbc.minIdle}"
@@ -20,4 +21,5 @@
     <jdbc:initialize-database data-source="dataSource">
         <jdbc:script location="${jdbc.scriptLocation}"/>
     </jdbc:initialize-database>
+    -->
 </beans>

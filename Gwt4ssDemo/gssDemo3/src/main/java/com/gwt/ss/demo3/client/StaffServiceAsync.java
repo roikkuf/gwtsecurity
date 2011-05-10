@@ -1,28 +1,30 @@
 package com.gwt.ss.demo3.client;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.client.rpc.ServiceDefTarget;
+import com.gwt.ss.client.loginable.LoginableService;
+import com.gwt.ss.sharedservice.client.LoginBox;
 import com.gwt.ss.sharedservice.client.RemoteAsync;
 
-public interface StaffServiceAsync extends RemoteAsync{
+public interface StaffServiceAsync extends RemoteAsync {
+
     /**
      * Utility class to get the RPC Async interface from client-side code
      */
-    public static final class Util 
-    { 
+    public static final class Util {
+
         private static StaffServiceAsync instance;
 
-        public static StaffServiceAsync getInstance()
-        {
-            if ( instance == null )
-            {
-                instance = (StaffServiceAsync) GWT.create( StaffService.class );
+        public static StaffServiceAsync getInstance(String loginurl) {
+            if (instance == null) {
+                instance = GWT.create(StaffServiceAsync.class);
+                LoginableService<StaffServiceAsync> ls = (LoginableService<StaffServiceAsync>) instance;
+                ls.setRemoteService((StaffServiceAsync) GWT.create(StaffService.class));
+                ls.setHasLoginHandler(LoginBox.getLoginBox(loginurl));
             }
             return instance;
         }
 
-        private Util()
-        {
+        private Util() {
             // Utility class should not be instanciated
         }
     }

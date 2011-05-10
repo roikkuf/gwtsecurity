@@ -34,12 +34,19 @@
     <beans:bean class="com.gwt.ss.GwtSessionManagement"/>
     
     <authentication-manager alias="authenticationManager">
-        <authentication-provider user-service-ref="userDetailService">
+        <!--authentication-provider user-service-ref="userDetailService"-->
+        <authentication-provider>
             <password-encoder hash="plaintext"/>
+            <user-service>
+                <user name="staff" password="only" authorities="ROLE_STAFF" />
+                <user name="admin" password="user" authorities="ROLE_ADMIN,ROLE_STAFF" />
+            </user-service>
         </authentication-provider>
-    </authentication-manager>
+    </authentication-manager>     
+    
+    <!-- Memory DB seem has problem on GAE
     <beans:bean id="userDetailService" class="org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl">
         <beans:property name="dataSource" ref="dataSource"/>
     </beans:bean>
-    
+    -->
 </beans:beans>

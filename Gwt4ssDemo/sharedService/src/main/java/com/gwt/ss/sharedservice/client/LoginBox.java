@@ -4,20 +4,20 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
-import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.gwt.ss.client.GwtLoginAsync;
+import com.gwt.ss.client.loginable.AbstractLoginBox;
+import com.gwt.ss.client.loginable.LoginEvent;
 
-public class LoginBox extends DialogBox {
+public class LoginBox extends AbstractLoginBox {
 
     private static LoginBox loginBox;
     private String loginUrl;
@@ -102,7 +102,8 @@ public class LoginBox extends DialogBox {
                         @Override
                         public void onSuccess(Void result) {
                             hide();
-                            fireEvent(new LoginEvent());
+                            GWT.log("user login succeed. ready to fire Login event(true)");
+                            fireEvent(new LoginEvent(true));
                             getSubmitButton().setEnabled(true);
                             setMsgValue(messages.loginRequired());
                         }
@@ -118,7 +119,8 @@ public class LoginBox extends DialogBox {
             @Override
             public void onClick(ClickEvent event) {
                 hide();
-                fireEvent(new LoginEvent(true));
+                GWT.log("user click cancel button to stop login, so issue a Login event(false)");
+                fireEvent(new LoginEvent(false));
             }
         });
 
@@ -168,7 +170,10 @@ public class LoginBox extends DialogBox {
         return remeberMeField;
     }
 
-    public HandlerRegistration addLoginHandler(LoginEvent.LoginHandler handler) {
-        return super.addHandler(handler, LoginEvent.getType());
+    @Override
+    public void startLogin(Throwable caught) {
+        this.setMsgValue(messages.errorProne() + ":"
+                + (caught.getMessage().length() > 10 ? caught.getMessage().substring(0, 10) + "..." : caught.getMessage()));
+        center();
     }
 }

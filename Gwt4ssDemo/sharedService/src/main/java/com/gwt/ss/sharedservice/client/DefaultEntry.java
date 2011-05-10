@@ -2,10 +2,8 @@ package com.gwt.ss.sharedservice.client;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -17,15 +15,30 @@ import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
-import com.gwt.ss.client.GwtAccessDeniedException;
 import com.gwt.ss.client.GwtLogoutAsync;
-import com.gwt.ss.client.GwtSecurityException;
+import com.gwt.ss.client.loginable.LoginCancelException;
 
 public abstract class DefaultEntry implements EntryPoint {
 
-    private ServiceAction greetingAction = new ServiceAction(getGreetingServiceAsync(), "Greeting Service");
-    private ServiceAction staffAction = new ServiceAction(getStaffServiceAsync(), "Staff Service");
     private final Messages messages = Messages.Util.getInstance();
+    private RemoteAsync staffService;
+    private RemoteAsync greetingService;
+
+    protected RemoteAsync getGreetingService() {
+        return greetingService;
+    }
+
+    protected void setGreetingService(RemoteAsync greetingService) {
+        this.greetingService = greetingService;
+    }
+
+    protected RemoteAsync getStaffService() {
+        return staffService;
+    }
+
+    protected void setStaffService(RemoteAsync staffService) {
+        this.staffService = staffService;
+    }
 
     private boolean isEmpty(Object obj) {
         if (obj == null) {
@@ -35,118 +48,6 @@ public abstract class DefaultEntry implements EntryPoint {
         } else {
             return false;
         }
-    }
-
-    private void doGreeting(final ServiceAction action, final String name, final Button button) {
-        GWT.log("start " + action.getName());
-        button.setEnabled(false);
-        action.doGreeting(name, new AbstractScheduledCommand<String, GwtSecurityException>() {
-
-            @Override
-            public void execute(String result) {
-                Window.alert(action.getName() + ".greetServer:" + result);
-                button.setEnabled(true);
-            }
-
-            @Override
-            public void onException(GwtSecurityException e) {
-                GWT.log(null, e);
-                if (e instanceof GwtAccessDeniedException) {
-                    Window.alert(e.getMessage());
-                    button.setEnabled(true);
-                } else {
-                    LoginBox loginBox = LoginBox.getLoginBox(getLoginUrl());
-                    LoginEvent.LoginHandler loginHandler = new LoginEvent.LoginHandler() {
-
-                        private HandlerRegistration hr;
-
-                        @Override
-                        public void setHandlerRegistration(HandlerRegistration hr) {
-                            this.hr = hr;
-                        }
-
-                        @Override
-                        public void onLoginResult(LoginEvent e) {
-                            if (hr != null) {
-                                hr.removeHandler();
-                            }
-                            if (!e.isCanceled()) {
-                                Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
-
-                                    @Override
-                                    public void execute() {
-                                        doGreeting(action, name, button);
-                                    }
-                                });
-
-                            } else {
-                                button.setEnabled(true);
-                            }
-                        }
-                    };
-                    final HandlerRegistration hr = loginBox.addLoginHandler(loginHandler);
-                    loginHandler.setHandlerRegistration(hr);
-                    loginBox.center();
-                }
-            }
-        });
-    }
-
-    private void doWhisper(final ServiceAction action, final String name, final Button button) {
-        GWT.log("start " + action.getName());
-        button.setEnabled(false);
-        action.doWhisper(name, new AbstractScheduledCommand<String, GwtSecurityException>() {
-
-            @Override
-            public void execute(String result) {
-                GWT.log(result);
-                Window.alert(action.getName() + ".whisperServer:" + result);
-                button.setEnabled(true);
-            }
-
-            @Override
-            public void onException(GwtSecurityException e) {
-                GWT.log("Security Error for", e);
-
-                if (e instanceof GwtAccessDeniedException) {
-                    Window.alert(e.getMessage());
-                    button.setEnabled(true);
-                } else {
-                    LoginBox loginBox = LoginBox.getLoginBox(getLoginUrl());
-                    LoginEvent.LoginHandler loginHandler = new LoginEvent.LoginHandler() {
-
-                        private HandlerRegistration hr;
-
-                        @Override
-                        public void setHandlerRegistration(HandlerRegistration hr) {
-                            this.hr = hr;
-                        }
-
-                        @Override
-                        public void onLoginResult(LoginEvent e) {
-                            if (hr != null) {
-                                hr.removeHandler();
-                            }
-                            if (e.isCanceled()) {
-                                button.setEnabled(true);
-                            } else {
-                                Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
-
-                                    @Override
-                                    public void execute() {
-                                        GWT.log("do " + action.getName() + "again");
-                                        doWhisper(action, name, button);
-                                    }
-                                });
-                            }
-                        }
-                    };
-                    final HandlerRegistration hr = loginBox.addLoginHandler(loginHandler);
-                    loginHandler.setHandlerRegistration(hr);
-                    loginBox.center();
-                }
-            }
-        });
     }
 
     @Override
@@ -179,7 +80,25 @@ public abstract class DefaultEntry implements EntryPoint {
                     nameField.setFocus(true);
                     Window.alert(messages.enterYourName());
                 } else {
-                    doGreeting(greetingAction, nameField.getValue(), callGg);
+                    callGg.setEnabled(false);  
+                    getGreetingService().greetServer(nameField.getValue(), new AsyncCallback<String>() {
+
+                        @Override
+                        public void onFailure(Throwable caught) {
+                            if (caught instanceof LoginCancelException) {
+                                GWT.log("LoginCancelException occur"+caught.getMessage());
+                            } else {
+                                Window.alert("Greeting Service.greetServer error:" + caught.getMessage());
+                            }
+                            callGg.setEnabled(true);
+                        }
+
+                        @Override
+                        public void onSuccess(String result) {
+                            Window.alert("Greeting Service.greetServer:" + result);
+                            callGg.setEnabled(true);
+                        }
+                    });
                 }
             }
         });
@@ -195,7 +114,25 @@ public abstract class DefaultEntry implements EntryPoint {
                     nameField.setFocus(true);
                     Window.alert(messages.enterYourName());
                 } else {
-                    doWhisper(greetingAction, nameField.getValue(), callGw);
+                	  callGw.setEnabled(false);
+                    getGreetingService().whisperServer(nameField.getValue(), new AsyncCallback<String>() {
+
+                        @Override
+                        public void onFailure(Throwable caught) {
+                            if (caught instanceof LoginCancelException) {
+                                GWT.log("LoginCancelException occur"+caught.getMessage());
+                            } else {
+                                Window.alert("Greeting Service.whisperServer error:" + caught.getMessage());
+                            }
+                            callGw.setEnabled(true);
+                        }
+
+                        @Override
+                        public void onSuccess(String result) {
+                            Window.alert("Greeting Service.whisperServer:" + result);
+                            callGw.setEnabled(true);
+                        }
+                    });
                 }
 
             }
@@ -222,7 +159,25 @@ public abstract class DefaultEntry implements EntryPoint {
                     nameField.setFocus(true);
                     Window.alert(messages.enterYourName());
                 } else {
-                    doGreeting(staffAction, nameField.getValue(), callSg);
+                    callSg.setEnabled(false);
+                    getStaffService().greetServer(nameField.getValue(), new AsyncCallback<String>() {
+
+                        @Override
+                        public void onFailure(Throwable caught) {
+                            if (caught instanceof LoginCancelException) {
+                                GWT.log("LoginCancelException occur"+caught.getMessage());
+                            } else {
+                                Window.alert("Greeting Service.greetServer error:" + caught.getMessage());
+                            }
+                            callSg.setEnabled(true);
+                        }
+
+                        @Override
+                        public void onSuccess(String result) {
+                            Window.alert("Greeting Service.greetServer:" + result);
+                            callSg.setEnabled(true);
+                        }
+                    });
                 }
             }
         });
@@ -238,7 +193,25 @@ public abstract class DefaultEntry implements EntryPoint {
                     nameField.setFocus(true);
                     Window.alert(messages.enterYourName());
                 } else {
-                    doWhisper(staffAction, nameField.getValue(), callSw);
+                    callSw.setEnabled(false);
+                    getStaffService().whisperServer(nameField.getValue(), new AsyncCallback<String>() {
+
+                        @Override
+                        public void onFailure(Throwable caught) {
+                            if (caught instanceof LoginCancelException) {
+                                GWT.log("LoginCancelException occur"+caught.getMessage());
+                            } else {
+                                Window.alert("Greeting Service.whisperServer error:" + caught.getMessage());
+                            }
+                            callSw.setEnabled(true);
+                        }
+
+                        @Override
+                        public void onSuccess(String result) {
+                            Window.alert("Greeting Service.whisperServer:" + result);
+                            callSw.setEnabled(true);
+                        }
+                    });
                 }
 
             }
@@ -274,8 +247,4 @@ public abstract class DefaultEntry implements EntryPoint {
     public abstract String getLoginUrl();
 
     public abstract String getLogoutUrl();
-
-    public abstract RemoteAsync getGreetingServiceAsync();
-
-    public abstract RemoteAsync getStaffServiceAsync();
 }
