@@ -30,6 +30,7 @@ import org.springframework.security.authentication.event.InteractiveAuthenticati
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
+import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
 import org.springframework.security.web.util.TextEscapeUtils;
 import org.springframework.util.Assert;
 import org.springframework.web.context.ServletContextAware;
@@ -143,6 +144,13 @@ public class GwtUsernamePasswordAuthority implements ServletContextAware, Initia
                 filter.getRememberMeServices().loginSuccess(pi.isRemeberMe()
                         ? new RemeberRequestWrapper(httpHolder.getRequest(), rememberMeParameter)
                         : httpHolder.getRequest(), httpHolder.getResponse(), authResult);
+                
+                //Patch provided by Steven Jardine steven.j...@gmail.com http://code.google.com/u/@UhVVQ1JZAxVEXgF4/
+                f = c.getDeclaredField("sessionStrategy");
+                f.setAccessible(true);
+                SessionAuthenticationStrategy sessionStrategy = (SessionAuthenticationStrategy) f.get(filter);
+                sessionStrategy.onAuthentication(authResult, httpHolder.getRequest(), httpHolder.getResponse());
+                
                 applicationContext.publishEvent(new InteractiveAuthenticationSuccessEvent(authResult, this.getClass()));
                 return null;
             } catch (Exception e) {
