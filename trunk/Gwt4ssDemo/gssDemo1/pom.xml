@@ -7,7 +7,7 @@
     <parent>
         <groupId>com.gwt.ss</groupId>
         <artifactId>Gwt4ssDemo</artifactId>
-        <version>1.0.1</version>
+        <version>1.0.3</version>
     </parent>
     <dependencies>
         <dependency>
@@ -29,15 +29,17 @@
               If you want to debug in devmode,
                 1. first package shareService module
                 2. activate this comment section
-                3. execute gwt:run goal     
+                3. execute gwt:run goal
             <scope>system</scope>
-            <systemPath>${basedir}\..\sharedService\target\sharedService-${version}.jar</systemPath>    
+            <systemPath>${basedir}\..\sharedService\target\sharedService-${version}.jar</systemPath>
             -->    
         </dependency>
+        <!-- Memory DB seem has problem on GAE
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>org.springframework.jdbc</artifactId>
         </dependency>
+        -->
         <dependency>
             <groupId>commons-logging</groupId>
             <artifactId>commons-logging</artifactId>
@@ -47,6 +49,7 @@
             <groupId>javax.annotation</groupId>
             <artifactId>jsr250-api</artifactId>
         </dependency>
+        <!-- Memory DB seem has problem on GAE
         <dependency>
             <groupId>commons-dbcp</groupId>
             <artifactId>commons-dbcp</artifactId>
@@ -55,6 +58,7 @@
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
         </dependency>
+        -->
     </dependencies>
     <build>
         <!-- Generate compiled stuff in the folder used for developing mode -->

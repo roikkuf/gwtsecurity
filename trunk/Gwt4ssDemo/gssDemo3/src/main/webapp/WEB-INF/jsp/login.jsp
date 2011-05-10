@@ -34,6 +34,10 @@
                     <th><label for="j_password">Password</label>:&nbsp;</th>
                     <td class="left"><input id="j_password" name="j_password" size="20" maxlength="50" type="password"/></td>
                 </tr>
+                <tr>
+                	  <th colSpan="2"><input type="checkbox" id="_spring_security_remember_me" name="_spring_security_remember_me">
+                	      <label for="_spring_security_remember_me">Remeber me 2 weeks</label></th>
+                </tr>
             </tbody>
             <tfoot>
             	  <tr>

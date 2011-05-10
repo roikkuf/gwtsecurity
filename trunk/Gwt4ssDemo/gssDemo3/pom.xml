@@ -8,7 +8,7 @@
     <parent>
         <groupId>com.gwt.ss</groupId>
         <artifactId>Gwt4ssDemo</artifactId>
-        <version>1.0.1</version>
+        <version>1.0.3</version>
     </parent>
     <dependencies>
         <dependency>
@@ -39,27 +39,31 @@
             <scope>system</scope>
             <systemPath>${basedir}\..\sharedService\target\sharedService-${project.version}.jar</systemPath>
             -->
-        </dependency>
+        </dependency>                           
+        <!-- Memory DB seem has problem on GAE
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>org.springframework.jdbc</artifactId>
         </dependency>
+        -->
         <dependency>
             <groupId>javax.annotation</groupId>
             <artifactId>jsr250-api</artifactId>
         </dependency>
         <dependency>
-            <groupId>commons-dbcp</groupId>
-            <artifactId>commons-dbcp</artifactId>
-        </dependency>
-        <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>jstl</artifactId>
+        </dependency>            
+        <!-- Memory DB seem has problem on GAE
+        <dependency>
+            <groupId>commons-dbcp</groupId>
+            <artifactId>commons-dbcp</artifactId>
         </dependency>
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
         </dependency>
+        -->
     </dependencies>
     <build>
         <!-- Generate compiled stuff in the folder used for developing mode -->
