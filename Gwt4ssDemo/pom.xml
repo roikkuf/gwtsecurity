@@ -76,7 +76,7 @@
             <dependency>
                 <groupId>com.gwt.ss</groupId>
                 <artifactId>GwtSecurity</artifactId>
-                <version>1.0.1</version>
+                <version>${project.version}</version>
                 <exclusions>
                     <exclusion>
                         <artifactId>spring-core</artifactId>
