@@ -1,21 +1,21 @@
 #summary Make asynchronous remote call loginable
 
 = Introduction =
-[http://code.google.com/p/gwtsecurity/ GwtSecurity] ³qª¾±zªº¦bPRC¨ç¦¡µo¥ÍSpring Security ¿ù»~,
-µM«á±z¥²¶·¶i¦æµn¿ı«á¦Aµo°e¤@¦¸»·ºİµ{§Ç¥s¥Î¡C
+[http://code.google.com/p/gwtsecurity/ GwtSecurity] é€šçŸ¥æ‚¨çš„åœ¨PRCå‡½å¼ç™¼ç”ŸSpring Security éŒ¯èª¤,
+ç„¶å¾Œæ‚¨å¿…é ˆé€²è¡Œç™»éŒ„å¾Œå†ç™¼é€ä¸€æ¬¡é ç«¯ç¨‹åºå«ç”¨ã€‚
 
-ÀHµÛµ{¦¡·U¨Ó·U¤j¡AµLÁpªº¥N½X¤@¦A¦a­«ÂĞ¡AÅı§Ú¨Ó§i¶D±z¦p¦óÁ×§K³o¨Ç·Ğ¤Hªº¤u§@¡C
+éš¨è‘—ç¨‹å¼æ„ˆä¾†æ„ˆå¤§ï¼Œç„¡è¯çš„ä»£ç¢¼ä¸€å†åœ°é‡è¦†ï¼Œè®“æˆ‘ä¾†å‘Šè¨´æ‚¨å¦‚ä½•é¿å…é€™äº›ç…©äººçš„å·¥ä½œã€‚
 
 = Details =
-³Ì¶}©l, §Aªº»·ºİªA°È¤èªk«Å§i[http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0.3/com/gwt/ss/client/GwtSecurityException.html GwtSecurityException]
-¥H³q§i¥D¾÷ºİ¥i¯àµo¥Íªº¦w¥ş©Ê¨Æ°È¿ù»~
+æœ€é–‹å§‹, ä½ çš„é ç«¯æœå‹™æ–¹æ³•å®£å‘Š[http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0.3/com/gwt/ss/client/GwtSecurityException.html GwtSecurityException]
+ä»¥é€šå‘Šä¸»æ©Ÿç«¯å¯èƒ½ç™¼ç”Ÿçš„å®‰å…¨æ€§äº‹å‹™éŒ¯èª¤
 {{{
     public interface RemoteCall extends RemoteService {
         RtnType request(ParamType param) throws GwtSecurityException;
     }
 }}}
 
-±µµÛ±z©w¸q¥t¤@­Ó°t¹ïªº interface¡A
+æ¥è‘—æ‚¨å®šç¾©å¦ä¸€å€‹é…å°çš„ interfaceï¼Œ
 
 {{{
     public interface RemoteCallAsync{
@@ -23,21 +23,21 @@
     }
 }}}
 
-µM«á«Ø¥ßRemoteCallAsync¥H¶i¦æ»·ºİµ{§Ç¥s¥Î
+ç„¶å¾Œå»ºç«‹RemoteCallAsyncä»¥é€²è¡Œé ç«¯ç¨‹åºå«ç”¨
 
 {{{
    RemoteCallAsync rc = (RemoteCallAsync) GWT.create(RemoteCall.class);  
 }}}
 
-±z¼¶¼g¨ç¦¡¨Ã¦Û¦æ±±¨î¿ù»~³B²z
+æ‚¨æ’°å¯«å‡½å¼ä¸¦è‡ªè¡Œæ§åˆ¶éŒ¯èª¤è™•ç†
 
 {{{
    rc.request(param,new AsyncCallback<RtnType>(){
        @Override
        public void onFailure(Throwable caught) {
-          //¦¹®É±z¥²¶··Ç³Æ¤@­Óµn¿ıªº¬É­±,
-          //·í¥Î¤áµn¿ı¦¨¥\®É¡A­«·s¦A¤@¦¸µo°e»İ¨D,
-          //©ÎªÌ«ä¦Ò¥Î¤á¤¤Â_µn¿ı®É¸Ó«ç»ò³B²z¡C
+          //æ­¤æ™‚æ‚¨å¿…é ˆæº–å‚™ä¸€å€‹ç™»éŒ„çš„ç•Œé¢,
+          //ç•¶ç”¨æˆ¶ç™»éŒ„æˆåŠŸæ™‚ï¼Œé‡æ–°å†ä¸€æ¬¡ç™¼é€éœ€æ±‚,
+          //æˆ–è€…æ€è€ƒç”¨æˆ¶ä¸­æ–·ç™»éŒ„æ™‚è©²æ€éº¼è™•ç†ã€‚
        }
        @Override
        public void onSuccess(RtnType result) {
@@ -45,10 +45,10 @@
    });
 }}}
 
-§ÚÄ±±o¦Û¦æ¶i¦æ¿ù¿ù±±¨î³B²z¨Ã¤£¬O¤@¥ó®e©öªº¨Æ¡C
-©Ò¥H¦b1.0.3ª©¥H«á¡A§Ú¥[¤J¤F[http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0.3/com/gwt/ss/client/loginable/package-summary.html loginable]¼Ò²Õ.
+æˆ‘è¦ºå¾—è‡ªè¡Œé€²è¡ŒéŒ¯éŒ¯æ§åˆ¶è™•ç†ä¸¦ä¸æ˜¯ä¸€ä»¶å®¹æ˜“çš„äº‹ã€‚
+æ‰€ä»¥åœ¨1.0.3ç‰ˆä»¥å¾Œï¼Œæˆ‘åŠ å…¥äº†[http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0.3/com/gwt/ss/client/loginable/package-summary.html loginable]æ¨¡çµ„.
 
-²{¦b¡A±z«D¦P¨B»·ºİ¥s¥Îªº°t¹ïInterface¥²¶·¹ê°µ[http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0.3/com/gwt/ss/client/loginable/LoginableAsync.html LoginableAsync]
+ç¾åœ¨ï¼Œæ‚¨éåŒæ­¥é ç«¯å«ç”¨çš„é…å°Interfaceå¿…é ˆå¯¦åš[http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0.3/com/gwt/ss/client/loginable/LoginableAsync.html LoginableAsync]
 
 {{{
     public interface RemoteCallAsync extends LoginableAsync{
@@ -56,35 +56,35 @@
     }
 }}}
 
-¨Ã¥B¼g¦n¤@­Ó¹ê°µ[http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0.3/com/gwt/ss/client/loginable/HasLoginHandler.html HasLoginHandler]ªº[http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0.3/com/gwt/ss/client/loginable/AbstractLoginBox.html µn¿ı¹ï¸Ü¤è¶ô]
-¥H³B²z¥H¤U¨â¥ó¨Æ. 
-  # ·í¥s¥Î[http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0.3/com/gwt/ss/client/loginable/HasLoginHandler.html#startLogin(java.lang.Throwable) startLogin]®É¶i¦æµn¿ı§@·~
-  # µLë«µn¿ı¦¨¥\©Î¨ú®ø¡A³£ªºÄ²µo¤@­Ófire a [http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0.3/com/gwt/ss/client/loginable/LoginEvent.html LoginEvent]¡C
+ä¸¦ä¸”å¯«å¥½ä¸€å€‹å¯¦åš[http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0.3/com/gwt/ss/client/loginable/HasLoginHandler.html HasLoginHandler]çš„[http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0.3/com/gwt/ss/client/loginable/AbstractLoginBox.html ç™»éŒ„å°è©±æ–¹å¡Š]
+ä»¥è™•ç†ä»¥ä¸‹å…©ä»¶äº‹. 
+  # ç•¶å«ç”¨[http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0.3/com/gwt/ss/client/loginable/HasLoginHandler.html#startLogin(java.lang.Throwable) startLogin]æ™‚é€²è¡Œç™»éŒ„ä½œæ¥­
+  # ç„¡è«ç™»éŒ„æˆåŠŸæˆ–å–æ¶ˆï¼Œéƒ½çš„è§¸ç™¼ä¸€å€‹fire a [http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0.3/com/gwt/ss/client/loginable/LoginEvent.html LoginEvent]ã€‚
 
-±µµÛ, ¸Ó GwtSecurity ¬°±zªº«D¦P¨Binterface«Ø¥ß¤@­Ó¥N²z¥]¸Ëª«¥ó¡C
+æ¥è‘—, è©² GwtSecurity ç‚ºæ‚¨çš„éåŒæ­¥interfaceå»ºç«‹ä¸€å€‹ä»£ç†åŒ…è£ç‰©ä»¶ã€‚
 
 {{{
     RemoteCallAsync proxy = GWT.create(RemoteCallAsync.class);
 }}}
 
-¹ê»Ú¤W proxy ¬°¤@[http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0.3/com/gwt/ss/client/loginable/LoginableService.html LoginableService] ª«¥ó¡C
-¥²¶·¬°¥¦«ü©wRemoteServiceª«¥ó»P[http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0.3/com/gwt/ss/client/loginable/AbstractLoginBox.html µn¿ı¹ï¸Ü¤è¶ô].
+å¯¦éš›ä¸Š proxy ç‚ºä¸€[http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0.3/com/gwt/ss/client/loginable/LoginableService.html LoginableService] ç‰©ä»¶ã€‚
+å¿…é ˆç‚ºå®ƒæŒ‡å®šRemoteServiceç‰©ä»¶èˆ‡[http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0.3/com/gwt/ss/client/loginable/AbstractLoginBox.html ç™»éŒ„å°è©±æ–¹å¡Š].
 {{{
     LoginableService<RemoteCallAsync> loginService = (LoginableService<RemoteCallAsync>) proxy;
-    //«Ø¥ßRemote Service
+    //å»ºç«‹Remote Service
     RemoteCallAsync remoteService = (RemoteCallAsync) GWT.create(RemoteCall.class);
-    //«ü©wRemote Service
+    //æŒ‡å®šRemote Service
     loginService.setRemoteService(remoteService);
-    //«ü©wµn¿ı¹ï¸Ü¤è¶ô
+    //æŒ‡å®šç™»éŒ„å°è©±æ–¹å¡Š
     loginService.setHasLoginHandler(loginbox);
 }}}
 
-²{¦b±z¨Ï¥Î¦¹proxyª«¥ó¦p¦P¤§«e¨Ï¥ÎRemoteCallAsync¡A¦ÓµL¶·¾á¼~¦w¥ş©Ê¨Æ°È¿ù»~
-¦]¬°·í¦w¥ş©Ê¨Æ°È¿ù»~µo¥Í®É¡Aproxyª«¥ó·|±Ò©lµn¿ıµ{§Ç¡C
-¦pªGµn¿ı¦¨¥\¡A¦P¼Ëªº¨ç¦¡·|¦AµoÍÒ¤@¦¸¡C
-§_«h¡A·í¥Î¤á¨ú®øµn¿ı®É¡A±z«h¥²¶·³B²z[http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0.3/com/gwt/ss/client/loginable/LoginCancelException.html LoginCancelException]¡C
+ç¾åœ¨æ‚¨ä½¿ç”¨æ­¤proxyç‰©ä»¶å¦‚åŒä¹‹å‰ä½¿ç”¨RemoteCallAsyncï¼Œè€Œç„¡é ˆæ“”æ†‚å®‰å…¨æ€§äº‹å‹™éŒ¯èª¤
+å› ç‚ºç•¶å®‰å…¨æ€§äº‹å‹™éŒ¯èª¤ç™¼ç”Ÿæ™‚ï¼Œproxyç‰©ä»¶æœƒå•Ÿå§‹ç™»éŒ„ç¨‹åºã€‚
+å¦‚æœç™»éŒ„æˆåŠŸï¼ŒåŒæ¨£çš„å‡½å¼æœƒå†ç™¼è¿—ä¸€æ¬¡ã€‚
+å¦å‰‡ï¼Œç•¶ç”¨æˆ¶å–æ¶ˆç™»éŒ„æ™‚ï¼Œæ‚¨å‰‡å¿…é ˆè™•ç†[http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0.3/com/gwt/ss/client/loginable/LoginCancelException.html LoginCancelException]ã€‚
 
-²{¦b¡A¥H¤UÁÙ¦³¤@­Ó¤£´M±`ªºÄ³ÃD: ¨â­Ó³sÄòªº»·ºİ¥s¥Î¡C
+ç¾åœ¨ï¼Œä»¥ä¸‹é‚„æœ‰ä¸€å€‹ä¸å°‹å¸¸çš„è­°é¡Œ: å…©å€‹é€£çºŒçš„é ç«¯å«ç”¨ã€‚
 
 {{{
     public void doDiscreteRequests(){
@@ -97,13 +97,13 @@
     }
 }}}
 
-§Ú­Ì³£²z¸Ñ¡A¨â­Ó»·ºİ¥s¥Î¬Ò¬°«D¦P¨B¡A¥B¦U¦Û¿W¥ß¤£·|¦]¬°«e¤@­Óµo¥Í²§±`¦Ó¼vÅT¨ì¤U¤@­Ó¨ç¦¡¦a¥s¥Î¡C
-©Ò¥H¦³¥i¯à·|¥s¥ÎstartLogin() ¨â¦¸.
+æˆ‘å€‘éƒ½ç†è§£ï¼Œå…©å€‹é ç«¯å«ç”¨çš†ç‚ºéåŒæ­¥ï¼Œä¸”å„è‡ªç¨ç«‹ä¸æœƒå› ç‚ºå‰ä¸€å€‹ç™¼ç”Ÿç•°å¸¸è€Œå½±éŸ¿åˆ°ä¸‹ä¸€å€‹å‡½å¼åœ°å«ç”¨ã€‚
+æ‰€ä»¥æœ‰å¯èƒ½æœƒå«ç”¨startLogin() å…©æ¬¡.
 
-¹ï©ó¸Ñ¨Mªº¤è¦¡¡A§Úªº«ØÄ³¬O:
+å°æ–¼è§£æ±ºçš„æ–¹å¼ï¼Œæˆ‘çš„å»ºè­°æ˜¯:
 
-LoginBox·í¬° singleton ¼Ò¦¡¡A¥B¸Óµn¿ı¹ï¸Ü¤è¶ôÀ³¯à¥s¥ÎstargLogin()¤´µMÅã¥Ü¦P¤@­Óµn¿ıµe­±¡C
+LoginBoxç•¶ç‚º singleton æ¨¡å¼ï¼Œä¸”è©²ç™»éŒ„å°è©±æ–¹å¡Šæ‡‰èƒ½å«ç”¨stargLogin()ä»ç„¶é¡¯ç¤ºåŒä¸€å€‹ç™»éŒ„ç•«é¢ã€‚
 
-¦]¬°proxyª«¥ó·|¹ïLoginBoxµù¥U¨Æ¥ó³B²z¡C
-©Ò¥H·íµn¿ı¦¨¥\®É¡A¨â­Ó¨ç¦¡³£·|¦A¦¸µo°e¡A
-§_«h¨â­Ó¨ç¦¡¦U¦Ûªº¿ù»~³B²z´N³£¥²¶·³B²z[http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0.3/com/gwt/ss/client/loginable/LoginCancelException.html LoginCancelException]¡C 
+å› ç‚ºproxyç‰©ä»¶æœƒå°LoginBoxè¨»å†Šäº‹ä»¶è™•ç†ã€‚
+æ‰€ä»¥ç•¶ç™»éŒ„æˆåŠŸæ™‚ï¼Œå…©å€‹å‡½å¼éƒ½æœƒå†æ¬¡ç™¼é€ï¼Œ
+å¦å‰‡å…©å€‹å‡½å¼å„è‡ªçš„éŒ¯èª¤è™•ç†å°±éƒ½å¿…é ˆè™•ç†[http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0.3/com/gwt/ss/client/loginable/LoginCancelException.html LoginCancelException]ã€‚ 
