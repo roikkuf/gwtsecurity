@@ -18,6 +18,9 @@ import java.io.PrintWriter;
 
 /**
  * Proxy generator for {@link com.gwt.ss.client.loginable.LoginableAsync LoginableAsync}
+ * 
+ * Thanks to Steven Jardine steven.j...@gmail.com http://code.google.com/u/@UhVVQ1JZAxVEXgF4/
+ * for providing parameter Type parameter patch.
  * @author Kent Yeh
  */
 public class LoginableGenerator extends Generator {
@@ -44,7 +47,7 @@ public class LoginableGenerator extends Generator {
         try {
             this.sourceType = typeOracle.getType(typeName);
             if (this.sourceType.isInterface() == null) {
-                logger.log(TreeLogger.ERROR, format("%s is not an interface.", sourceType.getQualifiedSourceName()), null);
+                logger.log(TreeLogger.ERROR, format("%s is not an interface.", sourceType.getParameterizedQualifiedSourceName()), null);
                 throw new UnableToCompleteException();
             }
             JClassType loginableAsyncType = typeOracle.getType(LoginableAsync.class.getName());
@@ -64,7 +67,7 @@ public class LoginableGenerator extends Generator {
             throw new UnableToCompleteException();
         }
         if (this.serviceType.isInterface() == null) {
-            logger.log(TreeLogger.ERROR, format("%s is not an interface.", serviceType.getQualifiedSourceName()), null);
+            logger.log(TreeLogger.ERROR, format("%s is not an interface.", serviceType.getParameterizedQualifiedSourceName()), null);
             throw new UnableToCompleteException();
         }
         //Find Remote Service
@@ -165,9 +168,9 @@ public class LoginableGenerator extends Generator {
             } else {
                 writer.print(", ");
             }
-            writer.print("final %s %s", param.getType().getQualifiedSourceName(), param.getName());
+            writer.print("final %s %s", param.getType().getParameterizedQualifiedSourceName(), param.getName());
         }
-        writer.println(", final AsyncCallback<%s> callback) {", method.getReturnType().getQualifiedSourceName());
+        writer.println(", final AsyncCallback<%s> callback) {", method.getReturnType().getParameterizedQualifiedSourceName());
         writer.indent();
         writer.print("getRemoteService().%s(", method.getName());
         first = true;
@@ -179,11 +182,11 @@ public class LoginableGenerator extends Generator {
             }
             writer.print(param.getName());
         }
-        writer.println(", new AsyncCallback<%s>() {", method.getReturnType().getQualifiedSourceName());
+        writer.println(", new AsyncCallback<%s>() {", method.getReturnType().getParameterizedQualifiedSourceName());
         writer.println();
         writer.indent();
         writer.println("@Override");
-        writer.println("public void onSuccess(%s result) {", method.getReturnType().getQualifiedSourceName());
+        writer.println("public void onSuccess(%s result) {", method.getReturnType().getParameterizedQualifiedSourceName());
         writer.indentln("callback.onSuccess(result);");
         writer.println("}");
         writer.println();
