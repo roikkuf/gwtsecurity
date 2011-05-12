@@ -77,7 +77,7 @@ When security exception occure, proxy will initializate login procedure.
 If login succeed, request will issue again,
 or you need to handle a [http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0.3/com/gwt/ss/client/loginable/LoginCancelException.html LoginCancelException] if user cancel login.
 
-Now we have a freaky issue: How about a series of discrete requsts?
+Now we have a unusual issue: How about a series of discrete requsts?
 {{{
     public void doDiscreteRequests(){
         asyncProxy.request1(param... ,new AsyncCallBack<?> callback(){
