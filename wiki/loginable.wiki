@@ -9,7 +9,7 @@ Here is to show you how to avoid those anonying jobs.
 
 = Details =
 Originally, your remote service method throws [http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0.3/com/gwt/ss/client/GwtSecurityException.html GwtSecurityException] to acknowledge
- that serve may occure a security exception. 
+ that server may occure a security exception. 
 {{{
     public interface RemoteCall extends RemoteService {
         RtnType request(ParamType param) throws GwtSecurityException;
