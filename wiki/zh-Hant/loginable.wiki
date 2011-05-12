@@ -4,7 +4,7 @@
 [http://code.google.com/p/gwtsecurity/ GwtSecurity] 通知您的在PRC函式發生Spring Security 錯誤,
 然後您必須進行登錄後再發送一次遠端程序叫用。
 
-隨著程式愈來愈大，無聯的代碼一再地重覆，讓我來告訴您如何避免這些煩人的工作。
+隨著程式愈來愈大，無聊的代碼一再地重覆，讓我來告訴您如何避免這些煩人的工作。
 
 = Details =
 最開始, 你的遠端服務方法宣告[http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0.3/com/gwt/ss/client/GwtSecurityException.html GwtSecurityException]
@@ -59,9 +59,9 @@
 並且寫好一個實做[http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0.3/com/gwt/ss/client/loginable/HasLoginHandler.html HasLoginHandler]的[http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0.3/com/gwt/ss/client/loginable/AbstractLoginBox.html 登錄對話方塊]
 以處理以下兩件事. 
   # 當叫用[http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0.3/com/gwt/ss/client/loginable/HasLoginHandler.html#startLogin(java.lang.Throwable) startLogin]時進行登錄作業
-  # 無諞登錄成功或取消，都的觸發一個fire a [http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0.3/com/gwt/ss/client/loginable/LoginEvent.html LoginEvent]。
+  # 無論登錄成功或取消，都得觸發一個[http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0.3/com/gwt/ss/client/loginable/LoginEvent.html LoginEvent]。
 
-接著, 該 GwtSecurity 為您的非同步interface建立一個代理包裝物件。
+接著，讓 GwtSecurity 為您的非同步interface建立一個代理包裝物件。
 
 {{{
     RemoteCallAsync proxy = GWT.create(RemoteCallAsync.class);
@@ -79,9 +79,9 @@
     loginService.setHasLoginHandler(loginbox);
 }}}
 
-現在您使用此proxy物件如同之前使用RemoteCallAsync，而無須擔憂安全性事務錯誤
+現在您使用此proxy物件如同之前使用RemoteCallAsync一般，而無須擔憂安全性事務錯誤<br/>
 因為當安全性事務錯誤發生時，proxy物件會啟始登錄程序。
-如果登錄成功，同樣的函式會再發迗一次。
+如果登錄成功，同樣的函式會再發送一次。
 否則，當用戶取消登錄時，您則必須處理[http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0.3/com/gwt/ss/client/loginable/LoginCancelException.html LoginCancelException]。
 
 現在，以下還有一個不尋常的議題: 兩個連續的遠端叫用。
@@ -102,8 +102,8 @@
 
 對於解決的方式，我的建議是:
 
-LoginBox當為 singleton 模式，且該登錄對話方塊應能叫用stargLogin()仍然顯示同一個登錄畫面。
+LoginBox當為 singleton 模式，且該登錄對話方塊能應付stargLogin()多次叫用仍顯示同一個登錄畫面。
 
-因為proxy物件會對LoginBox註冊事件處理。
-所以當登錄成功時，兩個函式都會再次發送，
+因為proxy物件會對LoginBox註冊事件處理。<br/>
+所以當登錄成功時，兩個函式都會再次發送，<br/>
 否則兩個函式各自的錯誤處理就都必須處理[http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0.3/com/gwt/ss/client/loginable/LoginCancelException.html LoginCancelException]。 
