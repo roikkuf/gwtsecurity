@@ -18,14 +18,14 @@ gwtsecury 會判斷對事件發生的主體是不是來自RemoteService，<br/>
 {{{
     <aop:aspectj-autoproxy proxy-target-class="true"/>
 }}}
-然後建立[http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0/com/gwt/ss/GwtExceptionTranslator.html GwtExceptionTranslator] bean 來處理安全性事務異常.
+然後建立[http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0.3/com/gwt/ss/GwtExceptionTranslator.html GwtExceptionTranslator] bean 來處理安全性事務異常.
 {{{
     <beans:bean class="com.gwt.ss.GwtExceptionTranslator"/>
 }}}
 
-Gwtsecurity 提供兩類錯誤 [http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0/com/gwt/ss/client/GwtSecurityException.html GwtSecurityException].
-|| [http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0/com/gwt/ss/client/GwtAuthenticationException.html GwtAuthenticationException] || 意謂尚未對用戶加以認證.<br>, GWT程式有責任引導用戶登錄。 ||
-|| [http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0/com/gwt/ss/client/GwtAccessDeniedException.html GwtAccessDeniedException] || 意謂用戶權限不足以存取該資源.<br/>此時必須對用戶加以警告。 ||
+Gwtsecurity 提供兩類錯誤 [http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0.3/com/gwt/ss/client/GwtSecurityException.html GwtSecurityException].
+|| [http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0.3/com/gwt/ss/client/GwtAuthenticationException.html GwtAuthenticationException] || 意謂尚未對用戶加以認證.<br>, GWT程式有責任引導用戶登錄。 ||
+|| [http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0.3/com/gwt/ss/client/GwtAccessDeniedException.html GwtAccessDeniedException] || 意謂用戶權限不足以存取該資源.<br/>此時必須對用戶加以警告。 ||
 
 在範例程式中, 我的處理方式是交由GWT程式本身來處理(我也提供了一個獨立的登錄頁)：
 || Gwt 處理未登錄用戶||                                                                           
@@ -86,8 +86,8 @@ Gwtsecurity 提供兩類錯誤 [http://gwtsecurity.googlecode.com/svn/trunk/java
         <concurrency-control max-sessions="1" expired-url="/login.jsp?sessionExpired=true"/>
     </session-management>
 }}}
-此時您需要建立[http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0/com/gwt/ss/GwtSessionManagement.html GwtSessionManagement]，
-以便在Session逾期時能發出[http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0/com/gwt/ss/client/GwtAccessDeniedException.html GwtAccessDeniedException] 通知.
+此時您需要建立[http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0.3/com/gwt/ss/GwtSessionManagement.html GwtSessionManagement]，
+以便在Session逾期時能發出[http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0.3/com/gwt/ss/client/GwtAccessDeniedException.html GwtAccessDeniedException] 通知.
 <br/><span color="red">(Notice: previous proxy-target-class must be set to "false")</span>
 {{{
     <beans:bean class="com.gwt.ss.GwtSessionManagement"/>
