@@ -161,28 +161,16 @@ public class LoginableGenerator extends Generator {
     private void generateMethod(SourceWriter writer, JMethod method) {
         writer.println("@Override");
         writer.print("public void %s(", method.getName());
-        boolean first = true;
         for (JParameter param : method.getParameters()) {
-            if (first) {
-                first = false;
-            } else {
-                writer.print(", ");
-            }
-            writer.print("final %s %s", param.getType().getParameterizedQualifiedSourceName(), param.getName());
+            writer.print("final %s %s, ", param.getType().getParameterizedQualifiedSourceName(), param.getName());
         }
-        writer.println(", final AsyncCallback<%s> callback) {", method.getReturnType().getParameterizedQualifiedSourceName());
+        writer.println("final AsyncCallback<%s> callback) {", method.getReturnType().getParameterizedQualifiedSourceName());
         writer.indent();
         writer.print("getRemoteService().%s(", method.getName());
-        first = true;
         for (JParameter param : method.getParameters()) {
-            if (first) {
-                first = false;
-            } else {
-                writer.print(", ");
-            }
-            writer.print(param.getName());
+            writer.print("%s, ",param.getName());
         }
-        writer.println(", new AsyncCallback<%s>() {", method.getReturnType().getParameterizedQualifiedSourceName());
+        writer.println("new AsyncCallback<%s>() {", method.getReturnType().getParameterizedQualifiedSourceName());
         writer.println();
         writer.indent();
         writer.println("@Override");
@@ -225,16 +213,10 @@ public class LoginableGenerator extends Generator {
         writer.println("public void execute() {");
         writer.indent();
         writer.print("%s(", method.getName());
-        first = true;
         for (JParameter param : method.getParameters()) {
-            if (first) {
-                first = false;
-            } else {
-                writer.print(", ");
-            }
-            writer.print(param.getName());
+            writer.print("%s, ",param.getName());
         }
-        writer.println(", callback);");
+        writer.println("callback);");
         writer.outdent();
         writer.println("}");
         writer.outdent();
