@@ -20,7 +20,7 @@ import java.io.PrintWriter;
  * Proxy generator for {@link com.gwt.ss.client.loginable.LoginableAsync LoginableAsync}
  * 
  * Thanks to Steven Jardine steven.j...@gmail.com http://code.google.com/u/@UhVVQ1JZAxVEXgF4/
- * for providing parameter Type parameter patch.
+ * for providing debuging and patch.
  * @author Kent Yeh
  */
 public class LoginableGenerator extends Generator {
@@ -159,18 +159,20 @@ public class LoginableGenerator extends Generator {
     }
 
     private void generateMethod(SourceWriter writer, JMethod method) {
+        String returnType = method.getReturnType().getParameterizedQualifiedSourceName();
+        if (returnType.equals("void")) { returnType="Void"; }
         writer.println("@Override");
         writer.print("public void %s(", method.getName());
         for (JParameter param : method.getParameters()) {
             writer.print("final %s %s, ", param.getType().getParameterizedQualifiedSourceName(), param.getName());
         }
-        writer.println("final AsyncCallback<%s> callback) {", method.getReturnType().getParameterizedQualifiedSourceName());
+        writer.println("final AsyncCallback<%s> callback) {", returnType);
         writer.indent();
         writer.print("getRemoteService().%s(", method.getName());
         for (JParameter param : method.getParameters()) {
             writer.print("%s, ",param.getName());
         }
-        writer.println("new AsyncCallback<%s>() {", method.getReturnType().getParameterizedQualifiedSourceName());
+        writer.println("new AsyncCallback<%s>() {", returnType);
         writer.println();
         writer.indent();
         writer.println("@Override");
