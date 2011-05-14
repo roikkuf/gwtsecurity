@@ -1,7 +1,6 @@
 package com.gwt.ss.client.loginable;
 
 import com.google.gwt.event.shared.GwtEvent;
-import com.google.gwt.event.shared.GwtEvent.Type;
 
 /**
  * Represents login process result.<br/>
@@ -11,7 +10,7 @@ import com.google.gwt.event.shared.GwtEvent.Type;
 public class LoginEvent extends GwtEvent<LoginHandler> {
 
     private boolean succeeded = false;
-    
+
     /**
      * 
      * @param succeeded <table style="padding-left:70px"><tr><td>true meeas Login success, otherwise login is canceled.</td></td>
@@ -21,17 +20,19 @@ public class LoginEvent extends GwtEvent<LoginHandler> {
         this.succeeded = succeeded;
     }
     private static Type<LoginHandler> type = new Type<LoginHandler>();
+
     /**
      * Does user cancel loggin process?<br/>
      * 是否用戶取消登錄?     
-     */         
+     */
     public boolean isCanceled() {
         return !succeeded;
     }
+
     /**
      * Does user login success?<br/>
      * 是否用戶已登錄成功?     
-     */         
+     */
     public boolean isLoginSuccessful() {
         return succeeded;
     }

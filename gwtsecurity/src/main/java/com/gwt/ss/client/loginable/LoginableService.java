@@ -1,7 +1,5 @@
 package com.gwt.ss.client.loginable;
 
-import com.google.gwt.core.client.GWT;
-
 /**
  * A wrapper(proxy) for asynchronous {@link com.google.gwt.user.client.rpc.RemoteService remoteService}
  * descended from {@link LoginableAsync LoginableAsync}.<br/>
