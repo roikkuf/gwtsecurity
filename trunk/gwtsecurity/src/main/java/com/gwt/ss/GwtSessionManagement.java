@@ -10,7 +10,6 @@ import org.aspectj.lang.annotation.Aspect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.session.SessionInformation;
 import org.springframework.security.core.session.SessionRegistry;
@@ -179,7 +178,7 @@ public class GwtSessionManagement implements ServletContextAware {
                             }
                             holder.getRequest().getSession();
                             GwtResponseUtil.processGwtException(servletContext, holder.getRequest(), holder.getResponse(),
-                                    new AuthenticationException("Session had invalid.") {
+                                    new SessionAuthenticationException("Session had invalid.") {
                                     });
                             return null;
                         }
@@ -210,7 +209,7 @@ public class GwtSessionManagement implements ServletContextAware {
                     handler.logout(holder.getRequest(), holder.getResponse(), auth);
                 }
                 GwtResponseUtil.processGwtException(servletContext, holder.getRequest(), holder.getResponse(),
-                        new AuthenticationException("This session has been expired (possibly due to multiple concurrent " +
+                        new SessionAuthenticationException("This session has been expired (possibly due to multiple concurrent " +
                                 "logins being attempted as the same user)."){});
                 return null;
             } else {

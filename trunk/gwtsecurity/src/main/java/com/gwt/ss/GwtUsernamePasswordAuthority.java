@@ -129,7 +129,7 @@ public class GwtUsernamePasswordAuthority implements ServletContextAware, Initia
             try {
                 pi = extract(pjp);
                 UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(pi.getUsername(), pi.getPassword());
-                Class c = AbstractAuthenticationProcessingFilter.class;
+                Class<AbstractAuthenticationProcessingFilter> c = AbstractAuthenticationProcessingFilter.class;
                 Field f = c.getDeclaredField("allowSessionCreation");
                 f.setAccessible(true);
                 boolean allowSessionCreation = (Boolean) f.get(filter);
@@ -144,13 +144,13 @@ public class GwtUsernamePasswordAuthority implements ServletContextAware, Initia
                 filter.getRememberMeServices().loginSuccess(pi.isRemeberMe()
                         ? new RemeberRequestWrapper(httpHolder.getRequest(), rememberMeParameter)
                         : httpHolder.getRequest(), httpHolder.getResponse(), authResult);
-                
+
                 //Patch provided by Steven Jardine steven.j...@gmail.com http://code.google.com/u/@UhVVQ1JZAxVEXgF4/
                 f = c.getDeclaredField("sessionStrategy");
                 f.setAccessible(true);
                 SessionAuthenticationStrategy sessionStrategy = (SessionAuthenticationStrategy) f.get(filter);
                 sessionStrategy.onAuthentication(authResult, httpHolder.getRequest(), httpHolder.getResponse());
-                
+
                 applicationContext.publishEvent(new InteractiveAuthenticationSuccessEvent(authResult, this.getClass()));
                 return null;
             } catch (Exception e) {
@@ -233,10 +233,6 @@ public class GwtUsernamePasswordAuthority implements ServletContextAware, Initia
 
         public boolean isRemeberMe() {
             return remeberMe;
-        }
-
-        public void setHttpHolder(HttpHolder httpHolder) {
-            this.httpHolder = httpHolder;
         }
     }
 
