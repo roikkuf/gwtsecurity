@@ -176,7 +176,7 @@ public class LoginableGenerator extends Generator {
         writer.println();
         writer.indent();
         writer.println("@Override");
-        writer.println("public void onSuccess(%s result) {", method.getReturnType().getParameterizedQualifiedSourceName());
+        writer.println("public void onSuccess(%s result) {", returnType);
         writer.indentln("callback.onSuccess(result);");
         writer.println("}");
         writer.println();
