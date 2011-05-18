@@ -178,8 +178,7 @@ public class GwtSessionManagement implements ServletContextAware {
                             }
                             holder.getRequest().getSession();
                             GwtResponseUtil.processGwtException(servletContext, holder.getRequest(), holder.getResponse(),
-                                    new SessionAuthenticationException("Session had invalid.") {
-                                    });
+                                    new SessionAuthenticationException("Session had invalid."));
                             return null;
                         }
                     }
@@ -210,7 +209,7 @@ public class GwtSessionManagement implements ServletContextAware {
                 }
                 GwtResponseUtil.processGwtException(servletContext, holder.getRequest(), holder.getResponse(),
                         new SessionAuthenticationException("This session has been expired (possibly due to multiple concurrent " +
-                                "logins being attempted as the same user)."){});
+                                "logins being attempted as the same user)."));
                 return null;
             } else {
                 if (logger.isDebugEnabled()) {
