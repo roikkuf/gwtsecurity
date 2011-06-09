@@ -6,7 +6,7 @@ package com.gwt.ss.client;
  */
 public class GwtAuthenticationException extends GwtSecurityException {
 
-    private static final long serialVersionUID = 5760665135753385196L;
+    private static final long serialVersionUID = -2184254725978136595L;
 
     public GwtAuthenticationException() {
         super();
@@ -23,4 +23,5 @@ public class GwtAuthenticationException extends GwtSecurityException {
     public GwtAuthenticationException(Throwable cause) {
         super(cause);
     }
+
 }
