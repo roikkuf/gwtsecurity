@@ -1,12 +1,5 @@
 package com.gwt.ss;
 
-import com.google.gwt.user.client.rpc.SerializationException;
-import com.google.gwt.user.server.rpc.RPC;
-import com.google.gwt.user.server.rpc.RPCServletUtils;
-import com.gwt.ss.client.GWTSessionAuthenticationException;
-import com.gwt.ss.client.GwtAccessDeniedException;
-import com.gwt.ss.client.GwtAuthenticationException;
-import com.gwt.ss.client.GwtBadCredentialsException;
 import java.io.IOException;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -14,13 +7,33 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.AccountExpiredException;
+import org.springframework.security.authentication.AccountStatusException;
 import org.springframework.security.authentication.AuthenticationTrustResolver;
 import org.springframework.security.authentication.AuthenticationTrustResolverImpl;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.CredentialsExpiredException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.session.SessionAuthenticationException;
+import com.google.gwt.user.client.rpc.SerializationException;
+import com.google.gwt.user.server.rpc.RPC;
+import com.google.gwt.user.server.rpc.RPCServletUtils;
+import com.gwt.ss.client.GwtAccessDeniedException;
+import com.gwt.ss.client.GwtAccountExpiredException;
+import com.gwt.ss.client.GwtAccountStatusException;
+import com.gwt.ss.client.GwtAuthenticationException;
+import com.gwt.ss.client.GwtBadCredentialsException;
+import com.gwt.ss.client.GwtCredentialsExpiredException;
+import com.gwt.ss.client.GwtDisabledException;
+import com.gwt.ss.client.GwtLockedException;
+import com.gwt.ss.client.GwtSecurityException;
+import com.gwt.ss.client.GwtSessionAuthenticationException;
+import com.gwt.ss.client.GwtUsernameNotFoundException;
 
 /**
  * Utility for handle GWT RPC response.<br/>
@@ -79,48 +92,50 @@ public class GwtResponseUtil {
     public static void processGwtException(ServletContext servletContext, HttpServletRequest request,
             HttpServletResponse response, Exception ex) {
         try {
-            if (ex instanceof BadCredentialsException) {
-                if (logger.isErrorEnabled()) {
-                    logger.error("Encode GwtBadCredentialsException:" + ex.getMessage());
-                }
-                writeResponse(servletContext, request, response,
-                        RPC.encodeResponseForFailure(null, new GwtBadCredentialsException(ex.getMessage(), ex)));
-            } else if(ex instanceof SessionAuthenticationException){
-                writeResponse(servletContext, request, response,
-                        RPC.encodeResponseForFailure(null, new GWTSessionAuthenticationException(ex.getMessage())));
-            } else if (ex instanceof AuthenticationException) {
-                if (logger.isErrorEnabled()) {
-                    logger.error("Encode GwtAuthenticationException:" + ex.getMessage());
-                }
-                writeResponse(servletContext, request, response,
-                        RPC.encodeResponseForFailure(
-                        null,
-                        new GwtAuthenticationException(ex.getMessage(), ex)));
-            } else if (ex instanceof AccessDeniedException) {
-                if (isAnonymous(SecurityContextHolder.getContext().getAuthentication())) {
-                    if (logger.isErrorEnabled()) {
-                        logger.error("Encode GwtAuthenticationException(user is anonymous):" + ex.getMessage());
+            GwtSecurityException gwtEx = createGwtException(ex);
+            if (gwtEx != null && logger.isErrorEnabled()) {
+                String extra = "";
+                if (ex instanceof AccessDeniedException) {
+                    extra = "(user is ";
+                    if (!isAnonymous(SecurityContextHolder.getContext().getAuthentication())) {
+                        extra += "not ";
                     }
-                    writeResponse(servletContext, request, response,
-                            RPC.encodeResponseForFailure(null, new GwtAuthenticationException(ex.getMessage(), ex)));
-                } else {
-                    if (logger.isErrorEnabled()) {
-                        logger.error("Encode GwtAccessDeniedException(user is not anonymous):" + ex.getMessage());
-                    }
-                    writeResponse(servletContext, request, response,
-                            RPC.encodeResponseForFailure(null, new GwtAccessDeniedException(ex.getMessage(), ex)));
+                    extra += "anonymous)";
                 }
-            } else {
-                writeResponse(servletContext, request, response,
-                        RPC.encodeResponseForFailure(null, ex));
+                logger.error("Encode " + gwtEx.getClass().getSimpleName() + extra + ":" + gwtEx.getMessage());
             }
+            String payload = RPC.encodeResponseForFailure(null, gwtEx == null ? ex : gwtEx);
+            writeResponse(servletContext, request, response, payload);
         } catch (SerializationException ex1) {
             doUnexpectedFailure(response, ex);
         }
     }
 
+    private static GwtSecurityException createGwtException(Exception ex) {
+        // 例外狀態錯誤相關的帳戶 Exceptions related to account errors.
+        if (ex instanceof AccountExpiredException) return new GwtAccountExpiredException(ex.getMessage(), ex);
+        if (ex instanceof CredentialsExpiredException) return new GwtCredentialsExpiredException(ex.getMessage(), ex);
+        if (ex instanceof DisabledException) return new GwtDisabledException(ex.getMessage(), ex);
+        if (ex instanceof LockedException) return new GwtLockedException(ex.getMessage(), ex);
+        if (ex instanceof AccountStatusException) return new GwtAccountStatusException(ex.getMessage(), ex);
+        // 例外有關認證錯誤 Exceptions related to authentication errors.
+        if (ex instanceof UsernameNotFoundException) return new GwtUsernameNotFoundException(ex.getMessage(), ex);
+        if (ex instanceof BadCredentialsException) return new GwtBadCredentialsException(ex.getMessage(), ex);
+        if (ex instanceof SessionAuthenticationException)
+            return new GwtSessionAuthenticationException(ex.getMessage(), ex);
+        if (ex instanceof AuthenticationException) return new GwtAuthenticationException(ex.getMessage(), ex);
+        // 訪問被拒絕 Access denied
+        if (ex instanceof AccessDeniedException) {
+            if (isAnonymous(SecurityContextHolder.getContext().getAuthentication()))
+                return new GwtAuthenticationException(ex.getMessage(), ex);
+            return new GwtAccessDeniedException(ex.getMessage(), ex);
+        }
+        // 沒有可用的映射 No mapping available
+        return null;
+    }
+
     /**
-     * Determine whether request comes from  GWT RPC<br/>
+     * Determine whether request comes from GWT RPC<br/>
      * 判斷request是否來自GWT RPC
      * @param request
      * @return
@@ -129,4 +144,5 @@ public class GwtResponseUtil {
         return request != null && request.getContentType() != null
                 && request.getContentType().startsWith(GWT_RPC_CONTENT_TYPE);
     }
+    
 }
