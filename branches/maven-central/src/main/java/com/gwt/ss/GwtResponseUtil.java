@@ -23,17 +23,17 @@ import org.springframework.security.web.authentication.session.SessionAuthentica
 import com.google.gwt.user.client.rpc.SerializationException;
 import com.google.gwt.user.server.rpc.RPC;
 import com.google.gwt.user.server.rpc.RPCServletUtils;
-import com.gwt.ss.client.GwtAccessDeniedException;
-import com.gwt.ss.client.GwtAccountExpiredException;
-import com.gwt.ss.client.GwtAccountStatusException;
-import com.gwt.ss.client.GwtAuthenticationException;
-import com.gwt.ss.client.GwtBadCredentialsException;
-import com.gwt.ss.client.GwtCredentialsExpiredException;
-import com.gwt.ss.client.GwtDisabledException;
-import com.gwt.ss.client.GwtLockedException;
-import com.gwt.ss.client.GwtSecurityException;
-import com.gwt.ss.client.GwtSessionAuthenticationException;
-import com.gwt.ss.client.GwtUsernameNotFoundException;
+import com.gwt.ss.client.exceptions.GwtAccessDeniedException;
+import com.gwt.ss.client.exceptions.GwtAccountExpiredException;
+import com.gwt.ss.client.exceptions.GwtAccountStatusException;
+import com.gwt.ss.client.exceptions.GwtAuthenticationException;
+import com.gwt.ss.client.exceptions.GwtBadCredentialsException;
+import com.gwt.ss.client.exceptions.GwtCredentialsExpiredException;
+import com.gwt.ss.client.exceptions.GwtDisabledException;
+import com.gwt.ss.client.exceptions.GwtLockedException;
+import com.gwt.ss.client.exceptions.GwtSecurityException;
+import com.gwt.ss.client.exceptions.GwtSessionAuthenticationException;
+import com.gwt.ss.client.exceptions.GwtUsernameNotFoundException;
 
 /**
  * Utility for handle GWT RPC response.<br/>

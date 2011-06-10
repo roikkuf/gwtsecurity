@@ -1,4 +1,4 @@
-package com.gwt.ss.client;
+package com.gwt.ss.client.exceptions;
 
 /**
  * Denote Server side occur {@link org.springframework.security.authentication.AccountStatusException AccountStatusException}
