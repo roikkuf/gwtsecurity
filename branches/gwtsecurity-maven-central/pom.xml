@@ -57,7 +57,7 @@
 		<maven.compiler.optimize>true</maven.compiler.optimize>
 
 		<!-- Other -->
-		<gwtVersion>2.2.0</gwtVersion>
+		<gwtVersion>2.3.0</gwtVersion>
 		<spring.version>3.0.5.RELEASE</spring.version>
 		<spring-security.version>3.0.5.RELEASE</spring-security.version>
 
