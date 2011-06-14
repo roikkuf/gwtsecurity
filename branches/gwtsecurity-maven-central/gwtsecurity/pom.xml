@@ -170,13 +170,13 @@
 			<resource>
 				<directory>src/main/java</directory>
 				<includes>
-					<include> **/client/**/*.java </include>
+					<include>**/client/**/*.java</include>
 				</includes>
 			</resource>
 			<resource>
 				<directory>src/main/resources</directory>
 				<includes>
-					<include> **/*.gwt.xml </include>
+					<include>**/*.gwt.xml</include>
 				</includes>
 			</resource>
 		</resources>
@@ -253,6 +253,7 @@
 						<link>http://google-web-toolkit.googlecode.com/svn/javadoc/2.3/</link>
 						<link>http://www.eclipse.org/aspectj/doc/released/runtime-api/</link>
 						<link>http://www.slf4j.org/api/</link>
+						<link>http://google-web-toolkit.googlecode.com/svn/javadoc/latest/</link>
 					</links>
 				</configuration>
 			</plugin>

@@ -138,7 +138,7 @@ public class GwtResponseUtil {
      * Determine whether request comes from GWT RPC<br/>
      * 判斷request是否來自GWT RPC
      * @param request
-     * @return
+     * @return is the request from GWT RPC?
      */
     public static boolean isGwt(HttpServletRequest request) {
         return request != null && request.getContentType() != null

@@ -66,7 +66,7 @@ public interface GwtLogoutAsync {
          * return {@link GwtLogoutAsync GwtLogoutAsync} instance with specified service entry.<br/>
          * 指定服務進入點並取得{@link GwtLogoutAsync GwtLogoutAsync} 實例
          * @param processUrl Spring logout processing url
-         * @return
+         * @return the instance.
          */
         public static GwtLogoutAsync getInstance(String processUrl) {
             assert processUrl != null && !processUrl.isEmpty();
@@ -77,7 +77,7 @@ public interface GwtLogoutAsync {
         /**
          * return {@link GwtLogoutAsync GwtLogoutAsync} instance with default service entry point &quot;j_spring_security_logout&quot;<br/>
          * 取得預設進入點為&quot;j_spring_security_logout&quot;之{@link GwtLogoutAsync GwtLogoutAsync} 實例
-         * @return
+         * @return the instance.
          */
         public static GwtLogoutAsync getInstance() {
             if (instance == null) {
