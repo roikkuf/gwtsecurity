@@ -14,9 +14,10 @@ public interface GreetingServiceAsync extends RemoteAsync{
 
         private static GreetingServiceAsync instance;
 
-        public static GreetingServiceAsync getInstance(String loginurl) {
+		public static GreetingServiceAsync getInstance(String loginurl) {
             if (instance == null) {
                 instance = GWT.create(GreetingServiceAsync.class);
+                @SuppressWarnings("unchecked")
                 LoginableService<GreetingServiceAsync> ls = (LoginableService<GreetingServiceAsync>) instance;
                 ls.setRemoteService((GreetingServiceAsync) GWT.create( GreetingService.class ));
                 ls.setHasLoginHandler(LoginBox.getLoginBox(loginurl));

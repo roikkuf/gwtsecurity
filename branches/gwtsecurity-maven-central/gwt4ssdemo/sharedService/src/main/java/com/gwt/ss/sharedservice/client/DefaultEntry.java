@@ -50,7 +50,8 @@ public abstract class DefaultEntry implements EntryPoint {
         }
     }
 
-    @Override
+	@Override
+    @SuppressWarnings("serial")
     public void onModuleLoad() {
         FlexTable outer = new FlexTable();
         FlexCellFormatter formatter = outer.getFlexCellFormatter();

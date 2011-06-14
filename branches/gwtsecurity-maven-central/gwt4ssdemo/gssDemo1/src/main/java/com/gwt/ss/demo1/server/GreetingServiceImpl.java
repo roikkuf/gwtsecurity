@@ -1,9 +1,11 @@
 package com.gwt.ss.demo1.server;
 
-import com.gwt.ss.client.GwtSecurityException;
-import com.gwt.ss.demo1.client.GreetingService;
 import org.springframework.security.access.annotation.Secured;
 
+import com.gwt.ss.client.exceptions.GwtSecurityException;
+import com.gwt.ss.demo1.client.GreetingService;
+
+@SuppressWarnings("serial")
 public class GreetingServiceImpl extends StaffServiceImpl implements GreetingService {
     /**
      * Secured method not working.
