@@ -29,9 +29,9 @@ Gwtsecurity propose two type [http://gwtsecurity.googlecode.com/svn/javadoc/late
 
 The demo app, I intent to handle security exception by gwt app itself(I also provide a stand aloe login page).
 || Gwt RPC login when user not yet authenticated||                                                                           
-|| [http://gwtsecurity.googlecode.com/svn/trunk/resources/gssdemoSimpleLogin.png] ||
+|| [http://gwtsecurity.googlecode.com/svn/resources/gssdemoSimpleLogin.png] ||
 || or redirect to spring login entry(jsp page) ||
-|| [http://gwtsecurity.googlecode.com/svn/trunk/resources/login_jsp.png] ||
+|| [http://gwtsecurity.googlecode.com/svn/resources/login_jsp.png] ||
 
 
 I configure spring security config as follows:<br/> 

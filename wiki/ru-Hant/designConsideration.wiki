@@ -30,9 +30,9 @@ Gwtsecurity предлагает два типа исключений безоп
 
 В демо-приложении, производится перехват ислючений безопасности и обработка исключени самим приложением (так же предоставляется возможность аутентификации через стандартную http-форму).
 || Аутентификация средствами GWT RPC если пользователь не аутентифицирован||
-|| [http://gwtsecurity.googlecode.com/svn/trunk/resources/gssdemoSimpleLogin.png] ||
+|| [http://gwtsecurity.googlecode.com/svn/resources/gssdemoSimpleLogin.png] ||
 || или редирект на стандартную http-форму логина (jsp page) ||
-|| [http://gwtsecurity.googlecode.com/svn/trunk/resources/login_jsp.png] ||
+|| [http://gwtsecurity.googlecode.com/svn/resources/login_jsp.png] ||
 
 
 Конфигурация spring secutiry делается следующим образом:<br/>
