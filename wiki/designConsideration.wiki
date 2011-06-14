@@ -8,7 +8,7 @@ In Gwt, you have two choices to handle security exception,
 
 Gwtsecurity detect handle exception affair(using AOP) when security exception occurs, <br/>
 gwtsecury distinguish whether request offer by RemoteService or not.<br/>
-If true, gwtsecurity direct report [http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0.3/com/gwt/ss/client/GwtSecurityException.html GwtSecurityException] to front end gwt app,
+If true, gwtsecurity direct report [http://gwtsecurity.googlecode.com/svn/javadoc/latest/com/gwt/ss/client/GwtSecurityException.html GwtSecurityException] to front end gwt app,
 <br/>otherwise gwtsecurity bypass to spring's mechanism.
 
 
@@ -18,14 +18,14 @@ First,add aop context into your configuration and add fllowing config.<br/>
 {{{
     <aop:aspectj-autoproxy proxy-target-class="true"/>
 }}}
-then add a [http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0.3/com/gwt/ss/GwtExceptionTranslator.html GwtExceptionTranslator] bean to handle Security Exception.
+then add a [http://gwtsecurity.googlecode.com/svn/javadoc/latest/com/gwt/ss/GwtExceptionTranslator.html GwtExceptionTranslator] bean to handle Security Exception.
 {{{
     <beans:bean class="com.gwt.ss.GwtExceptionTranslator"/>
 }}}
 
-Gwtsecurity propose two type [http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0.3/com/gwt/ss/client/GwtSecurityException.html GwtSecurityException].
-|| [http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0.3/com/gwt/ss/client/GwtAuthenticationException.html GwtAuthenticationException] || means user not yet authenticated.<br>, gwt app has duty to provide a login entry for user singin. ||
-|| [http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0.3/com/gwt/ss/client/GwtAccessDeniedException.html GwtAccessDeniedException] || means user has not enough authority to acess then resource.<br/>user should get a wraning this time. ||
+Gwtsecurity propose two type [http://gwtsecurity.googlecode.com/svn/javadoc/latest/com/gwt/ss/client/GwtSecurityException.html GwtSecurityException].
+|| [http://gwtsecurity.googlecode.com/svn/javadoc/latest/com/gwt/ss/client/GwtAuthenticationException.html GwtAuthenticationException] || means user not yet authenticated.<br>, gwt app has duty to provide a login entry for user singin. ||
+|| [http://gwtsecurity.googlecode.com/svn/javadoc/latest/com/gwt/ss/client/GwtAccessDeniedException.html GwtAccessDeniedException] || means user has not enough authority to acess then resource.<br/>user should get a wraning this time. ||
 
 The demo app, I intent to handle security exception by gwt app itself(I also provide a stand aloe login page).
 || Gwt RPC login when user not yet authenticated||                                                                           
@@ -87,8 +87,8 @@ Sometimes, you may enabled "session-management"
         <concurrency-control max-sessions="1" expired-url="/login.jsp?sessionExpired=true"/>
     </session-management>
 }}}
-Then your need to constuct a [http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0.3/com/gwt/ss/GwtSessionManagement.html GwtSessionManagement] bean
-to throw a [http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0.3/com/gwt/ss/client/GwtAccessDeniedException.html GwtAccessDeniedException] when session is invalid.
+Then your need to constuct a [http://gwtsecurity.googlecode.com/svn/javadoc/latest/com/gwt/ss/GwtSessionManagement.html GwtSessionManagement] bean
+to throw a [http://gwtsecurity.googlecode.com/svn/javadoc/latest/com/gwt/ss/client/GwtAccessDeniedException.html GwtAccessDeniedException] when session is invalid.
 <br/><span color="red">(Notice: previous proxy-target-class must be set to "false")</span>
 {{{
     <beans:bean class="com.gwt.ss.GwtSessionManagement"/>

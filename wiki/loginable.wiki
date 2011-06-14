@@ -8,7 +8,7 @@ More and more your application growing up and there is to much boring code to wr
 Here is to show you how to avoid those anonying jobs.
 
 = Details =
-Originally, your remote service method throws [http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0.3/com/gwt/ss/client/GwtSecurityException.html GwtSecurityException] to acknowledge
+Originally, your remote service method throws [http://gwtsecurity.googlecode.com/svn/javadoc/latest/com/gwt/ss/client/GwtSecurityException.html GwtSecurityException] to acknowledge
  that server may occure a security exception. 
 {{{
     public interface RemoteCall extends RemoteService {
@@ -41,27 +41,27 @@ You invoke function call and everything controll by yourself when exception happ
 }}}
 
 I found it seem not so eazy to implement.
-So from 1.0.3, I add a [http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0.3/com/gwt/ss/client/loginable/package-summary.html loginable] module.
+So from 1.0.3, I add a [http://gwtsecurity.googlecode.com/svn/javadoc/latest/com/gwt/ss/client/loginable/package-summary.html loginable] module.
 
-Now, your asynchronous interface need to inherit from [http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0.3/com/gwt/ss/client/loginable/LoginableAsync.html LoginableAsync]
+Now, your asynchronous interface need to inherit from [http://gwtsecurity.googlecode.com/svn/javadoc/latest/com/gwt/ss/client/loginable/LoginableAsync.html LoginableAsync]
 {{{
     public interface RemoteCallAsync extends LoginableAsync{
         void request(ParamType parameter, AsyncCallback<RtnType> callback);
     }
 }}}
 
-Then prepare a [http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0.3/com/gwt/ss/client/loginable/AbstractLoginBox.html loginBox] that implements [http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0.3/com/gwt/ss/client/loginable/HasLoginHandler.html HasLoginHandler]
+Then prepare a [http://gwtsecurity.googlecode.com/svn/javadoc/latest/com/gwt/ss/client/loginable/AbstractLoginBox.html loginBox] that implements [http://gwtsecurity.googlecode.com/svn/javadoc/latest/com/gwt/ss/client/loginable/HasLoginHandler.html HasLoginHandler]
 for two functionality. 
-  # Start to login process when invoke on [http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0.3/com/gwt/ss/client/loginable/HasLoginHandler.html#startLogin(java.lang.Throwable) startLogin]
-  # Whenever user login succeed or user cancel login must fire a [http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0.3/com/gwt/ss/client/loginable/LoginEvent.html LoginEvent].
+  # Start to login process when invoke on [http://gwtsecurity.googlecode.com/svn/javadoc/latest/com/gwt/ss/client/loginable/HasLoginHandler.html#startLogin(java.lang.Throwable) startLogin]
+  # Whenever user login succeed or user cancel login must fire a [http://gwtsecurity.googlecode.com/svn/javadoc/latest/com/gwt/ss/client/loginable/LoginEvent.html LoginEvent].
 
 Finally, Let GwtSecurity create a proxy wrapper for your asynchronous interface.
 {{{
     RemoteCallAsync proxy = GWT.create(RemoteCallAsync.class);
 }}}
 
-In fact, proxy is a [http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0.3/com/gwt/ss/client/loginable/LoginableService.html LoginableService] object.
-It need to be assigned a RemoteService Object and a [http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0.3/com/gwt/ss/client/loginable/AbstractLoginBox.html loginBox].
+In fact, proxy is a [http://gwtsecurity.googlecode.com/svn/javadoc/latest/com/gwt/ss/client/loginable/LoginableService.html LoginableService] object.
+It need to be assigned a RemoteService Object and a [http://gwtsecurity.googlecode.com/svn/javadoc/latest/com/gwt/ss/client/loginable/AbstractLoginBox.html loginBox].
 {{{
     LoginableService<RemoteCallAsync> loginService = (LoginableService<RemoteCallAsync>) proxy;
     //Create a Remote Service
@@ -75,7 +75,7 @@ It need to be assigned a RemoteService Object and a [http://gwtsecurity.googleco
 Now you can using proxy objet like RemoteCallAsync before but no worry about security exception.
 When security exception occure, proxy will initializate login procedure.
 If login succeed, request will issue again,
-or you need to handle a [http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0.3/com/gwt/ss/client/loginable/LoginCancelException.html LoginCancelException] if user cancel login.
+or you need to handle a [http://gwtsecurity.googlecode.com/svn/javadoc/latest/com/gwt/ss/client/loginable/LoginCancelException.html LoginCancelException] if user cancel login.
 
 Now we have a unusual issue: How about a series of discrete requsts?
 {{{
@@ -97,4 +97,4 @@ make LoginBox singleton and can be invoke stargLogin() twice to show the same di
 
 Because proxy obejct register event handler to LoginBox.
 When login completed, both requests will send again
-or both request need to handle [http://gwtsecurity.googlecode.com/svn/trunk/javadoc/1.0.3/com/gwt/ss/client/loginable/LoginCancelException.html LoginCancelException]. 
+or both request need to handle [http://gwtsecurity.googlecode.com/svn/javadoc/latest/com/gwt/ss/client/loginable/LoginCancelException.html LoginCancelException]. 
