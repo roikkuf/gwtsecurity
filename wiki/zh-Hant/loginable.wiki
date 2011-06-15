@@ -7,7 +7,7 @@
 隨著程式愈來愈大，無聊的代碼一再地重覆，讓我來告訴您如何避免這些煩人的工作。
 
 = Details =
-最開始, 你的遠端服務方法宣告[http://gwtsecurity.googlecode.com/svn/javadoc/latest/com/gwt/ss/client/GwtSecurityException.html GwtSecurityException]
+最開始, 你的遠端服務方法宣告[http://gwtsecurity.googlecode.com/svn/javadoc/latest/com/gwt/ss/client/exceptions/GwtSecurityException.html GwtSecurityException]
 以通告主機端可能發生的安全性事務錯誤
 {{{
     public interface RemoteCall extends RemoteService {

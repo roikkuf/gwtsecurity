@@ -5,10 +5,10 @@
 Этот проект разработа с использованием [http://maven.apache.org/ Maven] поэтому вы должны в первую очередь установить его.
 
 Ниже приведены ссылки на собранные компоненты проекта:
-|| [http://code.google.com/p/gwtsecurity/downloads/detail?name=GwtSecurity-1.0.jar&can=2&q= GwtSecurity-1.0.jar] || Основная библиотека ||
-|| [http://code.google.com/p/gwtsecurity/downloads/detail?name=GssDemo-Simple-1.0.war&can=2&q= GssDemo-Simple-1.0.war] || Простая демонстрация использования Spring Security без всяких интеграций с системой безопасности.||
-|| [http://code.google.com/p/gwtsecurity/downloads/detail?name=GssDemo-GwtSL-1.0.war&can=2&q= GssDemo-GwtSL-1.0.war] || Демонстрация системы безопасности если вы используете библиотеку [http://code.google.com/p/gwt-sl/ gwt-sl] для интеграции со spring.  ||
-|| [http://code.google.com/p/gwtsecurity/downloads/detail?name=GssDemo-spring4gwt-1.0.war&can=2&q= GssDemo-spring4gwt-1.0.war] || Демонстрация системы безопасности если вы используете библиотеку [http://code.google.com/p/spring4gwt/ spring4gwt] для интеграции со spring.  ||
+|| [http://code.google.com/p/gwtsecurity/downloads/detail?name=gwtsecurity-1.1.0.jar gwtsecurity-1.1.0.jar] || Основная библиотека ||
+|| [http://code.google.com/p/gwtsecurity/downloads/detail?name=GssDemo-Simple-1.1.0.war GssDemo-Simple-1.1.0.war] || Простая демонстрация использования Spring Security без всяких интеграций с системой безопасности.||
+|| [http://code.google.com/p/gwtsecurity/downloads/detail?name=GssDemo-GwtSL-1.1.0.war GssDemo-GwtSL-1.1.0.war] || Демонстрация системы безопасности если вы используете библиотеку [http://code.google.com/p/gwt-sl/ gwt-sl] для интеграции со spring.  ||
+|| [http://code.google.com/p/gwtsecurity/downloads/detail?name=GssDemo-spring4gwt-1.1.0.war GssDemo-spring4gwt-1.1.0.war] || Демонстрация системы безопасности если вы используете библиотеку [http://code.google.com/p/spring4gwt/ spring4gwt] для интеграции со spring.  ||
 
 = Подробнее =
 
