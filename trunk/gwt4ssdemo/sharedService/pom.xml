@@ -30,7 +30,6 @@
 		<dependency>
 			<groupId>com.google.code.gwtsecurity</groupId>
 			<artifactId>gwtsecurity</artifactId>
-			<version>${project.version}</version>
 		</dependency>
 	</dependencies>
 	
