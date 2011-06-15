@@ -6,7 +6,7 @@
 
 	<groupId>com.google.code.gwtsecurity</groupId>
 	<artifactId>gwt4ssdemo</artifactId>
-	<version>1.1.0</version>
+	<version>1.1.1-SNAPSHOT</version>
 
 	<name>Gwt4SpringSecurity Demo</name>
 	<description>Gwt for Spring Security Demo Application</description>
@@ -164,9 +164,9 @@
 	</build>
 
 	<scm>
-		<url>http://code.google.com/p/gwtsecurity/source/browse/tags/gwt4ssdemo-1.1.0</url>
-		<connection>scm:svn:https://gwtsecurity.googlecode.com/svn/tags/gwt4ssdemo-1.1.0</connection>
-		<developerConnection>scm:svn:https://gwtsecurity.googlecode.com/svn/tags/gwt4ssdemo-1.1.0</developerConnection>
+		<url>http://code.google.com/p/gwtsecurity/source/browse/</url>
+		<connection>scm:svn:https://gwtsecurity.googlecode.com/svn/trunk/gwt4ssdemo</connection>
+		<developerConnection>scm:svn:https://gwtsecurity.googlecode.com/svn/trunk/gwt4ssdemo</developerConnection>
 	</scm>
 
 </project>
