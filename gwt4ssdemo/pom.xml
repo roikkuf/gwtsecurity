@@ -34,7 +34,7 @@
 		<gwt.version>2.3.0</gwt.version>
 		<gwt.maven.plugin.version>${gwt.version}</gwt.maven.plugin.version>
 		<gwt.draftCompile>false</gwt.draftCompile>
-		
+
 		<!-- Other -->
 		<spring.version>3.0.5.RELEASE</spring.version>
 		<spring-security.version>3.0.5.RELEASE</spring-security.version>
@@ -74,13 +74,9 @@
 				<scope>provided</scope>
 			</dependency>
 
-            <!-- Memory DB seem has problem on GAE
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>org.springframework.jdbc</artifactId>
-                <version>${org.springframework.version}</version>
-            </dependency>
-            -->
+			<!-- Memory DB seem has problem on GAE <dependency> <groupId>org.springframework</groupId> 
+				<artifactId>org.springframework.jdbc</artifactId> <version>${org.springframework.version}</version> 
+				</dependency> -->
 
 			<dependency>
 				<groupId>org.slf4j</groupId>
@@ -103,15 +99,10 @@
 				<version>${servlet.version}</version>
 				<scope>provided</scope>
 			</dependency>
-			
-            <!-- Memory DB seem has problem on GAE
-            <dependency>
-                <groupId>commons-dbcp</groupId>
-                <artifactId>commons-dbcp</artifactId>
-                <version>1.4</version>
-            </dependency>
-            -->
-			
+
+			<!-- Memory DB seem has problem on GAE <dependency> <groupId>commons-dbcp</groupId> 
+				<artifactId>commons-dbcp</artifactId> <version>1.4</version> </dependency> -->
+
 			<dependency>
 				<groupId>javax.annotation</groupId>
 				<artifactId>jsr250-api</artifactId>
@@ -123,14 +114,9 @@
 				<version>${jstl.version}</version>
 			</dependency>
 
-            <!-- Memory DB seem has problem on GAE
-            <dependency>
-                <groupId>com.h2database</groupId>
-                <artifactId>h2</artifactId>
-                <version>1.3.148</version>
-            </dependency>
-            -->
-			
+			<!-- Memory DB seem has problem on GAE <dependency> <groupId>com.h2database</groupId> 
+				<artifactId>h2</artifactId> <version>1.3.148</version> </dependency> -->
+
 		</dependencies>
 	</dependencyManagement>
 	<build>
@@ -168,4 +154,11 @@
 			</plugins>
 		</pluginManagement>
 	</build>
+
+	<scm>
+		<url>http://code.google.com/p/gwtsecurity/source/browse/</url>
+		<connection>scm:svn:https://gwtsecurity.googlecode.com/svn/trunk/</connection>
+		<developerConnection>scm:svn:https://gwtsecurity.googlecode.com/svn/trunk/</developerConnection>
+	</scm>
+
 </project>
