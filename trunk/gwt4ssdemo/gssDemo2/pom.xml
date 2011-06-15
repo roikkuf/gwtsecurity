@@ -6,14 +6,14 @@
 
 	<groupId>com.google.code.gwtsecurity</groupId>
 	<artifactId>gssDemo2</artifactId>
-	<version>1.1.1-SNAPSHOT</version>
+	<version>1.1.0-SNAPSHOT</version>
 
 	<name>Gwt4SS Demo2</name>
 
 	<parent>
 		<groupId>com.google.code.gwtsecurity</groupId>
 		<artifactId>gwt4ssdemo</artifactId>
-		<version>1.1.1-SNAPSHOT</version>
+		<version>1.1.0-SNAPSHOT</version>
 	</parent>
 
 	<!-- TODO Remove when the gwt-sl dependency is in the Maven Central Repository -->
@@ -122,6 +122,14 @@
 				</executions>
 				<configuration>
 					<webappDirectory>${webappDirectory}</webappDirectory>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<version>2.6</version>
+				<configuration>
+					<skip>true</skip>
 				</configuration>
 			</plugin>
 		</plugins>
