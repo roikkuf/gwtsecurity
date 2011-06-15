@@ -5,11 +5,10 @@
 You then start a login process and send remote procedure call again when login succeed.
 
 More and more your application growing up and there is to much boring code to write the same thing.
-Here is to show you how to avoid those anonying jobs.
+Here is to show you how to avoid those annoying jobs.
 
 = Details =
-Originally, your remote service method throws [http://gwtsecurity.googlecode.com/svn/javadoc/latest/com/gwt/ss/client/GwtSecurityException.html GwtSecurityException] to acknowledge
- that server may occure a security exception. 
+Originally, your remote service method throws [http://gwtsecurity.googlecode.com/svn/javadoc/latest/com/gwt/ss/client/exceptions/GwtSecurityException.html GwtSecurityException] to acknowledge that server may occur a security exception. 
 {{{
     public interface RemoteCall extends RemoteService {
         RtnType request(ParamType param) throws GwtSecurityException;
@@ -40,7 +39,7 @@ You invoke function call and everything controll by yourself when exception happ
    });
 }}}
 
-I found it seem not so eazy to implement.
+I found it seem not so easy to implement.
 So from 1.0.3, I add a [http://gwtsecurity.googlecode.com/svn/javadoc/latest/com/gwt/ss/client/loginable/package-summary.html loginable] module.
 
 Now, your asynchronous interface need to inherit from [http://gwtsecurity.googlecode.com/svn/javadoc/latest/com/gwt/ss/client/loginable/LoginableAsync.html LoginableAsync]
@@ -72,12 +71,12 @@ It need to be assigned a RemoteService Object and a [http://gwtsecurity.googleco
     loginService.setHasLoginHandler(loginbox);
 }}}
 
-Now you can using proxy objet like RemoteCallAsync before but no worry about security exception.
-When security exception occure, proxy will initializate login procedure.
+Now you can using proxy object like RemoteCallAsync before but no worry about security exception.
+When security exception occur, proxy will initiate the login procedure.
 If login succeed, request will issue again,
 or you need to handle a [http://gwtsecurity.googlecode.com/svn/javadoc/latest/com/gwt/ss/client/loginable/LoginCancelException.html LoginCancelException] if user cancel login.
 
-Now we have a unusual issue: How about a series of discrete requsts?
+Now we have a unusual issue: How about a series of discrete requests?
 {{{
     public void doDiscreteRequests(){
         asyncProxy.request1(param... ,new AsyncCallBack<?> callback(){
@@ -95,6 +94,6 @@ My suggest is:
 
 make LoginBox singleton and can be invoke stargLogin() twice to show the same dialog.
 
-Because proxy obejct register event handler to LoginBox.
+Because proxy obeject register event handler to LoginBox.
 When login completed, both requests will send again
 or both request need to handle [http://gwtsecurity.googlecode.com/svn/javadoc/latest/com/gwt/ss/client/loginable/LoginCancelException.html LoginCancelException]. 
