@@ -4,55 +4,56 @@
 <FONT color="green">001</FONT>    package com.gwt.ss.client.loginable;<a name="line.1"></a>
 <FONT color="green">002</FONT>    <a name="line.2"></a>
 <FONT color="green">003</FONT>    import com.google.gwt.event.shared.GwtEvent;<a name="line.3"></a>
-<FONT color="green">004</FONT>    import com.google.gwt.event.shared.GwtEvent.Type;<a name="line.4"></a>
-<FONT color="green">005</FONT>    <a name="line.5"></a>
-<FONT color="green">006</FONT>    /**<a name="line.6"></a>
-<FONT color="green">007</FONT>     * Represents login process result.&lt;br/&gt;<a name="line.7"></a>
-<FONT color="green">008</FONT>     * 表示?��??��?後�??? <a name="line.8"></a>
-<FONT color="green">009</FONT>     * @author Kent Yeh<a name="line.9"></a>
-<FONT color="green">010</FONT>     */<a name="line.10"></a>
-<FONT color="green">011</FONT>    public class LoginEvent extends GwtEvent&lt;LoginHandler&gt; {<a name="line.11"></a>
-<FONT color="green">012</FONT>    <a name="line.12"></a>
-<FONT color="green">013</FONT>        private boolean succeeded = false;<a name="line.13"></a>
-<FONT color="green">014</FONT>        <a name="line.14"></a>
-<FONT color="green">015</FONT>        /**<a name="line.15"></a>
-<FONT color="green">016</FONT>         * <a name="line.16"></a>
-<FONT color="green">017</FONT>         * @param succeeded &lt;table style="padding-left:70px"&gt;&lt;tr&gt;&lt;td&gt;true meeas Login success, otherwise login is canceled.&lt;/td&gt;&lt;/td&gt;<a name="line.17"></a>
-<FONT color="green">018</FONT>         *&lt;tr&gt;&lt;td&gt;true 表示?��??��?，否?�為?�戶?��??��?作業&lt;/td&gt;&lt;/td&gt;&lt;/table&gt;<a name="line.18"></a>
-<FONT color="green">019</FONT>         */<a name="line.19"></a>
-<FONT color="green">020</FONT>        public LoginEvent(boolean succeeded) {<a name="line.20"></a>
-<FONT color="green">021</FONT>            this.succeeded = succeeded;<a name="line.21"></a>
-<FONT color="green">022</FONT>        }<a name="line.22"></a>
-<FONT color="green">023</FONT>        private static Type&lt;LoginHandler&gt; type = new Type&lt;LoginHandler&gt;();<a name="line.23"></a>
+<FONT color="green">004</FONT>    <a name="line.4"></a>
+<FONT color="green">005</FONT>    /**<a name="line.5"></a>
+<FONT color="green">006</FONT>     * Represents login process result.&lt;br/&gt;<a name="line.6"></a>
+<FONT color="green">007</FONT>     * 表示登錄的最後結果  <a name="line.7"></a>
+<FONT color="green">008</FONT>     * @author Kent Yeh<a name="line.8"></a>
+<FONT color="green">009</FONT>     */<a name="line.9"></a>
+<FONT color="green">010</FONT>    public class LoginEvent extends GwtEvent&lt;LoginHandler&gt; {<a name="line.10"></a>
+<FONT color="green">011</FONT>    <a name="line.11"></a>
+<FONT color="green">012</FONT>        private boolean succeeded = false;<a name="line.12"></a>
+<FONT color="green">013</FONT>    <a name="line.13"></a>
+<FONT color="green">014</FONT>        /**<a name="line.14"></a>
+<FONT color="green">015</FONT>         * <a name="line.15"></a>
+<FONT color="green">016</FONT>         * @param succeeded &lt;table style="padding-left:70px"&gt;&lt;tr&gt;&lt;td&gt;true meeas Login success, otherwise login is canceled.&lt;/td&gt;&lt;/td&gt;<a name="line.16"></a>
+<FONT color="green">017</FONT>         *&lt;tr&gt;&lt;td&gt;true 表示登錄成功，否則為用戶取消登錄作業&lt;/td&gt;&lt;/td&gt;&lt;/table&gt;<a name="line.17"></a>
+<FONT color="green">018</FONT>         */<a name="line.18"></a>
+<FONT color="green">019</FONT>        public LoginEvent(boolean succeeded) {<a name="line.19"></a>
+<FONT color="green">020</FONT>            this.succeeded = succeeded;<a name="line.20"></a>
+<FONT color="green">021</FONT>        }<a name="line.21"></a>
+<FONT color="green">022</FONT>        private static Type&lt;LoginHandler&gt; type = new Type&lt;LoginHandler&gt;();<a name="line.22"></a>
+<FONT color="green">023</FONT>    <a name="line.23"></a>
 <FONT color="green">024</FONT>        /**<a name="line.24"></a>
 <FONT color="green">025</FONT>         * Does user cancel loggin process?&lt;br/&gt;<a name="line.25"></a>
-<FONT color="green">026</FONT>         * ?�否?�戶?��??��??     <a name="line.26"></a>
-<FONT color="green">027</FONT>         */         <a name="line.27"></a>
+<FONT color="green">026</FONT>         * 是否用戶取消登錄?     <a name="line.26"></a>
+<FONT color="green">027</FONT>         */<a name="line.27"></a>
 <FONT color="green">028</FONT>        public boolean isCanceled() {<a name="line.28"></a>
 <FONT color="green">029</FONT>            return !succeeded;<a name="line.29"></a>
 <FONT color="green">030</FONT>        }<a name="line.30"></a>
-<FONT color="green">031</FONT>        /**<a name="line.31"></a>
-<FONT color="green">032</FONT>         * Does user login success?&lt;br/&gt;<a name="line.32"></a>
-<FONT color="green">033</FONT>         * ?�否?�戶已登?��???     <a name="line.33"></a>
-<FONT color="green">034</FONT>         */         <a name="line.34"></a>
-<FONT color="green">035</FONT>        public boolean isLoginSuccessful() {<a name="line.35"></a>
-<FONT color="green">036</FONT>            return succeeded;<a name="line.36"></a>
-<FONT color="green">037</FONT>        }<a name="line.37"></a>
-<FONT color="green">038</FONT>    <a name="line.38"></a>
-<FONT color="green">039</FONT>        @Override<a name="line.39"></a>
-<FONT color="green">040</FONT>        protected void dispatch(LoginHandler handler) {<a name="line.40"></a>
-<FONT color="green">041</FONT>            handler.onLogin(this);<a name="line.41"></a>
-<FONT color="green">042</FONT>        }<a name="line.42"></a>
-<FONT color="green">043</FONT>    <a name="line.43"></a>
-<FONT color="green">044</FONT>        @Override<a name="line.44"></a>
-<FONT color="green">045</FONT>        public Type&lt;LoginHandler&gt; getAssociatedType() {<a name="line.45"></a>
-<FONT color="green">046</FONT>            return type;<a name="line.46"></a>
-<FONT color="green">047</FONT>        }<a name="line.47"></a>
-<FONT color="green">048</FONT>    <a name="line.48"></a>
-<FONT color="green">049</FONT>        public static Type&lt;LoginHandler&gt; getType() {<a name="line.49"></a>
-<FONT color="green">050</FONT>            return type;<a name="line.50"></a>
-<FONT color="green">051</FONT>        }<a name="line.51"></a>
-<FONT color="green">052</FONT>    }<a name="line.52"></a>
+<FONT color="green">031</FONT>    <a name="line.31"></a>
+<FONT color="green">032</FONT>        /**<a name="line.32"></a>
+<FONT color="green">033</FONT>         * Does user login success?&lt;br/&gt;<a name="line.33"></a>
+<FONT color="green">034</FONT>         * 是否用戶已登錄成功?     <a name="line.34"></a>
+<FONT color="green">035</FONT>         */<a name="line.35"></a>
+<FONT color="green">036</FONT>        public boolean isLoginSuccessful() {<a name="line.36"></a>
+<FONT color="green">037</FONT>            return succeeded;<a name="line.37"></a>
+<FONT color="green">038</FONT>        }<a name="line.38"></a>
+<FONT color="green">039</FONT>    <a name="line.39"></a>
+<FONT color="green">040</FONT>        @Override<a name="line.40"></a>
+<FONT color="green">041</FONT>        protected void dispatch(LoginHandler handler) {<a name="line.41"></a>
+<FONT color="green">042</FONT>            handler.onLogin(this);<a name="line.42"></a>
+<FONT color="green">043</FONT>        }<a name="line.43"></a>
+<FONT color="green">044</FONT>    <a name="line.44"></a>
+<FONT color="green">045</FONT>        @Override<a name="line.45"></a>
+<FONT color="green">046</FONT>        public Type&lt;LoginHandler&gt; getAssociatedType() {<a name="line.46"></a>
+<FONT color="green">047</FONT>            return type;<a name="line.47"></a>
+<FONT color="green">048</FONT>        }<a name="line.48"></a>
+<FONT color="green">049</FONT>    <a name="line.49"></a>
+<FONT color="green">050</FONT>        public static Type&lt;LoginHandler&gt; getType() {<a name="line.50"></a>
+<FONT color="green">051</FONT>            return type;<a name="line.51"></a>
+<FONT color="green">052</FONT>        }<a name="line.52"></a>
+<FONT color="green">053</FONT>    }<a name="line.53"></a>
 
 
 

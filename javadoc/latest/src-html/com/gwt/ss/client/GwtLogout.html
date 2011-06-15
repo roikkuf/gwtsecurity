@@ -7,18 +7,19 @@
 <FONT color="green">004</FONT>    /**<a name="line.4"></a>
 <FONT color="green">005</FONT>     * &amp;lt;logout&amp;gt; direct from GWT RPC,you need  instantiate a {@link com.gwt.ss.GwtLogoutSuccessHandler GwtLogoutSuccessHandler}<a name="line.5"></a>
 <FONT color="green">006</FONT>     * and assign to &amp;lt;logout success-handler-ref=&amp;quot;hander-reference&amp;quot;/&amp;gt;&lt;br/&gt;<a name="line.6"></a>
-<FONT color="green">007</FONT>     * This interface did not annotated with {@link  RemoteServiceRelativePath @RemoteServiceRelativePath},<a name="line.7"></a>
+<FONT color="green">007</FONT>     * This interface did not annotated with {@link com.google.gwt.user.client.rpc.RemoteServiceRelativePath @RemoteServiceRelativePath},<a name="line.7"></a>
 <FONT color="green">008</FONT>     * Do not generate instance by {@link com.google.gwt.core.client.GWT#create(java.lang.Class) GWT.create},<a name="line.8"></a>
 <FONT color="green">009</FONT>     * Just invoke {@link GwtLogoutAsync.Util#getInstance() GwtLogoutAsync.Util.getInstance} instead.&lt;br/&gt;<a name="line.9"></a>
-<FONT color="green">010</FONT>     * 使用GWT RPC?��??�出，�??�建立�?{@link com.gwt.ss.GwtLogoutSuccessHandler GwtLogoutSuccessHandler}實�?�? * 並�??��??�to &amp;lt;logout success-handler-ref=&amp;quot;實�??�照&amp;quot;/&amp;gt;&lt;br/&gt;<a name="line.10"></a>
-<FONT color="green">011</FONT>     * ?��??�並?��?記{@link  RemoteServiceRelativePath @RemoteServiceRelativePath}，�?以�?要用<a name="line.11"></a>
-<FONT color="green">012</FONT>     * {@link com.google.gwt.core.client.GWT#create(java.lang.Class) GWT.create}建�?intance，�??�用<a name="line.12"></a>
-<FONT color="green">013</FONT>     * {@link GwtLogoutAsync.Util#getInstance() GwtLogoutAsync.Util.getInstance}<a name="line.13"></a>
-<FONT color="green">014</FONT>     */<a name="line.14"></a>
-<FONT color="green">015</FONT>    public interface GwtLogout extends RemoteService {<a name="line.15"></a>
-<FONT color="green">016</FONT>    <a name="line.16"></a>
-<FONT color="green">017</FONT>        void j_gwt_security_logout();<a name="line.17"></a>
-<FONT color="green">018</FONT>    }<a name="line.18"></a>
+<FONT color="green">010</FONT>     * 使用GWT RPC進行登出，必須建立一{@link com.gwt.ss.GwtLogoutSuccessHandler GwtLogoutSuccessHandler}實例，<a name="line.10"></a>
+<FONT color="green">011</FONT>     * 並且指定到to &amp;lt;logout success-handler-ref=&amp;quot;實例參照&amp;quot;/&amp;gt;&lt;br/&gt;<a name="line.11"></a>
+<FONT color="green">012</FONT>     * 本界面並未標記{@link com.google.gwt.user.client.rpc.RemoteServiceRelativePath @RemoteServiceRelativePath}，所以不要用<a name="line.12"></a>
+<FONT color="green">013</FONT>     * {@link com.google.gwt.core.client.GWT#create(java.lang.Class) GWT.create}建立intance，請改用<a name="line.13"></a>
+<FONT color="green">014</FONT>     * {@link GwtLogoutAsync.Util#getInstance() GwtLogoutAsync.Util.getInstance}<a name="line.14"></a>
+<FONT color="green">015</FONT>     */<a name="line.15"></a>
+<FONT color="green">016</FONT>    public interface GwtLogout extends RemoteService {<a name="line.16"></a>
+<FONT color="green">017</FONT>    <a name="line.17"></a>
+<FONT color="green">018</FONT>        void j_gwt_security_logout();<a name="line.18"></a>
+<FONT color="green">019</FONT>    }<a name="line.19"></a>
 
 
 

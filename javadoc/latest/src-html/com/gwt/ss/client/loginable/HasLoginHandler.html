@@ -13,25 +13,26 @@
 <FONT color="green">010</FONT>     * &lt;span style="color:red"&gt;Important:&lt;/span&gt; <a name="line.10"></a>
 <FONT color="green">011</FONT>     * when {@link AbstractLoginBox#startLogin(java.lang.Throwable) start Login}}, no matter login succeeded or canceled,<a name="line.11"></a>
 <FONT color="green">012</FONT>     * It must fire a {@link LoginEvent} to notify the waiting {@link LoginableService}. <a name="line.12"></a>
-<FONT color="green">013</FONT>     * &lt;br/&gt;å¯¦å?æ­¤ç??¢ä??©ä»¶?¯è??¨æˆ¶?Ÿå??»é?ä½œæ¥­ï¼Œä¸¦?é?<a name="line.13"></a>
-<FONT color="green">014</FONT>     * {@link com.gwt.ss.client.loginable.LoginHandler LoginHandler}?¥æ”¶?»é?çµæ? &lt;br/&gt;<a name="line.14"></a>
-<FONT color="green">015</FONT>     * &lt;span style="color:red"&gt;æ³¨æ?:&lt;/span&gt; ä¸?—¦{@link AbstractLoginBox#startLogin(java.lang.Throwable) ?Ÿå??»é?}ï¼Œç„¡è«? * ?»é??å??–ç”¨?¶å?æ¶ˆç™»?„ï??½ä?å®šè??¼é?{@link LoginEvent}çµ¦ç?å¾…ä¸­?„{@link LoginableService}.<a name="line.15"></a>
-<FONT color="green">016</FONT>     * @author Kent Yeh<a name="line.16"></a>
-<FONT color="green">017</FONT>     */<a name="line.17"></a>
-<FONT color="green">018</FONT>    public interface HasLoginHandler extends HasHandlers {<a name="line.18"></a>
-<FONT color="green">019</FONT>        /**<a name="line.19"></a>
-<FONT color="green">020</FONT>         * start login action<a name="line.20"></a>
-<FONT color="green">021</FONT>         * ?‹å??Ÿå??»é?ä½œæ¥­<a name="line.21"></a>
-<FONT color="green">022</FONT>         * @param caught &lt;table style="padding-left:70px"&gt;&lt;tr&gt;&lt;td&gt;then reason why should start login.&lt;/td&gt;&lt;/td&gt;<a name="line.22"></a>
-<FONT color="green">023</FONT>         *&lt;tr&gt;&lt;td&gt;?Ÿå??»é?ä½œæ¥­?„ç•°å¸¸ä?å¤?td&gt;&lt;/td&gt;&lt;/table&gt;<a name="line.23"></a>
-<FONT color="green">024</FONT>         */<a name="line.24"></a>
-<FONT color="green">025</FONT>        public void startLogin(Throwable caught);<a name="line.25"></a>
-<FONT color="green">026</FONT>        /**<a name="line.26"></a>
-<FONT color="green">027</FONT>         * Accept {@link LoginHandler} to handle {@link LoginEvent}&lt;br/&gt;<a name="line.27"></a>
-<FONT color="green">028</FONT>         * ?¥å? {@link LoginHandler} ä»¥è???{@link LoginEvent}<a name="line.28"></a>
-<FONT color="green">029</FONT>         */<a name="line.29"></a>
-<FONT color="green">030</FONT>        public HandlerRegistration addLoginHandler(LoginHandler handler);<a name="line.30"></a>
-<FONT color="green">031</FONT>    }<a name="line.31"></a>
+<FONT color="green">013</FONT>     * &lt;br/&gt;å¯¦åšæ­¤ç•Œé¢ä¹‹ç‰©ä»¶å¯è®“ç”¨æˆ¶å•Ÿå§‹ç™»éŒ„ä½œæ¥­ï¼Œä¸¦é€é<a name="line.13"></a>
+<FONT color="green">014</FONT>     * {@link com.gwt.ss.client.loginable.LoginHandler LoginHandler}æ¥æ”¶ç™»éŒ„çµæœ &lt;br/&gt;<a name="line.14"></a>
+<FONT color="green">015</FONT>     * &lt;span style="color:red"&gt;æ³¨æ„:&lt;/span&gt; ä¸€æ—¦{@link AbstractLoginBox#startLogin(java.lang.Throwable) å•Ÿå‹•ç™»éŒ„}ï¼Œç„¡è«–<a name="line.15"></a>
+<FONT color="green">016</FONT>     * ç™»éŒ„æˆåŠŸæˆ–ç”¨æˆ¶å–æ¶ˆç™»éŒ„ï¼Œéƒ½ä¸€å®šè¦ç™¼é€{@link LoginEvent}çµ¦ç­‰å¾…ä¸­çš„{@link LoginableService}.<a name="line.16"></a>
+<FONT color="green">017</FONT>     * @author Kent Yeh<a name="line.17"></a>
+<FONT color="green">018</FONT>     */<a name="line.18"></a>
+<FONT color="green">019</FONT>    public interface HasLoginHandler extends HasHandlers {<a name="line.19"></a>
+<FONT color="green">020</FONT>        /**<a name="line.20"></a>
+<FONT color="green">021</FONT>         * start login action<a name="line.21"></a>
+<FONT color="green">022</FONT>         * é–‹å§‹å•Ÿå§‹ç™»éŒ„ä½œæ¥­<a name="line.22"></a>
+<FONT color="green">023</FONT>         * @param caught &lt;table style="padding-left:70px"&gt;&lt;tr&gt;&lt;td&gt;then reason why should start login.&lt;/td&gt;&lt;/td&gt;<a name="line.23"></a>
+<FONT color="green">024</FONT>         *&lt;tr&gt;&lt;td&gt;å•Ÿå‹•ç™»éŒ„ä½œæ¥­çš„ç•°å¸¸ä¾‹å¤–/td&gt;&lt;/td&gt;&lt;/table&gt;<a name="line.24"></a>
+<FONT color="green">025</FONT>         */<a name="line.25"></a>
+<FONT color="green">026</FONT>        public void startLogin(Throwable caught);<a name="line.26"></a>
+<FONT color="green">027</FONT>        /**<a name="line.27"></a>
+<FONT color="green">028</FONT>         * Accept {@link LoginHandler} to handle {@link LoginEvent}&lt;br/&gt;<a name="line.28"></a>
+<FONT color="green">029</FONT>         * æ¥å— {@link LoginHandler} ä»¥è™•ç† {@link LoginEvent}<a name="line.29"></a>
+<FONT color="green">030</FONT>         */<a name="line.30"></a>
+<FONT color="green">031</FONT>        public HandlerRegistration addLoginHandler(LoginHandler handler);<a name="line.31"></a>
+<FONT color="green">032</FONT>    }<a name="line.32"></a>
 
 
 

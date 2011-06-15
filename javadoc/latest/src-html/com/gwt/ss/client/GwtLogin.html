@@ -5,22 +5,24 @@
 <FONT color="green">002</FONT>    <a name="line.2"></a>
 <FONT color="green">003</FONT>    import com.google.gwt.user.client.rpc.RemoteService;<a name="line.3"></a>
 <FONT color="green">004</FONT>    import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;<a name="line.4"></a>
-<FONT color="green">005</FONT>    <a name="line.5"></a>
-<FONT color="green">006</FONT>    /**<a name="line.6"></a>
-<FONT color="green">007</FONT>     * &amp;lt;form-login&amp;gt; for Gwt,<a name="line.7"></a>
-<FONT color="green">008</FONT>     * instantiate a {@link com.gwt.ss.GwtUsernamePasswordAuthority GwtUsernamePasswordAuthority} is needed.&lt;br/&gt;<a name="line.8"></a>
-<FONT color="green">009</FONT>     * This interface did not annotated with {@link  RemoteServiceRelativePath @RemoteServiceRelativePath},<a name="line.9"></a>
-<FONT color="green">010</FONT>     * Do not generate instance by {@link com.google.gwt.core.client.GWT#create(java.lang.Class) GWT.create},<a name="line.10"></a>
-<FONT color="green">011</FONT>     * Just invoke {@link GwtLoginAsync.Util#getInstance() GwtLoginAsync.Util.getInstance} instead.&lt;br/&gt;<a name="line.11"></a>
-<FONT color="green">012</FONT>     * GWT?��??��?&amp;lt;form-login&amp;gt;?��??��??��?必�?建�?�? * {@link com.gwt.ss.GwtUsernamePasswordAuthority GwtUsernamePasswordAuthority} 實�?&lt;br/&gt;<a name="line.12"></a>
-<FONT color="green">013</FONT>     * ?��??�並?��?記{@link  RemoteServiceRelativePath @RemoteServiceRelativePath}，�?以�?要用<a name="line.13"></a>
-<FONT color="green">014</FONT>     * {@link com.google.gwt.core.client.GWT#create(java.lang.Class) GWT.create}建�?intance，�??�用<a name="line.14"></a>
-<FONT color="green">015</FONT>     * {@link GwtLoginAsync.Util#getInstance() GwtLoginAsync.Util.getInstance}<a name="line.15"></a>
-<FONT color="green">016</FONT>     */<a name="line.16"></a>
-<FONT color="green">017</FONT>    public interface GwtLogin extends RemoteService {<a name="line.17"></a>
-<FONT color="green">018</FONT>    <a name="line.18"></a>
-<FONT color="green">019</FONT>        void j_gwt_security_check(String username, String password,boolean remeberMe) throws GwtSecurityException;<a name="line.19"></a>
-<FONT color="green">020</FONT>    }<a name="line.20"></a>
+<FONT color="green">005</FONT>    import com.gwt.ss.client.exceptions.GwtSecurityException;<a name="line.5"></a>
+<FONT color="green">006</FONT>    <a name="line.6"></a>
+<FONT color="green">007</FONT>    /**<a name="line.7"></a>
+<FONT color="green">008</FONT>     * &amp;lt;form-login&amp;gt; for Gwt,<a name="line.8"></a>
+<FONT color="green">009</FONT>     * instantiate a {@link com.gwt.ss.GwtUsernamePasswordAuthority GwtUsernamePasswordAuthority} is needed.&lt;br/&gt;<a name="line.9"></a>
+<FONT color="green">010</FONT>     * This interface did not annotated with {@link  RemoteServiceRelativePath @RemoteServiceRelativePath},<a name="line.10"></a>
+<FONT color="green">011</FONT>     * Do not generate instance by {@link com.google.gwt.core.client.GWT#create(java.lang.Class) GWT.create},<a name="line.11"></a>
+<FONT color="green">012</FONT>     * Just invoke {@link GwtLoginAsync.Util#getInstance() GwtLoginAsync.Util.getInstance} instead.&lt;br/&gt;<a name="line.12"></a>
+<FONT color="green">013</FONT>     * GWT用來進行&amp;lt;form-login&amp;gt;的服務界面，必須建立一<a name="line.13"></a>
+<FONT color="green">014</FONT>     * {@link com.gwt.ss.GwtUsernamePasswordAuthority GwtUsernamePasswordAuthority} 實例&lt;br/&gt;<a name="line.14"></a>
+<FONT color="green">015</FONT>     * 本界面並未標記{@link  RemoteServiceRelativePath @RemoteServiceRelativePath}，所以不要用<a name="line.15"></a>
+<FONT color="green">016</FONT>     * {@link com.google.gwt.core.client.GWT#create(java.lang.Class) GWT.create}建立intance，請改用<a name="line.16"></a>
+<FONT color="green">017</FONT>     * {@link GwtLoginAsync.Util#getInstance() GwtLoginAsync.Util.getInstance}<a name="line.17"></a>
+<FONT color="green">018</FONT>     */<a name="line.18"></a>
+<FONT color="green">019</FONT>    public interface GwtLogin extends RemoteService {<a name="line.19"></a>
+<FONT color="green">020</FONT>    <a name="line.20"></a>
+<FONT color="green">021</FONT>        void j_gwt_security_check(String username, String password,boolean remeberMe) throws GwtSecurityException;<a name="line.21"></a>
+<FONT color="green">022</FONT>    }<a name="line.22"></a>
 
 
 

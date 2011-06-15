@@ -3,36 +3,35 @@
 <PRE>
 <FONT color="green">001</FONT>    package com.gwt.ss.client.loginable;<a name="line.1"></a>
 <FONT color="green">002</FONT>    <a name="line.2"></a>
-<FONT color="green">003</FONT>    import com.google.gwt.core.client.GWT;<a name="line.3"></a>
-<FONT color="green">004</FONT>    <a name="line.4"></a>
-<FONT color="green">005</FONT>    /**<a name="line.5"></a>
-<FONT color="green">006</FONT>     * A wrapper(proxy) for asynchronous {@link com.google.gwt.user.client.rpc.RemoteService remoteService}<a name="line.6"></a>
-<FONT color="green">007</FONT>     * descended from {@link LoginableAsync LoginableAsync}.&lt;br/&gt;<a name="line.7"></a>
-<FONT color="green">008</FONT>     * 繼承?�{@link LoginableAsync LoginableAsync}?��??�步{@link com.google.gwt.user.client.rpc.RemoteService remoteService}<a name="line.8"></a>
-<FONT color="green">009</FONT>     * ?�代?�物件�? <a name="line.9"></a>
-<FONT color="green">010</FONT>     * @author Kent Yeh<a name="line.10"></a>
-<FONT color="green">011</FONT>     */<a name="line.11"></a>
-<FONT color="green">012</FONT>    public interface LoginableService&lt;T extends LoginableAsync&gt; {<a name="line.12"></a>
+<FONT color="green">003</FONT>    /**<a name="line.3"></a>
+<FONT color="green">004</FONT>     * A wrapper(proxy) for asynchronous {@link com.google.gwt.user.client.rpc.RemoteService remoteService}<a name="line.4"></a>
+<FONT color="green">005</FONT>     * descended from {@link LoginableAsync LoginableAsync}.&lt;br/&gt;<a name="line.5"></a>
+<FONT color="green">006</FONT>     * 繼承自{@link LoginableAsync LoginableAsync}的非同步{@link com.google.gwt.user.client.rpc.RemoteService remoteService}<a name="line.6"></a>
+<FONT color="green">007</FONT>     * 的代理物件。 <a name="line.7"></a>
+<FONT color="green">008</FONT>     * @author Kent Yeh<a name="line.8"></a>
+<FONT color="green">009</FONT>     */<a name="line.9"></a>
+<FONT color="green">010</FONT>    public interface LoginableService&lt;T extends LoginableAsync&gt; {<a name="line.10"></a>
+<FONT color="green">011</FONT>    <a name="line.11"></a>
+<FONT color="green">012</FONT>        HasLoginHandler getHasLoginHandler();<a name="line.12"></a>
 <FONT color="green">013</FONT>    <a name="line.13"></a>
-<FONT color="green">014</FONT>        HasLoginHandler getHasLoginHandler();<a name="line.14"></a>
+<FONT color="green">014</FONT>        void setHasLoginHandler(HasLoginHandler hasLoginHandler);<a name="line.14"></a>
 <FONT color="green">015</FONT>    <a name="line.15"></a>
-<FONT color="green">016</FONT>        void setHasLoginHandler(HasLoginHandler hasLoginHandler);<a name="line.16"></a>
-<FONT color="green">017</FONT>    <a name="line.17"></a>
-<FONT color="green">018</FONT>        /**<a name="line.18"></a>
-<FONT color="green">019</FONT>         * return then real asynchronous {@link com.google.gwt.user.client.rpc.RemoteService remoteService}, If not <a name="line.19"></a>
-<FONT color="green">020</FONT>         * setup before, generate by {@link com.google.gwt.core.client.GWT GWT}.{@link com.google.gwt.core.client.GWT#create(java.lang.Class create}<a name="line.20"></a>
-<FONT color="green">021</FONT>         *  automaticly.&lt;br/&gt;<a name="line.21"></a>
-<FONT color="green">022</FONT>         * ?�傳之�?設�??��??�步{@link com.google.gwt.user.client.rpc.RemoteService remoteService}，若?�未?�設定�??�叫??     * {@link com.google.gwt.core.client.GWT GWT}.{@link com.google.gwt.core.client.GWT#create(java.lang.Class create()}<a name="line.22"></a>
-<FONT color="green">023</FONT>         * ?��?建�?�??<a name="line.23"></a>
-<FONT color="green">024</FONT>         */<a name="line.24"></a>
-<FONT color="green">025</FONT>        T getRemoteService();<a name="line.25"></a>
-<FONT color="green">026</FONT>    <a name="line.26"></a>
-<FONT color="green">027</FONT>        /**<a name="line.27"></a>
-<FONT color="green">028</FONT>         * setup then real asynchronous {@link com.google.gwt.user.client.rpc.RemoteService remoteService}&lt;br/&gt;<a name="line.28"></a>
-<FONT color="green">029</FONT>         * 設�??��?步{@link com.google.gwt.user.client.rpc.RemoteService remoteService}.<a name="line.29"></a>
-<FONT color="green">030</FONT>         */<a name="line.30"></a>
-<FONT color="green">031</FONT>        void setRemoteService(T service);<a name="line.31"></a>
-<FONT color="green">032</FONT>    }<a name="line.32"></a>
+<FONT color="green">016</FONT>        /**<a name="line.16"></a>
+<FONT color="green">017</FONT>         * return then real asynchronous {@link com.google.gwt.user.client.rpc.RemoteService remoteService}, If not <a name="line.17"></a>
+<FONT color="green">018</FONT>         * setup before, generate by {@link com.google.gwt.core.client.GWT#create(java.lang.Class create)}<a name="line.18"></a>
+<FONT color="green">019</FONT>         *  automaticly.&lt;br/&gt;<a name="line.19"></a>
+<FONT color="green">020</FONT>         * 回傳之前設定的非同步{@link com.google.gwt.user.client.rpc.RemoteService remoteService}，若是未曾設定，則叫用<a name="line.20"></a>
+<FONT color="green">021</FONT>         * {@link com.google.gwt.core.client.GWT#create(java.lang.Class create)}<a name="line.21"></a>
+<FONT color="green">022</FONT>         * 自動建立一個<a name="line.22"></a>
+<FONT color="green">023</FONT>         */<a name="line.23"></a>
+<FONT color="green">024</FONT>        T getRemoteService();<a name="line.24"></a>
+<FONT color="green">025</FONT>    <a name="line.25"></a>
+<FONT color="green">026</FONT>        /**<a name="line.26"></a>
+<FONT color="green">027</FONT>         * setup then real asynchronous {@link com.google.gwt.user.client.rpc.RemoteService remoteService}&lt;br/&gt;<a name="line.27"></a>
+<FONT color="green">028</FONT>         * 設定非同步{@link com.google.gwt.user.client.rpc.RemoteService remoteService}.<a name="line.28"></a>
+<FONT color="green">029</FONT>         */<a name="line.29"></a>
+<FONT color="green">030</FONT>        void setRemoteService(T service);<a name="line.30"></a>
+<FONT color="green">031</FONT>    }<a name="line.31"></a>
 
 
 
