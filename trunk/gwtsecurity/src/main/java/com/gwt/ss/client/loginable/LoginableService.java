@@ -15,10 +15,10 @@ public interface LoginableService<T extends LoginableAsync> {
 
     /**
      * return then real asynchronous {@link com.google.gwt.user.client.rpc.RemoteService remoteService}, If not 
-     * setup before, generate by {@link com.google.gwt.core.client.GWT GWT}.{@link com.google.gwt.core.client.GWT#create(java.lang.Class create}
+     * setup before, generate by {@link com.google.gwt.core.client.GWT#create(java.lang.Class create)}
      *  automaticly.<br/>
      * 回傳之前設定的非同步{@link com.google.gwt.user.client.rpc.RemoteService remoteService}，若是未曾設定，則叫用
-     * {@link com.google.gwt.core.client.GWT GWT}.{@link com.google.gwt.core.client.GWT#create(java.lang.Class create()}
+     * {@link com.google.gwt.core.client.GWT#create(java.lang.Class create)}
      * 自動建立一個
      */
     T getRemoteService();

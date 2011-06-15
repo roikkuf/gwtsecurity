@@ -2,6 +2,7 @@ package com.gwt.ss.client;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
+import com.gwt.ss.client.exceptions.GwtSecurityException;
 
 /**
  * &lt;form-login&gt; for Gwt,

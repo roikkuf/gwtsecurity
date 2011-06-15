@@ -66,7 +66,7 @@ public interface GwtLoginAsync {
          * return {@link GwtLoginAsync GwtLoginAsync} instance with specified service entry point.<br/>
          * 指定服務進入點並取得{@link GwtLoginAsync GwtLoginAsync} 實例
          * @param processUrl Spring login processing url
-         * @return
+         * @return the instance.
          */
         public static GwtLoginAsync getInstance(String processUrl) {
             assert processUrl != null && !processUrl.isEmpty();
@@ -77,7 +77,7 @@ public interface GwtLoginAsync {
         /**
          * return {@link GwtLoginAsync GwtLoginAsync} instance with default service entry point &quot;j_spring_security_check&quot;<br/>
          * 取得預設進入點為&quot;j_spring_security_check&quot;之{@link GwtLoginAsync GwtLoginAsync} 實例
-         * @return
+         * @return the instance.
          */
         public static GwtLoginAsync getInstance() {
             if (instance == null) {

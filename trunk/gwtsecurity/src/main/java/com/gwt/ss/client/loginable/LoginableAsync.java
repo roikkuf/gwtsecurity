@@ -40,14 +40,14 @@ package com.gwt.ss.client.loginable;
  * &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...<br/>
  * &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br/>
  * &#47;*<dl><dt>You must handle</dt><dd><table>
- *       <tr><td>{@link com.gwt.ss.client.GwtAccessDeniedException GwtAccessDeniedException}:</td>
+ *       <tr><td>{@link com.gwt.ss.client.exceptions.GwtAccessDeniedException GwtAccessDeniedException}:</td>
  *           <td>Whenever user has not enough authority</td> </tr>
  *       <tr><td>{@link LoginCancelException}:</td>
  *           <td>User cancel login when login dialog box display</td> </tr>  
  *       <tr><td colSpan=&quot;2&quot;>Other exception</td></tr> 
  *       </table></dd></dl>
  *       <dl><dt>您必須自行處理以下錯誤:</dt><dd><table>
- *       <tr><td>{@link com.gwt.ss.client.GwtAccessDeniedException GwtAccessDeniedException}:</td>
+ *       <tr><td>{@link com.gwt.ss.client.exceptions.GwtAccessDeniedException GwtAccessDeniedException}:</td>
  *           <td>用戶權限不足時</td> </tr>
  *       <tr><td>{@link LoginCancelException}:</td>
  *           <td>登錄畫面出現時，用戶取消登錄</td> </tr>  

@@ -38,7 +38,7 @@ import org.springframework.web.context.ServletContextAware;
 /**
  * Monitor &lt;form-login&gt;  event.<br/>
  * When  &lt;form-login&gt; come from GWT RPC, return void message when success and
- * prone {@link  com.gwt.ss.client.GwtBadCredentialsException GwtBadCredentialsException} when failed.
+ * prone {@link  com.gwt.ss.client.exceptions.GwtBadCredentialsException GwtBadCredentialsException} when failed.
  * Not effect with web page form-login.<br/>
  * Note: Certification extracting code provide by Amit Khanna<br/>
  * 監控&lt;form-login&gt;登錄處理<br/>
