@@ -97,8 +97,8 @@ public class LoginableGenerator extends Generator {
         composer.addImport("com.google.gwt.core.client.Scheduler");
         composer.addImport("com.google.gwt.event.shared.HandlerRegistration");
         composer.addImport("com.google.gwt.user.client.rpc.AsyncCallback");
-        composer.addImport("com.gwt.ss.client.GwtAccessDeniedException");
-        composer.addImport("com.gwt.ss.client.GwtSecurityException");
+        composer.addImport("com.gwt.ss.client.exceptions.GwtAccessDeniedException");
+        composer.addImport("com.gwt.ss.client.exceptions.GwtSecurityException");
         composer.addImport("com.gwt.ss.client.loginable.HasLoginHandler");
         composer.addImport("com.gwt.ss.client.loginable.LoginEvent");
         composer.addImport("com.gwt.ss.client.loginable.LoginHandler");

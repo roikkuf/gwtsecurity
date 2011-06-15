@@ -21,6 +21,7 @@ public interface GwtGreetingServiceAsync extends RemoteAsync{
                 ServiceDefTarget target = (ServiceDefTarget) rs;
                 target.setServiceEntryPoint(GWT.getModuleBaseURL() + "../gwtsl/greet");
                 instance = GWT.create(GwtGreetingServiceAsync.class);
+                @SuppressWarnings("unchecked")
                 LoginableService<GwtGreetingServiceAsync> ls = (LoginableService<GwtGreetingServiceAsync>) instance;
                 ls.setRemoteService(rs);
                 ls.setHasLoginHandler(LoginBox.getLoginBox(loginurl));

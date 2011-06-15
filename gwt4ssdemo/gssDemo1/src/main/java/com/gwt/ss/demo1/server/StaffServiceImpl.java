@@ -1,12 +1,14 @@
 package com.gwt.ss.demo1.server;
 
+import org.springframework.security.access.annotation.Secured;
+
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-import com.gwt.ss.client.GwtSecurityException;
+import com.gwt.ss.client.exceptions.GwtSecurityException;
 import com.gwt.ss.demo1.client.StaffService;
 import com.gwt.ss.sharedservice.client.Remote;
 import com.gwt.ss.sharedservice.server.ServiceImpl;
-import org.springframework.security.access.annotation.Secured;
 
+@SuppressWarnings("serial")
 public class StaffServiceImpl extends RemoteServiceServlet implements StaffService {
     private Remote impl =  ServiceImpl.getInstance();
 

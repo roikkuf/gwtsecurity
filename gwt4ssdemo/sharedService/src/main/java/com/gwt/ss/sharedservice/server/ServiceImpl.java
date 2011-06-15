@@ -1,6 +1,6 @@
 package com.gwt.ss.sharedservice.server;
 
-import com.gwt.ss.client.GwtSecurityException;
+import com.gwt.ss.client.exceptions.GwtSecurityException;
 import com.gwt.ss.sharedservice.client.Remote;
 /**
  * Default service implement.

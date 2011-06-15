@@ -21,6 +21,7 @@ public interface GwtStaffServiceAsync extends RemoteAsync{
                 ServiceDefTarget target = (ServiceDefTarget) rs;
                 target.setServiceEntryPoint(GWT.getModuleBaseURL() + "../gwtsl/staff");
                 instance = GWT.create(GwtStaffServiceAsync.class);
+                @SuppressWarnings("unchecked")
                 LoginableService<GwtStaffServiceAsync> ls = (LoginableService<GwtStaffServiceAsync>) instance;
                 ls.setRemoteService(rs);
                 ls.setHasLoginHandler(LoginBox.getLoginBox(loginurl));

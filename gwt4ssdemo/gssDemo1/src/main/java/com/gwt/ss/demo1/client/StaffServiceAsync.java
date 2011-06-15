@@ -18,6 +18,7 @@ public interface StaffServiceAsync extends RemoteAsync{
             if ( instance == null )
             {
                 instance = GWT.create(StaffServiceAsync.class);
+                @SuppressWarnings("unchecked")
                 LoginableService<StaffServiceAsync> ls = (LoginableService<StaffServiceAsync>) instance;
                 ls.setRemoteService((StaffServiceAsync) GWT.create( StaffService.class ));
                 ls.setHasLoginHandler(LoginBox.getLoginBox(loginurl));

@@ -1,10 +1,11 @@
 package com.gwt.ss.demo3.server;
 
-import com.gwt.ss.client.GwtSecurityException;
+import org.springframework.stereotype.Service;
+
+import com.gwt.ss.client.exceptions.GwtSecurityException;
 import com.gwt.ss.demo3.client.StaffService;
 import com.gwt.ss.sharedservice.client.Remote;
 import com.gwt.ss.sharedservice.server.ServiceImpl;
-import org.springframework.stereotype.Service;
 
 @Service("staff")
 public class StaffServiceImpl implements StaffService {
