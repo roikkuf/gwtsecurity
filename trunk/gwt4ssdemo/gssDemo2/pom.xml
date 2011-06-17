@@ -36,10 +36,6 @@
 		</dependency>
 		<dependency>
 			<groupId>com.google.code.gwtsecurity</groupId>
-			<artifactId>gwtsecurity</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.google.code.gwtsecurity</groupId>
 			<artifactId>sharedService</artifactId>
 			<!-- If you want to debug in devmode,
 				1. first package shareService module 
