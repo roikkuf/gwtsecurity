@@ -1,0 +1,59 @@
+#summary OpenId Issue.
+
+= Introduction =
+Sometimes, we can't put it all into a single page when authentication need.
+Like OpenId, it is page oriented(even though you put it into frame,
+some provider like Goolge will send a x-frame-options header to prevent), 
+go through multiple pages,
+and final navigate to destination after pass validation.
+ 
+
+= Details =
+About using opendId, it can be reference to 
+[http://git.springsource.org/spring-security/spring-security/trees/master/samples/openid Spring Security Sample].
+
+[http://code.google.com/p/gwtsecurity/source/browse/#svn%2Ftrunk%2Fgwt4ssdemo%2FgssDemo4 This Sample code] 
+was rewrite from [http://code.google.com/p/gwtsecurity/source/browse/#svn%2Ftrunk%2Fgwt4ssdemo%2FgssDemo2 demo2 example].
+
+From Spring Sample, which introduce the [http://code.google.com/p/openid-selector/ openid selector] project,
+I put them all under openid folder and config it to be filterd none by Spring Security.
+
+In previous example, I use a dialog log-in box that implements [http://gwtsecurity.googlecode.com/svn/javadoc/latest/com/gwt/ss/client/loginable/HasLoginHandler.html HasLoginHandler] 
+to provide the login functionality.
+
+Nothing special, with page oriented mode,we just need to open a secured page,
+and spring security will take over every thing.
+
+First,I create a [http://code.google.com/p/gwtsecurity/source/browse/trunk/gwt4ssdemo/gssDemo4/src/main/java/com/gwt/ss/demo4/client/OpenIdSelector.java OpenIdSelector] that implements HasLoginHandler,
+It is a simple panel that mask all the client screen, open a secured entry page and waiting for a LoginEvent trigger.
+
+You should notice that OpenIdSelector using some JSNI invocation within registerJSMethod(),which add a window prototype function.
+It's a javascript function to provide html page to fire a Login event.
+
+Because we dont't know how spring security processing.
+So I add a anchor link on this mask to provide a opportunity for user cancel the login process.
+
+We need a secured document that match any secured path,so I add a common controller(see [http://code.google.com/p/gwtsecurity/source/browse/trunk/gwt4ssdemo/gssDemo4/src/main/resources/applicationContext-mvc.xml applicationContext-mvc.xml]),
+{{{
+<mvc:view-controller path="/**/gwt.openid.verify" view-name="verify"/>
+}}}
+to result in [http://code.google.com/p/gwtsecurity/source/browse/trunk/gwt4ssdemo/gssDemo4/src/main/webapp/WEB-INF/jsp/verify.jsp verify.jsp] page when url is endding with &quot;gwt.openid.verify&quot;.  
+
+Then we look at [http://code.google.com/p/gwtsecurity/source/browse/trunk/gwt4ssdemo/gssDemo4/src/main/java/com/gwt/ss/demo4/client/GwtStaffServiceAsync.java GwtStaffServiceAsync.java],
+whenever a login required(RPC to &quot;/gwtsl/staff&quot;),then LoginHandler to open &quot;/gwtsl/staff/gwt.openid.verify&quot; page.
+
+Because path &quot;/gwtsl/staff&quot; is secured. So open &quot;/gwtsl/staff/gwt.openid.verify&quot; lead Spring Security start login process.
+
+And what's the verify.jsp major job?
+
+The major job of verify.jsp is to invoke loginResult to fire a login event to make GWT Ajax re-issue a RPC again.  
+
+
+One thing I have to memtion. This sample has method level secure.
+
+My suggestion is to avoid using method level secure. 
+You can look at [http://code.google.com/p/gwtsecurity/source/browse/trunk/gwt4ssdemo/gssDemo4/src/main/java/com/gwt/ss/demo4/server/GwtGreetingServiceImpl.java GreetingService Implements],
+For the sake of method secure, I had to open "/gwtsl/admin/gwt.openid.verify" (see [http://code.google.com/p/gwtsecurity/source/browse/trunk/gwt4ssdemo/gssDemo4/src/main/java/com/gwt/ss/demo4/client/GwtGreetingServiceAsync.java GwtGreetingServiceAsync.java]).
+and config same secured path in [http://code.google.com/p/gwtsecurity/source/browse/trunk/gwt4ssdemo/gssDemo4/src/main/resources/applicationContext-security.xml configuration].
+
+I must say, It's not a good design
