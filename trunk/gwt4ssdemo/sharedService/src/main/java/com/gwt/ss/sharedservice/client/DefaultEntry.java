@@ -87,7 +87,7 @@ public abstract class DefaultEntry implements EntryPoint {
                         @Override
                         public void onFailure(Throwable caught) {
                             if (caught instanceof LoginCancelException) {
-                                GWT.log("LoginCancelException occur"+caught.getMessage());
+                                GWT.log("LoginCancelException occur"+caught.getMessage(),caught);
                             } else {
                                 Window.alert("Greeting Service.greetServer error:" + caught.getMessage());
                             }
@@ -121,7 +121,7 @@ public abstract class DefaultEntry implements EntryPoint {
                         @Override
                         public void onFailure(Throwable caught) {
                             if (caught instanceof LoginCancelException) {
-                                GWT.log("LoginCancelException occur"+caught.getMessage());
+                                GWT.log("LoginCancelException occur"+caught.getMessage(),caught);
                             } else {
                                 Window.alert("Greeting Service.whisperServer error:" + caught.getMessage());
                             }
@@ -166,7 +166,7 @@ public abstract class DefaultEntry implements EntryPoint {
                         @Override
                         public void onFailure(Throwable caught) {
                             if (caught instanceof LoginCancelException) {
-                                GWT.log("LoginCancelException occur"+caught.getMessage());
+                                GWT.log("LoginCancelException occur"+caught.getMessage(),caught);
                             } else {
                                 Window.alert("Greeting Service.greetServer error:" + caught.getMessage());
                             }
@@ -200,7 +200,7 @@ public abstract class DefaultEntry implements EntryPoint {
                         @Override
                         public void onFailure(Throwable caught) {
                             if (caught instanceof LoginCancelException) {
-                                GWT.log("LoginCancelException occur"+caught.getMessage());
+                                GWT.log("LoginCancelException occur"+caught.getMessage(),caught);
                             } else {
                                 Window.alert("Greeting Service.whisperServer error:" + caught.getMessage());
                             }

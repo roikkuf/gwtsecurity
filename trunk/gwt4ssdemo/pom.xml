@@ -13,9 +13,10 @@
 	<url>http://code.google.com/p/gwtsecurity/</url>
 
 	<modules>
-		<module>gssDemo1</module>
+		<module>gssDemo1</module> 
 		<module>gssDemo2</module>
 		<module>gssDemo3</module>
+		<module>gssDemo4</module>
 		<module>sharedService</module>
 	</modules>
 
