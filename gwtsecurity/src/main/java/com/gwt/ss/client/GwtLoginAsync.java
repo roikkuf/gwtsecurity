@@ -15,6 +15,7 @@ public interface GwtLoginAsync {
     public static final class Util {
 
         private static GwtLoginAsync instance;
+
         private static String processUrl = "j_spring_security_check";
 
         public static String getProcessUrl() {
@@ -33,30 +34,34 @@ public interface GwtLoginAsync {
 
         private static void setServiceEntryPoint(GwtLoginAsync instance, String processUrl) {
             ServiceDefTarget target = (ServiceDefTarget) instance;
-            String hpbl = GWT.getHostPageBaseURL();
-            int idx = hpbl.indexOf("//");
-            String hostContextPath = hpbl.substring(0, idx + 2);
-            hpbl = hpbl.substring(idx + 2);
-            idx = hpbl.indexOf("/");
-            if (idx > -1) {
-                hostContextPath += hpbl.substring(0, idx + 1);
-                hpbl = hpbl.substring(idx + 1);
+            if (!processUrl.toLowerCase().matches("^https?://.*")) {
+                String hpbl = GWT.getHostPageBaseURL();
+                int idx = hpbl.indexOf("//");
+                String hostContextPath = hpbl.substring(0, idx + 2);
+                hpbl = hpbl.substring(idx + 2);
                 idx = hpbl.indexOf("/");
                 if (idx > -1) {
-                    hostContextPath += hpbl.substring(0, idx);
+                    hostContextPath += hpbl.substring(0, idx + 1);
+                    hpbl = hpbl.substring(idx + 1);
+                    idx = hpbl.indexOf("/");
+                    if (idx > -1) {
+                        hostContextPath += hpbl.substring(0, idx);
+                    } else {
+                        hostContextPath += hpbl;
+                    }
                 } else {
                     hostContextPath += hpbl;
                 }
-            } else {
-                hostContextPath += hpbl;
-            }
 
-            if (processUrl.startsWith("/")) {
+                if (!hostContextPath.endsWith("/")) {
+                    hostContextPath += "/";
+                }
+                if (processUrl == null || processUrl.equals("") || processUrl.equals("/")) {
+                    processUrl = "";
+                } else if (processUrl.startsWith("/")) {
+                    processUrl = processUrl.substring(1);
+                }
                 processUrl = hostContextPath + processUrl;
-            } else if (processUrl.toLowerCase().startsWith("http://") || processUrl.toLowerCase().startsWith("https://")) {
-                //do nothing
-            } else {
-                processUrl = hostContextPath + "/" + processUrl;
             }
             target.setServiceEntryPoint(processUrl);
             GWT.log("Set Login Service Entry Point as " + target.getServiceEntryPoint());
@@ -75,7 +80,8 @@ public interface GwtLoginAsync {
         }
 
         /**
-         * return {@link GwtLoginAsync GwtLoginAsync} instance with default service entry point &quot;j_spring_security_check&quot;<br/>
+         * return {@link GwtLoginAsync GwtLoginAsync} instance with default service entry point
+         * &quot;j_spring_security_check&quot;<br/>
          * 取得預設進入點為&quot;j_spring_security_check&quot;之{@link GwtLoginAsync GwtLoginAsync} 實例
          * @return the instance.
          */
