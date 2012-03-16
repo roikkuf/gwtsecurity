@@ -20,6 +20,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ApplicationListener;
+import org.springframework.security.authentication.AuthenticationDetailsSource;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.event.InteractiveAuthenticationSuccessEvent;
@@ -42,10 +43,10 @@ import com.google.gwt.user.server.rpc.SerializationPolicy;
 import com.google.gwt.user.server.rpc.SerializationPolicyProvider;
 
 /**
- * Monitor &lt;form-login&gt;  event.<br/>
- * When  &lt;form-login&gt; come from GWT RPC, return void message when success and
- * prone {@link  com.gwt.ss.client.exceptions.GwtBadCredentialsException GwtBadCredentialsException} when failed.
- * Not effect with web page form-login.<br/>
+ * Monitor &lt;form-login&gt; event.<br/>
+ * When &lt;form-login&gt; come from GWT RPC, return void message when success and prone
+ * {@link com.gwt.ss.client.exceptions.GwtBadCredentialsException GwtBadCredentialsException} when failed. Not
+ * effect with web page form-login.<br/>
  * Note: Certification extracting code provide by Amit Khanna<br/>
  * 監控&lt;form-login&gt;登錄處理<br/>
  * 若使用GWT RPC進行登錄，本類別實例負責回應GWT RPC，否則交由Spring Security本身處理<br/>
@@ -142,6 +143,7 @@ public class GwtUsernamePasswordAuthority implements ServletContextAware, Initia
         return result;
     }
 
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     @Around("execution(* org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(..))")
     public Object doFilter(ProceedingJoinPoint pjp) throws Throwable {
         HttpHolder httpHolder = HttpHolder.getInstance(pjp);
@@ -160,10 +162,12 @@ public class GwtUsernamePasswordAuthority implements ServletContextAware, Initia
                     httpHolder.getRequest().getSession().setAttribute(GwtResponseUtil.SPRING_SECURITY_LAST_USERNAME_KEY,
                             TextEscapeUtils.escapeEntities(pi.getUsername()));
                 }
-                authRequest.setDetails(filter.getAuthenticationDetailsSource().buildDetails(httpHolder.getRequest()));
+                f = c.getDeclaredField("authenticationDetailsSource");
+                f.setAccessible(true);
+                authRequest.setDetails(((AuthenticationDetailsSource) f.get(filter)).buildDetails(httpHolder.getRequest()));
                 Authentication authResult = getAuthenticationManager().authenticate(authRequest);
                 SecurityContextHolder.getContext().setAuthentication(authResult);
-                filter.getRememberMeServices().loginSuccess(pi.isRemeberMe()
+                filter.getRememberMeServices().loginSuccess(pi.isRememberMe()
                         ? new RemeberRequestWrapper(httpHolder.getRequest(), rememberMeParameter)
                         : httpHolder.getRequest(), httpHolder.getResponse(), authResult);
 
@@ -245,15 +249,14 @@ public class GwtUsernamePasswordAuthority implements ServletContextAware, Initia
         private String username;
         private String password;
         private HttpHolder httpHolder;
-        private boolean remeberMe = false;
-
+        private boolean rememberMe = false;
         private boolean forceLogout = false;
 
-        public PayloadInfo(String username, String password, HttpHolder httpHolder, boolean remeberMe, boolean forceLogout) {
+        public PayloadInfo(String username, String password, HttpHolder httpHolder, boolean rememberMe, boolean forceLogout) {
             this.username = username;
             this.password = password;
             this.httpHolder = httpHolder;
-            this.remeberMe = remeberMe;
+            this.rememberMe = rememberMe;
             this.forceLogout = forceLogout;
         }
 
@@ -269,8 +272,8 @@ public class GwtUsernamePasswordAuthority implements ServletContextAware, Initia
             return httpHolder;
         }
 
-        public boolean isRemeberMe() {
-            return remeberMe;
+        public boolean isRememberMe() {
+            return rememberMe;
         }
 
         public boolean isForceLogout() {

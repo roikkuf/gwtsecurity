@@ -1,8 +1,10 @@
 package com.gwt.ss;
 
 import java.lang.reflect.Field;
+
 import javax.servlet.FilterChain;
 import javax.servlet.ServletContext;
+
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -17,9 +19,9 @@ import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.security.web.authentication.session.SessionAuthenticationException;
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
 import org.springframework.security.web.authentication.session.SessionFixationProtectionStrategy;
-import org.springframework.security.web.session.SessionManagementFilter;
 import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.security.web.session.ConcurrentSessionFilter;
+import org.springframework.security.web.session.SessionManagementFilter;
 import org.springframework.web.context.ServletContextAware;
 
 /**
@@ -57,6 +59,7 @@ public class GwtSessionManagement implements ServletContextAware {
     private SecurityContextRepository securityContextRepository = null;
     private SessionAuthenticationStrategy sessionStrategy = new SessionFixationProtectionStrategy();
     private String invalidSessionUrl = null;
+    private Object invalidSessionStrategy = null;
 
     @Override
     public void setServletContext(ServletContext servletContext) {
@@ -84,7 +87,7 @@ public class GwtSessionManagement implements ServletContextAware {
             NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
         if (logoutHandlers == null) {
             Field f = ConcurrentSessionFilter.class.getDeclaredField("handlers");
-            f.setAccessible(false);
+            f.setAccessible(true);
             logoutHandlers = (LogoutHandler[]) f.get(target);
         }
         return logoutHandlers;
@@ -107,6 +110,16 @@ public class GwtSessionManagement implements ServletContextAware {
         return securityContextRepository;
     }
 
+    private Object getInvalidSessionStrategy(SessionManagementFilter target)
+            throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
+        if (invalidSessionStrategy == null) {
+            Field f = SessionManagementFilter.class.getDeclaredField("invalidSessionStrategy");
+            f.setAccessible(true);
+            invalidSessionStrategy = f.get(target);
+        }
+        return invalidSessionStrategy;
+    }
+    
     private String getInvalidSessionUrl(SessionManagementFilter target) throws
             NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
         if (invalidSessionUrl == null) {
@@ -150,7 +163,6 @@ public class GwtSessionManagement implements ServletContextAware {
 
             if (!getSecurityContextRepository(getSMTarget(pjp)).containsContext(holder.getRequest())) {
                 Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
                 if (authentication != null && !GwtResponseUtil.isAnonymous(authentication)) {
                     // The user has been authenticated during the current request, so call the session strategy
                     try {
@@ -172,7 +184,7 @@ public class GwtSessionManagement implements ServletContextAware {
                         if (logger.isDebugEnabled()) {
                             logger.debug("Requested session ID" + holder.getRequest().getRequestedSessionId() + " is invalid.");
                         }
-                        if (getInvalidSessionUrl(getSMTarget(pjp)) != null) {
+                        if (getInvalidSessionUrl(getSMTarget(pjp)) != null || getInvalidSessionStrategy(getSMTarget(pjp)) != null) {
                             if (logger.isDebugEnabled()) {
                                 logger.debug("Starting new session (if required) and notify front-end user");
                             }
