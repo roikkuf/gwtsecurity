@@ -1,10 +1,10 @@
 package com.gwt.ss.client.loginable;
 
-import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.ui.DialogBox;
+import com.google.web.bindery.event.shared.HandlerRegistration;
 
 /**
- *  Abstract dialogBox for {@link HasLoginHandler HasLoginHandler}. 
+ * Abstract dialogBox for {@link HasLoginHandler HasLoginHandler}.
  * @author Kent Yeh
  */
 public abstract class AbstractLoginBox extends DialogBox implements HasLoginHandler {
@@ -19,9 +19,10 @@ public abstract class AbstractLoginBox extends DialogBox implements HasLoginHand
 
     public AbstractLoginBox() {
     }
-    
+
     @Override
     public HandlerRegistration addLoginHandler(LoginHandler handler) {
         return super.addHandler(handler, LoginEvent.getType());
     }
+
 }

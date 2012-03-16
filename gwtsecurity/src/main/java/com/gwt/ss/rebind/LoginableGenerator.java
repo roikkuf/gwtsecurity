@@ -95,7 +95,7 @@ public class LoginableGenerator extends Generator {
         ClassSourceFileComposerFactory composer = new ClassSourceFileComposerFactory(this.packageName, this.className);
         composer.addImport("com.google.gwt.core.client.GWT");
         composer.addImport("com.google.gwt.core.client.Scheduler");
-        composer.addImport("com.google.gwt.event.shared.HandlerRegistration");
+        composer.addImport("com.google.web.bindery.event.shared.HandlerRegistration");
         composer.addImport("com.google.gwt.user.client.rpc.AsyncCallback");
         composer.addImport("com.gwt.ss.client.exceptions.GwtAccessDeniedException");
         composer.addImport("com.gwt.ss.client.exceptions.GwtSecurityException");
