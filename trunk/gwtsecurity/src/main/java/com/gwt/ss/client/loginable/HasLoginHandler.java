@@ -1,7 +1,7 @@
 package com.gwt.ss.client.loginable;
 
-import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.event.shared.HasHandlers;
+import com.google.web.bindery.event.shared.HandlerRegistration;
 
 /**
  * A interface interact with front user for processing login action, 
