@@ -18,5 +18,8 @@ import com.gwt.ss.client.exceptions.GwtSecurityException;
  */
 public interface GwtLogin extends RemoteService {
 
-    void j_gwt_security_check(String username, String password,boolean remeberMe) throws GwtSecurityException;
+    void j_gwt_security_check(String username, String password, boolean rememberMe) throws GwtSecurityException;
+    
+    void j_gwt_security_check(String username, String password, boolean rememberMe, boolean forceLogout) throws GwtSecurityException;
+    
 }

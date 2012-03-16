@@ -8,6 +8,8 @@ public interface GwtLoginAsync {
 
     void j_gwt_security_check(String username, String password, boolean rememberMe, AsyncCallback<Void> callback);
 
+    void j_gwt_security_check(String username, String password, boolean rememberMe, boolean forceLogout, AsyncCallback<Void> callback);
+    
     /**
      * Maintain singleton {@link GwtLoginAsync GwtLoginAsync} instance.<br/>
      * 管控{@link GwtLoginAsync GwtLoginAsync}單一實例工具

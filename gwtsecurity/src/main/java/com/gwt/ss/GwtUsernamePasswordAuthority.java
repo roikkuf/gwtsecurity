@@ -1,18 +1,14 @@
 package com.gwt.ss;
 
-import com.google.gwt.user.client.rpc.impl.AbstractSerializationStream;
-import com.google.gwt.user.server.rpc.RPC;
-import com.google.gwt.user.server.rpc.RPCRequest;
-import com.google.gwt.user.server.rpc.RPCServletUtils;
-import com.google.gwt.user.server.rpc.SerializationPolicy;
-import com.google.gwt.user.server.rpc.SerializationPolicyProvider;
 import java.io.IOException;
 import java.lang.reflect.Field;
-import javax.servlet.ServletException;
+
 import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpSession;
+
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -29,11 +25,21 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.authentication.event.InteractiveAuthenticationSuccessEvent;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.session.SessionInformation;
+import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
+import org.springframework.security.web.authentication.session.SessionAuthenticationException;
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
 import org.springframework.security.web.util.TextEscapeUtils;
 import org.springframework.util.Assert;
 import org.springframework.web.context.ServletContextAware;
+
+import com.google.gwt.user.client.rpc.impl.AbstractSerializationStream;
+import com.google.gwt.user.server.rpc.RPC;
+import com.google.gwt.user.server.rpc.RPCRequest;
+import com.google.gwt.user.server.rpc.RPCServletUtils;
+import com.google.gwt.user.server.rpc.SerializationPolicy;
+import com.google.gwt.user.server.rpc.SerializationPolicyProvider;
 
 /**
  * Monitor &lt;form-login&gt;  event.<br/>
@@ -56,6 +62,7 @@ public class GwtUsernamePasswordAuthority implements ServletContextAware, Initia
     private AuthenticationManager authenticationManager;
     private SerializationPolicyProvider serializationPolicyProvider = DefaultSerializationPolicyProvider.getInstance();
     private String rememberMeParameter = "_spring_security_remember_me";
+    private boolean suppressLoginErrorMessages = false;
 
     @Override
     public void setServletContext(ServletContext servletContext) {
@@ -88,6 +95,14 @@ public class GwtUsernamePasswordAuthority implements ServletContextAware, Initia
         this.rememberMeParameter = rememberMeParameter;
     }
 
+    public boolean isSuppressLoginErrorMessages() {
+        return suppressLoginErrorMessages;
+    }
+
+    public void setSuppressLoginErrorMessages(boolean suppressLoginErrorMessages) {
+        this.suppressLoginErrorMessages = suppressLoginErrorMessages;
+    }
+
     /**
      * Provide by Amit Khanna<br/>
      * 由Amit Khanna提供
@@ -99,6 +114,7 @@ public class GwtUsernamePasswordAuthority implements ServletContextAware, Initia
         String username = null;
         String password = null;
         boolean rememberMe = false;
+        boolean forceLogout = false;
         if (result == null && request != null) {
             String payload = RPCServletUtils.readContentAsGwtRpc(request);
             RPCRequest rpcRequest = RPC.decodeRequest(payload, null, serializationPolicyProvider);
@@ -112,8 +128,14 @@ public class GwtUsernamePasswordAuthority implements ServletContextAware, Initia
                 } catch (Exception e) {
                 }
             }
+            if (requestParams.length > 3) {
+                try {
+                    forceLogout = (Boolean) requestParams[3];
+                } catch (Exception e) {
+                }
+            }
             if (username != null && password != null) {
-                result = new PayloadInfo(username, password, httpHolder, rememberMe);
+                result = new PayloadInfo(username, password, httpHolder, rememberMe, forceLogout);
                 payloadHolder.set(result);
             }
         }
@@ -149,12 +171,25 @@ public class GwtUsernamePasswordAuthority implements ServletContextAware, Initia
                 f = c.getDeclaredField("sessionStrategy");
                 f.setAccessible(true);
                 SessionAuthenticationStrategy sessionStrategy = (SessionAuthenticationStrategy) f.get(filter);
-                sessionStrategy.onAuthentication(authResult, httpHolder.getRequest(), httpHolder.getResponse());
-
+                try {
+                    sessionStrategy.onAuthentication(authResult, httpHolder.getRequest(), httpHolder.getResponse());
+                } catch (SessionAuthenticationException e) {
+                    if (pi.isForceLogout()) {
+                        SessionRegistry registry = applicationContext.getBean(SessionRegistry.class);
+                        if (registry != null) {
+                            for (SessionInformation info : registry.getAllSessions(authResult.getPrincipal(), true)) {
+                                info.expireNow();
+                            }
+                        }
+                        sessionStrategy.onAuthentication(authResult, httpHolder.getRequest(), httpHolder.getResponse());
+                    } else {
+                        throw e;
+                    }
+                }
                 applicationContext.publishEvent(new InteractiveAuthenticationSuccessEvent(authResult, this.getClass()));
                 return null;
             } catch (Exception e) {
-                if (logger.isErrorEnabled()) {
+                if (logger.isErrorEnabled() && !isSuppressLoginErrorMessages()) {
                     logger.error("Gwt login fail:", e);
                 }
                 GwtResponseUtil.processGwtException(servletContext, httpHolder.getRequest(), httpHolder.getResponse(), e);
@@ -212,11 +247,14 @@ public class GwtUsernamePasswordAuthority implements ServletContextAware, Initia
         private HttpHolder httpHolder;
         private boolean remeberMe = false;
 
-        public PayloadInfo(String username, String password, HttpHolder httpHolder, boolean remeberMe) {
+        private boolean forceLogout = false;
+
+        public PayloadInfo(String username, String password, HttpHolder httpHolder, boolean remeberMe, boolean forceLogout) {
             this.username = username;
             this.password = password;
             this.httpHolder = httpHolder;
             this.remeberMe = remeberMe;
+            this.forceLogout = forceLogout;
         }
 
         public String getPassword() {
@@ -233,6 +271,10 @@ public class GwtUsernamePasswordAuthority implements ServletContextAware, Initia
 
         public boolean isRemeberMe() {
             return remeberMe;
+        }
+
+        public boolean isForceLogout() {
+            return forceLogout;
         }
     }
 
