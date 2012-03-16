@@ -6,7 +6,7 @@ import com.google.gwt.user.client.rpc.ServiceDefTarget;
 
 public interface GwtLoginAsync {
 
-    void j_gwt_security_check(String username, String password, boolean remeberMe, AsyncCallback<Void> callback);
+    void j_gwt_security_check(String username, String password, boolean rememberMe, AsyncCallback<Void> callback);
 
     /**
      * Maintain singleton {@link GwtLoginAsync GwtLoginAsync} instance.<br/>
