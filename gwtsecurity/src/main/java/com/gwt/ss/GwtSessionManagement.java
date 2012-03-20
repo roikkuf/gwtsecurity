@@ -111,21 +111,31 @@ public class GwtSessionManagement implements ServletContextAware {
     }
 
     private Object getInvalidSessionStrategy(SessionManagementFilter target)
-            throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
+            throws IllegalArgumentException, IllegalAccessException {
         if (invalidSessionStrategy == null) {
-            Field f = SessionManagementFilter.class.getDeclaredField("invalidSessionStrategy");
-            f.setAccessible(true);
-            invalidSessionStrategy = f.get(target);
+            try{
+                Field f = SessionManagementFilter.class.getDeclaredField("invalidSessionStrategy");
+                f.setAccessible(true);
+                invalidSessionStrategy = f.get(target);
+            }
+            catch (NoSuchFieldException e){
+                // Do nothing.  We are probably using Spring Security 3.0.5.RELEASE.
+            }
         }
         return invalidSessionStrategy;
     }
     
-    private String getInvalidSessionUrl(SessionManagementFilter target) throws
-            NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
+    private String getInvalidSessionUrl(SessionManagementFilter target) throws 
+        IllegalArgumentException, IllegalAccessException {
         if (invalidSessionUrl == null) {
-            Field f = SessionManagementFilter.class.getDeclaredField("invalidSessionUrl");
-            f.setAccessible(true);
-            invalidSessionUrl = (String) f.get(target);
+            try {
+                Field f = SessionManagementFilter.class.getDeclaredField("invalidSessionUrl");
+                f.setAccessible(true);
+                invalidSessionUrl = (String) f.get(target);
+            }
+            catch (NoSuchFieldException e){
+                // Do nothing.  We are probably using Spring Security 3.1.0.RELEASE.
+            }
         }
         return invalidSessionUrl == null ? null : invalidSessionUrl.isEmpty() ? null : invalidSessionUrl;
     }
