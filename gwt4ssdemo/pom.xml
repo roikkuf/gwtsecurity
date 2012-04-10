@@ -31,15 +31,15 @@
 		<maven.compiler.optimize>true</maven.compiler.optimize>
 
 		<!-- Gwt -->
-		<gwt.version>2.3.0</gwt.version>
+		<gwt.version>2.4.0</gwt.version>
 		<gwt.maven.plugin.version>${gwt.version}</gwt.maven.plugin.version>
 		<gwt.draftCompile>false</gwt.draftCompile>
-		<gwtsecurity.version>1.1.0</gwtsecurity.version>
+		<gwtsecurity.version>1.1.1</gwtsecurity.version>
 
 		<!-- Other -->
-		<spring.version>3.0.5.RELEASE</spring.version>
-		<spring-security.version>3.0.5.RELEASE</spring-security.version>
-		<slf4j.version>1.5.11</slf4j.version>
+		<spring.version>3.1.0.RELEASE</spring.version>
+		<spring-security.version>3.1.0.RELEASE</spring-security.version>
+		<slf4j.version>1.6.4</slf4j.version>
 		<log4j.version>1.2.16</log4j.version>
 		<servlet.version>2.5</servlet.version>
 		<jsr250.version>1.0</jsr250.version>
