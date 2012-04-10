@@ -1,22 +1,23 @@
 package com.gwt.ss.demo4.client;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.Element;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
-import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
-import com.gwt.ss.client.loginable.LoginEvent;
+import com.google.web.bindery.event.shared.HandlerRegistration;
 import com.gwt.ss.client.loginable.HasLoginHandler;
+import com.gwt.ss.client.loginable.LoginEvent;
 import com.gwt.ss.client.loginable.LoginHandler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *

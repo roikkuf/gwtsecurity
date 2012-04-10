@@ -1,5 +1,5 @@
-#Thu Sep 02 10:55:28 CEST 2010
 eclipse.preferences.version=1
 jarsExcludedFromWebInfLib=
+lastWarOutDir=/work/java/gwt4ssdemo/gssDemo3/target/gssDemo3-1.1.1-SNAPSHOT
 warSrcDir=src/main/webapp
-warSrcDirIsOutput=true
+warSrcDirIsOutput=false
