@@ -13,7 +13,7 @@
     <aop:aspectj-autoproxy proxy-target-class="true"/> 
     <beans:bean class="com.gwt.ss.GwtExceptionTranslator"/>
     <global-method-security pre-post-annotations="disabled" secured-annotations="enabled" jsr250-annotations="enabled"/>
-    <http pattern="/demo4" security="none" />
+	<http pattern="/**/demo4" security="none" />
     <http pattern="/openid/**" security="none" />
     <http auto-config="false" use-expressions="true" disable-url-rewriting="true">
         <intercept-url pattern="/gwtsl/staff/**" access="hasRole('ROLE_STAFF')" requires-channel="any"/>
