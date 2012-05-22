@@ -1,9 +1,11 @@
 package com.gwt.ss;
 
 import java.io.IOException;
+
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
@@ -20,6 +22,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.session.SessionAuthenticationException;
+
 import com.google.gwt.user.client.rpc.SerializationException;
 import com.google.gwt.user.server.rpc.RPC;
 import com.google.gwt.user.server.rpc.RPCServletUtils;
@@ -42,8 +45,11 @@ import com.gwt.ss.client.exceptions.GwtUsernameNotFoundException;
 public class GwtResponseUtil {
 
     protected static Logger logger = LoggerFactory.getLogger(GwtResponseUtil.class);
+
     private static AuthenticationTrustResolver authenticationTrustResolver = new AuthenticationTrustResolverImpl();
+
     public static final String GWT_RPC_CONTENT_TYPE = "text/x-gwt-rpc";
+
     public static final String SPRING_SECURITY_LAST_USERNAME_KEY = "SPRING_SECURITY_LAST_USERNAME";
 
     public static boolean shouldCompressResponse(String responsePayload) {
@@ -58,8 +64,7 @@ public class GwtResponseUtil {
                 boolean gzipEncode = RPCServletUtils.acceptsGzipEncoding(request)
                         && shouldCompressResponse(responsePayload);
 
-                RPCServletUtils.writeResponse(servletContext, response,
-                        responsePayload, gzipEncode);
+                RPCServletUtils.writeResponse(servletContext, response, responsePayload, gzipEncode);
                 response.flushBuffer();
             } catch (IOException ex) {
                 doUnexpectedFailure(response, ex);
@@ -111,7 +116,7 @@ public class GwtResponseUtil {
         }
     }
 
-    private static GwtSecurityException createGwtException(Exception ex) {
+    public static GwtSecurityException createGwtException(Exception ex) {
         // 例外狀態錯誤相關的帳戶 Exceptions related to account errors.
         if (ex instanceof AccountExpiredException) return new GwtAccountExpiredException(ex.getMessage(), ex);
         if (ex instanceof CredentialsExpiredException) return new GwtCredentialsExpiredException(ex.getMessage(), ex);
@@ -144,5 +149,5 @@ public class GwtResponseUtil {
         return request != null && request.getContentType() != null
                 && request.getContentType().startsWith(GWT_RPC_CONTENT_TYPE);
     }
-    
+
 }
