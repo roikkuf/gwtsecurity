@@ -18,6 +18,12 @@
 	</parent>
 
 	<dependencies>
+		<dependency>
+			<groupId>com.google.code.gwtsecurity</groupId>
+			<artifactId>gwtsecurity-core</artifactId>
+			<version>${project.version}</version>
+			<scope>compile</scope>
+		</dependency>
 		<!-- GWT Dependencies -->
 		<dependency>
 			<groupId>com.google.gwt</groupId>
@@ -36,6 +42,12 @@
 			<artifactId>gwt-dev</artifactId>
 			<version>${gwt.version}</version>
 			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.google.web.bindery</groupId>
+			<artifactId>requestfactory-server</artifactId>
+			<version>${gwt.version}</version>
+			<scope>compile</scope>
 		</dependency>
 	</dependencies>
 
