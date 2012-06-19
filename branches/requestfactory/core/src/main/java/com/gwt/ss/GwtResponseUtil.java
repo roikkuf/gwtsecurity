@@ -21,6 +21,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.web.authentication.rememberme.CookieTheftException;
 import org.springframework.security.web.authentication.session.SessionAuthenticationException;
 
 import com.google.gwt.user.client.rpc.SerializationException;
@@ -31,6 +32,7 @@ import com.gwt.ss.client.exceptions.GwtAccountExpiredException;
 import com.gwt.ss.client.exceptions.GwtAccountStatusException;
 import com.gwt.ss.client.exceptions.GwtAuthenticationException;
 import com.gwt.ss.client.exceptions.GwtBadCredentialsException;
+import com.gwt.ss.client.exceptions.GwtCookieTheftException;
 import com.gwt.ss.client.exceptions.GwtCredentialsExpiredException;
 import com.gwt.ss.client.exceptions.GwtDisabledException;
 import com.gwt.ss.client.exceptions.GwtLockedException;
@@ -124,6 +126,7 @@ public class GwtResponseUtil {
         if (ex instanceof LockedException) return new GwtLockedException(ex.getMessage(), ex);
         if (ex instanceof AccountStatusException) return new GwtAccountStatusException(ex.getMessage(), ex);
         // 例外有關認證錯誤 Exceptions related to authentication errors.
+        if (ex instanceof CookieTheftException) return new GwtCookieTheftException(ex.getMessage(), ex);
         if (ex instanceof UsernameNotFoundException) return new GwtUsernameNotFoundException(ex.getMessage(), ex);
         if (ex instanceof BadCredentialsException) return new GwtBadCredentialsException(ex.getMessage(), ex);
         if (ex instanceof SessionAuthenticationException)
