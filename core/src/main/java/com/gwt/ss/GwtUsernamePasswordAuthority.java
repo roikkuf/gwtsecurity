@@ -41,6 +41,7 @@ import com.google.gwt.user.server.rpc.RPCRequest;
 import com.google.gwt.user.server.rpc.RPCServletUtils;
 import com.google.gwt.user.server.rpc.SerializationPolicy;
 import com.google.gwt.user.server.rpc.SerializationPolicyProvider;
+import com.gwt.ss.shared.GwtConst;
 
 /**
  * Monitor &lt;form-login&gt; event.<br/>
@@ -159,7 +160,7 @@ public class GwtUsernamePasswordAuthority implements ServletContextAware, Initia
                 boolean allowSessionCreation = (Boolean) f.get(filter);
                 HttpSession session = httpHolder.getRequest().getSession(allowSessionCreation);
                 if (session != null) {
-                    httpHolder.getRequest().getSession().setAttribute(GwtResponseUtil.SPRING_SECURITY_LAST_USERNAME_KEY,
+                    httpHolder.getRequest().getSession().setAttribute(GwtConst.SPRING_SECURITY_LAST_USERNAME_KEY,
                             TextEscapeUtils.escapeEntities(pi.getUsername()));
                 }
                 f = c.getDeclaredField("authenticationDetailsSource");

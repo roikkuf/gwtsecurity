@@ -5,4 +5,5 @@
         <when-type-assignable class="com.gwt.ss.client.loginable.LoginableAsync" />
     </generate-with>
     <source path="client"/>
+    <source path="shared"/>
 </module>
