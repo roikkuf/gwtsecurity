@@ -39,6 +39,7 @@ import com.gwt.ss.client.exceptions.GwtLockedException;
 import com.gwt.ss.client.exceptions.GwtSecurityException;
 import com.gwt.ss.client.exceptions.GwtSessionAuthenticationException;
 import com.gwt.ss.client.exceptions.GwtUsernameNotFoundException;
+import com.gwt.ss.shared.GwtConst;
 
 /**
  * Utility for handle GWT RPC response.<br/>
@@ -50,22 +51,16 @@ public class GwtResponseUtil {
 
     private static AuthenticationTrustResolver authenticationTrustResolver = new AuthenticationTrustResolverImpl();
 
-    public static final String GWT_RPC_CONTENT_TYPE = "text/x-gwt-rpc";
-
-    public static final String SPRING_SECURITY_LAST_USERNAME_KEY = "SPRING_SECURITY_LAST_USERNAME";
-
     public static boolean shouldCompressResponse(String responsePayload) {
         return RPCServletUtils.exceedsUncompressedContentLengthLimit(responsePayload);
     }
 
     public static void writeResponse(ServletContext servletContext, HttpServletRequest request,
             HttpServletResponse response, String responsePayload) {
-
         if (!response.isCommitted()) {
             try {
                 boolean gzipEncode = RPCServletUtils.acceptsGzipEncoding(request)
                         && shouldCompressResponse(responsePayload);
-
                 RPCServletUtils.writeResponse(servletContext, response, responsePayload, gzipEncode);
                 response.flushBuffer();
             } catch (IOException ex) {
@@ -149,8 +144,9 @@ public class GwtResponseUtil {
      * @return is the request from GWT RPC?
      */
     public static boolean isGwt(HttpServletRequest request) {
-        return request != null && request.getContentType() != null
-                && request.getContentType().startsWith(GWT_RPC_CONTENT_TYPE);
+        return request != null
+                && (request.getContentType() != null && request.getContentType().startsWith(
+                    GwtConst.GWT_RPC_CONTENT_TYPE)) || request.getHeader(GwtConst.GWT_RF_HEADER) != null;
     }
 
 }
