@@ -1,8 +1,7 @@
 /**
  * $Id$
- * Copyright (c) 2012 MJN Services, Inc., All Rights Reserved.
  */
-package com.gwt.ss;
+package com.gwt.ss.requestfactory;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -12,8 +11,11 @@ import org.slf4j.LoggerFactory;
 
 import com.google.web.bindery.requestfactory.server.ExceptionHandler;
 import com.google.web.bindery.requestfactory.shared.ServerFailure;
+import com.gwt.ss.GwtResponseUtil;
 
 /**
+ * Converts spring exceptions to their equivalent 
+ * 
  * @version $Rev$
  * @author Steven Jardine
  */

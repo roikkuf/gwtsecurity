@@ -1,8 +1,7 @@
 /**
  * $Id$
- * Copyright (c) 2012 MJN Services, Inc., All Rights Reserved.
  */
-package com.gwt.ss;
+package com.gwt.ss.requestfactory;
 
 import com.google.web.bindery.requestfactory.server.RequestFactoryServlet;
 import com.google.web.bindery.requestfactory.server.ServiceLayerDecorator;
