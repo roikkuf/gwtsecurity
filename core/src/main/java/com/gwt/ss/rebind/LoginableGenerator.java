@@ -1,5 +1,7 @@
 package com.gwt.ss.rebind;
 
+import java.io.PrintWriter;
+
 import com.google.gwt.core.ext.Generator;
 import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.TreeLogger;
@@ -14,23 +16,28 @@ import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
 import com.google.gwt.user.rebind.SourceWriter;
 import com.gwt.ss.client.loginable.LoginableAsync;
 import com.gwt.ss.client.loginable.LoginableService;
-import java.io.PrintWriter;
 
 /**
  * Proxy generator for {@link com.gwt.ss.client.loginable.LoginableAsync LoginableAsync}
  * 
- * Thanks to Steven Jardine steven.j...@gmail.com http://code.google.com/u/@UhVVQ1JZAxVEXgF4/
- * for providing debuging and patch.
+ * Thanks to Steven Jardine steven.j...@gmail.com http://code.google.com/u/@UhVVQ1JZAxVEXgF4/ for providing
+ * debuging and patch.
  * @author Kent Yeh
  */
 public class LoginableGenerator extends Generator {
 
     private GeneratorContext context;
+
     private String typeName;
+
     private String serviceName;
+
     private String packageName;
+
     private String className;
+
     private JClassType sourceType;
+
     private JClassType serviceType;
 
     private String format(String s, Object... args) {
@@ -39,7 +46,8 @@ public class LoginableGenerator extends Generator {
 
     private void validate(TreeLogger logger, String typeName) throws UnableToCompleteException {
         if (!typeName.endsWith("Async")) {
-            logger.log(TreeLogger.ERROR, format("Asynchronous service's name must ends with \"Async\",Obviously \"%s\" doesn't", typeName));
+            logger.log(TreeLogger.ERROR,
+                format("Asynchronous service's name must ends with \"Async\",Obviously \"%s\" doesn't", typeName));
             throw new UnableToCompleteException();
         }
         TypeOracle typeOracle = this.context.getTypeOracle();
@@ -47,7 +55,8 @@ public class LoginableGenerator extends Generator {
         try {
             this.sourceType = typeOracle.getType(typeName);
             if (this.sourceType.isInterface() == null) {
-                logger.log(TreeLogger.ERROR, format("%s is not an interface.", sourceType.getParameterizedQualifiedSourceName()), null);
+                logger.log(TreeLogger.ERROR,
+                    format("%s is not an interface.", sourceType.getParameterizedQualifiedSourceName()), null);
                 throw new UnableToCompleteException();
             }
             JClassType loginableAsyncType = typeOracle.getType(LoginableAsync.class.getName());
@@ -67,10 +76,11 @@ public class LoginableGenerator extends Generator {
             throw new UnableToCompleteException();
         }
         if (this.serviceType.isInterface() == null) {
-            logger.log(TreeLogger.ERROR, format("%s is not an interface.", serviceType.getParameterizedQualifiedSourceName()), null);
+            logger.log(TreeLogger.ERROR,
+                format("%s is not an interface.", serviceType.getParameterizedQualifiedSourceName()), null);
             throw new UnableToCompleteException();
         }
-        //Find Remote Service
+        // Find Remote Service
         JClassType remoteServiceType = typeOracle.findType(RemoteService.class.getName());
         if (!serviceType.getFlattenedSupertypeHierarchy().contains(remoteServiceType)) {
             logger.log(TreeLogger.ERROR, format("Type: %s not extends RemoteService", serviceName));
@@ -79,7 +89,8 @@ public class LoginableGenerator extends Generator {
     }
 
     @Override
-    public String generate(TreeLogger logger, GeneratorContext context, String typeName) throws UnableToCompleteException {
+    public String generate(TreeLogger logger, GeneratorContext context, String typeName)
+            throws UnableToCompleteException {
         this.context = context;
         validate(logger, typeName);
         this.className = format("%s_Proxy", this.sourceType.getSimpleSourceName());
@@ -89,9 +100,7 @@ public class LoginableGenerator extends Generator {
 
     private void generateClass(TreeLogger logger) {
         PrintWriter printWriter = context.tryCreate(logger, this.packageName, this.className);
-        if (printWriter == null) {
-            return;
-        }
+        if (printWriter == null) { return; }
         ClassSourceFileComposerFactory composer = new ClassSourceFileComposerFactory(this.packageName, this.className);
         composer.addImport("com.google.gwt.core.client.GWT");
         composer.addImport("com.google.gwt.core.client.Scheduler");
@@ -104,6 +113,7 @@ public class LoginableGenerator extends Generator {
         composer.addImport("com.gwt.ss.client.loginable.LoginHandler");
         composer.addImport("com.gwt.ss.client.loginable.LoginableService");
         composer.addImport("com.gwt.ss.client.loginable.LoginCancelException");
+        composer.addImport("com.gwt.ss.client.loginable.AbstractLoginHandler");
         composer.addImplementedInterface(this.typeName);
         composer.addImplementedInterface(format("%s<%s>", LoginableService.class.getName(), this.typeName));
         SourceWriter writer = composer.createSourceWriter(context, printWriter);
@@ -160,7 +170,9 @@ public class LoginableGenerator extends Generator {
 
     private void generateMethod(SourceWriter writer, JMethod method) {
         String returnType = method.getReturnType().getParameterizedQualifiedSourceName();
-        if (returnType.equals("void")) { returnType="Void"; }
+        if (returnType.equals("void")) {
+            returnType = "Void";
+        }
         writer.println("@Override");
         writer.print("public void %s(", method.getName());
         for (JParameter param : method.getParameters()) {
@@ -170,7 +182,7 @@ public class LoginableGenerator extends Generator {
         writer.indent();
         writer.print("getRemoteService().%s(", method.getName());
         for (JParameter param : method.getParameters()) {
-            writer.print("%s, ",param.getName());
+            writer.print("%s, ", param.getName());
         }
         writer.println("new AsyncCallback<%s>() {", returnType);
         writer.println();
@@ -183,54 +195,31 @@ public class LoginableGenerator extends Generator {
         writer.println("@Override");
         writer.println("public void onFailure(Throwable caught) {");
         writer.indent();
-        writer.println("if(caught instanceof GwtAccessDeniedException || !(caught instanceof GwtSecurityException) || getHasLoginHandler()==null){");
+        writer
+            .println("if(caught instanceof GwtAccessDeniedException || !(caught instanceof GwtSecurityException) || getHasLoginHandler()==null){");
         writer.indentln("callback.onFailure(caught);");
         writer.println("} else {");
         writer.indent();
-        writer.println("LoginHandler lh = new LoginHandler() {");
+        writer.println("LoginHandler lh = new AbstractLoginHandler() {");
         writer.indent();
         writer.println();
-        writer.println("private HandlerRegistration hr;");
-        writer.println();
         writer.println("@Override");
-        writer.println("public void setLoginHandlerRegistration(HandlerRegistration hr) {");
-        writer.indentln("this.hr = hr;");
+        writer.println("public void onCancelled() {");
+        writer.indentln("callback.onFailure(new LoginCancelException(CANCELLED_MSG));");
         writer.println("}");
         writer.println();
         writer.println("@Override");
-        writer.println("public void onLogin(LoginEvent e) {");
-        writer.indent();
-        writer.println("if (hr != null) {");
-        writer.indentln("hr.removeHandler();");
-        writer.println("}");
-        writer.println("GWT.log(\"Receive login \"+(e.isCanceled()?\"cancel\":\"succeed\")+\" event!\");");
-        writer.println("if(e.isCanceled()){");
-        writer.indentln("callback.onFailure(new LoginCancelException(\"user cancel login process.\"));");
-        writer.println("} else {");
-        writer.indent();
-        writer.println("Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {");
-        writer.println();
-        writer.indent();
-        writer.println("@Override");
-        writer.println("public void execute() {");
+        writer.println("public void resendPayload() {");
         writer.indent();
         writer.print("%s(", method.getName());
         for (JParameter param : method.getParameters()) {
-            writer.print("%s, ",param.getName());
+            writer.print("%s, ", param.getName());
         }
         writer.println("callback);");
         writer.outdent();
         writer.println("}");
         writer.outdent();
-        writer.println("});");
-        writer.outdent();
-        writer.println("}");
-        writer.outdent();
-        writer.println("}");
-        writer.outdent();
         writer.println("};");
-        writer.println("lh.setLoginHandlerRegistration(getHasLoginHandler().addLoginHandler(lh));");
-        writer.println("getHasLoginHandler().startLogin(caught);");
         writer.outdent();
         writer.println("}");
         writer.outdent();
