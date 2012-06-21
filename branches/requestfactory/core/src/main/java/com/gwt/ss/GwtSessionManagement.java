@@ -1,11 +1,9 @@
 package com.gwt.ss;
 
-import java.io.IOException;
 import java.lang.reflect.Field;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;

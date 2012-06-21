@@ -23,10 +23,11 @@ public interface HasLoginHandler extends HasHandlers {
      * @param caught <table style="padding-left:70px"><tr><td>then reason why should start login.</td></td>
      *<tr><td>啟動登錄作業的異常例外/td></td></table>
      */
-    public void startLogin(Throwable caught);
+    void startLogin(Throwable caught);
+
     /**
      * Accept {@link LoginHandler} to handle {@link LoginEvent}<br/>
      * 接受 {@link LoginHandler} 以處理 {@link LoginEvent}
      */
-    public HandlerRegistration addLoginHandler(LoginHandler handler);
+    HandlerRegistration addLoginHandler(LoginHandler handler);
 }

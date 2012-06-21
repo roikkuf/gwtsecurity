@@ -41,7 +41,7 @@ public class LoginableGenerator extends Generator {
     private JClassType serviceType;
 
     private String format(String s, Object... args) {
-        return String.format(s, args).toString();
+        return String.format(s, args);
     }
 
     private void validate(TreeLogger logger, String typeName) throws UnableToCompleteException {

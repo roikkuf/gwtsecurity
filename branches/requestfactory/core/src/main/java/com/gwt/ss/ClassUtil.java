@@ -4,7 +4,6 @@
 package com.gwt.ss;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -59,7 +58,6 @@ public final class ClassUtil {
      * @param packageName the package to find.
      * @return an array of classes in the package.
      * @throws ClassNotFoundException an error occurred.
-     * @throws IOException an io error occurred.
      */
     public static Class<?>[] getClasses(String packageName) {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
