@@ -9,7 +9,7 @@ public interface GwtLogoutAsync {
      * Maintain singleton {@link GwtLogoutAsync GwtLogoutAsync} instance.<br/>
      * 管控{@link GwtLogoutAsync GwtLogoutAsync}單一實例工具
      */
-    public static final class Util {
+     static final class Util {
 
         private static final AsyncUtil<GwtLogoutAsync> util = new AsyncUtil<GwtLogoutAsync>("j_spring_security_logout") {
             @Override

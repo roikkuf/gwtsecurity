@@ -9,7 +9,7 @@ public interface GwtLoginAsync {
      * Maintain singleton {@link GwtLoginAsync GwtLoginAsync} instance.<br/>
      * 管控{@link GwtLoginAsync GwtLoginAsync}單一實例工具
      */
-    public static final class Util {
+     static final class Util {
 
         private static final AsyncUtil<GwtLoginAsync> util = new AsyncUtil<GwtLoginAsync>("j_spring_security_check") {
             @Override
