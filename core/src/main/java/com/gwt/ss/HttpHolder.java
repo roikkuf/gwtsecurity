@@ -2,12 +2,14 @@ package com.gwt.ss;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.aspectj.lang.JoinPoint;
 
 public class HttpHolder {
 
-    HttpServletRequest request;
-    HttpServletResponse response;
+    private HttpServletRequest request;
+
+    private HttpServletResponse response;
 
     public HttpServletRequest getRequest() {
         return request;
