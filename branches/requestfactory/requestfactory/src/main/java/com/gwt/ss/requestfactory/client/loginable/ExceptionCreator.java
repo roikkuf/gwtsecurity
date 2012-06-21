@@ -20,6 +20,6 @@ public interface ExceptionCreator {
      * @param msg the message.
      * @return the created exception.
      */
-    public <T extends GwtSecurityException> T create(String clazz, String msg);
+    <T extends GwtSecurityException> T create(String clazz, String msg);
 
 }

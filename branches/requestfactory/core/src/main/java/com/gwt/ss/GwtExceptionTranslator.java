@@ -1,6 +1,7 @@
 package com.gwt.ss;
 
 import javax.servlet.ServletContext;
+
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -27,20 +28,17 @@ import org.springframework.web.context.ServletContextAware;
 @Aspect
 public class GwtExceptionTranslator implements ServletContextAware, ApplicationListener<AuthorizationFailureEvent> {
 
-    protected static Logger logger = LoggerFactory.getLogger(GwtExceptionTranslator.class);
     private static ThreadLocal<HttpHolder> httpHolder = new InheritableThreadLocal<HttpHolder>();
-    private ServletContext servletContext;
 
-    @Override
-    public void setServletContext(ServletContext servletContext) {
-        this.servletContext = servletContext;
-    }
+    protected static final Logger LOG = LoggerFactory.getLogger(GwtExceptionTranslator.class);
+
+    private ServletContext servletContext;
 
     @Around("execution(* org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(..))")
     public Object doFilter(ProceedingJoinPoint pjp) throws Throwable {
         HttpHolder holder = HttpHolder.getInstance(pjp);
-        if (logger.isDebugEnabled()) {
-            logger.debug("Capture of " + (holder.isGwt() ? "Gwt" : "Non Gwt") + " ExceptionTranslationFilter.doFilter!"
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Capture of " + (holder.isGwt() ? "Gwt" : "Non Gwt") + " ExceptionTranslationFilter.doFilter!"
                     + " with " + holder.getRequest().getRequestURI());
         }
         if (holder.isGwt()) {
@@ -55,16 +53,24 @@ public class GwtExceptionTranslator implements ServletContextAware, ApplicationL
         }
     }
 
+    /** {@inheritDoc} */
     @Override
     public void onApplicationEvent(AuthorizationFailureEvent event) {
-        if (logger.isErrorEnabled()) {
-            logger.error("Receive AuthorizationFailureEvent:" + event.getAccessDeniedException().getMessage(),
-                    event.getAccessDeniedException());
+        if (LOG.isErrorEnabled()) {
+            LOG.error("Receive AuthorizationFailureEvent:" + event.getAccessDeniedException().getMessage(),
+                event.getAccessDeniedException());
         }
         HttpHolder holder = httpHolder.get();
         if (holder != null && holder.isGwt()) {
             GwtResponseUtil.processGwtException(servletContext, holder.getRequest(), holder.getResponse(),
-                    event.getAccessDeniedException());
+                event.getAccessDeniedException());
         }
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public void setServletContext(ServletContext servletContext) {
+        this.servletContext = servletContext;
+    }
+
 }

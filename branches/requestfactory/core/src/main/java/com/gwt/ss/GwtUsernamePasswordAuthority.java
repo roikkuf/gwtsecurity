@@ -54,16 +54,23 @@ import com.gwt.ss.shared.GwtConst;
  * 註:取出帳號資料之程式由Amit Khanna提供
  */
 @Aspect
-public class GwtUsernamePasswordAuthority implements ServletContextAware, InitializingBean,
-        ApplicationContextAware, ApplicationListener<InteractiveAuthenticationSuccessEvent> {
+public class GwtUsernamePasswordAuthority implements ServletContextAware, InitializingBean, ApplicationContextAware,
+        ApplicationListener<InteractiveAuthenticationSuccessEvent> {
 
-    protected static Logger logger = LoggerFactory.getLogger(GwtUsernamePasswordAuthority.class);
+    protected static final Logger LOG = LoggerFactory.getLogger(GwtUsernamePasswordAuthority.class);
+
     private ServletContext servletContext;
+
     private static ThreadLocal<PayloadInfo> payloadHolder = new InheritableThreadLocal<PayloadInfo>();
+
     private ApplicationContext applicationContext;
+
     private AuthenticationManager authenticationManager;
+
     private SerializationPolicyProvider serializationPolicyProvider = DefaultSerializationPolicyProvider.getInstance();
+
     private String rememberMeParameter = "_spring_security_remember_me";
+
     private boolean suppressLoginErrorMessages = false;
 
     @Override
@@ -72,7 +79,7 @@ public class GwtUsernamePasswordAuthority implements ServletContextAware, Initia
     }
 
     @Override
-    public void afterPropertiesSet() throws Exception {
+    public void afterPropertiesSet() {
         Assert.notNull(authenticationManager, "authenticationManager must be specified");
     }
 
@@ -153,26 +160,32 @@ public class GwtUsernamePasswordAuthority implements ServletContextAware, Initia
             PayloadInfo pi = null;
             try {
                 pi = extract(pjp);
-                UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(pi.getUsername(), pi.getPassword());
+                UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(
+                    pi.getUsername(), pi.getPassword());
                 Class<AbstractAuthenticationProcessingFilter> c = AbstractAuthenticationProcessingFilter.class;
                 Field f = c.getDeclaredField("allowSessionCreation");
                 f.setAccessible(true);
                 boolean allowSessionCreation = (Boolean) f.get(filter);
                 HttpSession session = httpHolder.getRequest().getSession(allowSessionCreation);
                 if (session != null) {
-                    httpHolder.getRequest().getSession().setAttribute(GwtConst.SPRING_SECURITY_LAST_USERNAME_KEY,
+                    httpHolder
+                        .getRequest()
+                        .getSession()
+                        .setAttribute(GwtConst.SPRING_SECURITY_LAST_USERNAME_KEY,
                             TextEscapeUtils.escapeEntities(pi.getUsername()));
                 }
                 f = c.getDeclaredField("authenticationDetailsSource");
                 f.setAccessible(true);
-                authRequest.setDetails(((AuthenticationDetailsSource) f.get(filter)).buildDetails(httpHolder.getRequest()));
+                authRequest.setDetails(((AuthenticationDetailsSource) f.get(filter)).buildDetails(httpHolder
+                    .getRequest()));
                 Authentication authResult = getAuthenticationManager().authenticate(authRequest);
                 SecurityContextHolder.getContext().setAuthentication(authResult);
-                filter.getRememberMeServices().loginSuccess(pi.isRememberMe()
-                        ? new RemeberRequestWrapper(httpHolder.getRequest(), rememberMeParameter)
-                        : httpHolder.getRequest(), httpHolder.getResponse(), authResult);
+                filter.getRememberMeServices().loginSuccess(
+                    pi.isRememberMe() ? new RemeberRequestWrapper(httpHolder.getRequest(), rememberMeParameter)
+                            : httpHolder.getRequest(), httpHolder.getResponse(), authResult);
 
-                //Patch provided by Steven Jardine steven.j...@gmail.com http://code.google.com/u/@UhVVQ1JZAxVEXgF4/
+                // Patch provided by Steven Jardine steven.j...@gmail.com
+                // http://code.google.com/u/@UhVVQ1JZAxVEXgF4/
                 f = c.getDeclaredField("sessionStrategy");
                 f.setAccessible(true);
                 SessionAuthenticationStrategy sessionStrategy = (SessionAuthenticationStrategy) f.get(filter);
@@ -194,10 +207,11 @@ public class GwtUsernamePasswordAuthority implements ServletContextAware, Initia
                 applicationContext.publishEvent(new InteractiveAuthenticationSuccessEvent(authResult, this.getClass()));
                 return null;
             } catch (Exception e) {
-                if (logger.isErrorEnabled() && !isSuppressLoginErrorMessages()) {
-                    logger.error("Gwt login fail:", e);
+                if (LOG.isErrorEnabled() && !isSuppressLoginErrorMessages()) {
+                    LOG.error("Gwt login fail:", e);
                 }
-                GwtResponseUtil.processGwtException(servletContext, httpHolder.getRequest(), httpHolder.getResponse(), e);
+                GwtResponseUtil.processGwtException(servletContext, httpHolder.getRequest(), httpHolder.getResponse(),
+                    e);
                 return null;
             } finally {
                 payloadHolder.remove();
@@ -209,9 +223,9 @@ public class GwtUsernamePasswordAuthority implements ServletContextAware, Initia
 
     protected boolean requiresAuthentication(AbstractAuthenticationProcessingFilter filter, HttpServletRequest request) {
         String uri = request.getRequestURI();
-        if (logger.isDebugEnabled()) {
-            logger.debug("RequiresAuthentication check for \n"
-                    + "url = " + uri + "\ncontext path = " + request.getContextPath() + "\nprocessUrl = " + filter.getFilterProcessesUrl());
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("RequiresAuthentication check for \n" + "url = " + uri + "\ncontext path = "
+                    + request.getContextPath() + "\nprocessUrl = " + filter.getFilterProcessesUrl());
         }
         if (uri == null || uri.isEmpty()) {
             return false;
@@ -223,9 +237,7 @@ public class GwtUsernamePasswordAuthority implements ServletContextAware, Initia
                 uri = uri.substring(0, pathParamIndex);
             }
 
-            if ("".equals(request.getContextPath())) {
-                return uri.endsWith(filter.getFilterProcessesUrl());
-            }
+            if ("".equals(request.getContextPath())) { return uri.endsWith(filter.getFilterProcessesUrl()); }
             return uri.endsWith(request.getContextPath() + filter.getFilterProcessesUrl());
         }
     }
@@ -236,24 +248,29 @@ public class GwtUsernamePasswordAuthority implements ServletContextAware, Initia
         if (pi != null && pi.getHttpHolder().isGwt()) {
             HttpServletRequest request = pi.getHttpHolder().getRequest();
             Authentication authResult = event.getAuthentication();
-            if (logger.isDebugEnabled()) {
-                logger.debug("Gwt authentication success. Updating SecurityContextHolder to contain: " + authResult);
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Gwt authentication success. Updating SecurityContextHolder to contain: " + authResult);
             }
-            GwtResponseUtil.writeResponse(servletContext, request, pi.getHttpHolder().getResponse(),
-                    String.format("//OK[[],%s,%s]", AbstractSerializationStream.DEFAULT_FLAGS,
-                    AbstractSerializationStream.SERIALIZATION_STREAM_VERSION));
+            GwtResponseUtil.writeResponse(servletContext, request, pi.getHttpHolder().getResponse(), String.format(
+                "//OK[[],%s,%s]", AbstractSerializationStream.DEFAULT_FLAGS,
+                AbstractSerializationStream.SERIALIZATION_STREAM_VERSION));
         }
     }
 
-    private class PayloadInfo {
+    private static class PayloadInfo {
 
         private String username;
+
         private String password;
+
         private HttpHolder httpHolder;
+
         private boolean rememberMe = false;
+
         private boolean forceLogout = false;
 
-        public PayloadInfo(String username, String password, HttpHolder httpHolder, boolean rememberMe, boolean forceLogout) {
+        public PayloadInfo(String username, String password, HttpHolder httpHolder, boolean rememberMe,
+                boolean forceLogout) {
             this.username = username;
             this.password = password;
             this.httpHolder = httpHolder;
@@ -280,6 +297,7 @@ public class GwtUsernamePasswordAuthority implements ServletContextAware, Initia
         public boolean isForceLogout() {
             return forceLogout;
         }
+
     }
 
     /**
@@ -316,4 +334,5 @@ public class GwtUsernamePasswordAuthority implements ServletContextAware, Initia
             return name.equals(rememberMeParameter) ? "true" : super.getParameter(name);
         }
     }
+
 }
