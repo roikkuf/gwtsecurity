@@ -9,9 +9,6 @@ import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.Response;
-import com.google.gwt.json.client.JSONArray;
-import com.google.gwt.json.client.JSONParser;
-import com.google.gwt.json.client.JSONValue;
 import com.google.web.bindery.requestfactory.gwt.client.DefaultRequestTransport;
 import com.google.web.bindery.requestfactory.shared.ServerFailure;
 import com.gwt.ss.client.exceptions.GwtSecurityException;
@@ -42,12 +39,14 @@ public class LoginableRequestTransport extends DefaultRequestTransport {
     private static GwtSecurityException parseRpcSecurityException(String payload) {
         String type = null;
         String msg = null;
-        if (payload != null && payload.startsWith(EXCEPTION_PREFIX) && payload.indexOf(EXCEPTION_PKG) != -1) {
+        if (payload != null && payload.indexOf(EXCEPTION_PREFIX) != -1 && payload.indexOf(EXCEPTION_PKG) != -1) {
             try {
-                JSONValue respValue = JSONParser.parseStrict(payload.substring(4));
-                JSONArray respArr = respValue.isArray().get(2).isArray();
-                type = respArr.get(0).isString().stringValue();
-                msg = respArr.get(1).isString().stringValue();
+                String value = payload.substring(payload.indexOf("[\"" + EXCEPTION_PKG));
+                value = value.substring(2);
+                int index= value.indexOf("\",\"");
+                type = value.substring(0, index);
+                value = value.substring(index + 3);
+                msg = value.substring(0, value.indexOf("\"]"));
             } catch (IllegalArgumentException e) {
                 GWT.log(e.getMessage(), e);
                 return null;
