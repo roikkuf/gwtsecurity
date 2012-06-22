@@ -2,7 +2,6 @@ package com.gwt.ss;
 
 import java.io.IOException;
 import java.lang.reflect.Constructor;
-import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -32,7 +31,7 @@ public final class GwtResponseUtil {
 
     private static final Logger LOG = LoggerFactory.getLogger(GwtResponseUtil.class);
 
-    private static List<Class<?>> securityClasses = null;
+    private static Class<?>[] securityClasses = null;
 
     public static GwtSecurityException createGwtException(Exception ex) {
         if (ex == null) { return null; }
@@ -78,7 +77,7 @@ public final class GwtResponseUtil {
     /**
      * @return the available security exception classes in the com.gwt.ss.client.exceptions package.
      */
-    private synchronized static List<Class<?>> getSecurityClasses() {
+    private synchronized static Class<?>[] getSecurityClasses() {
         if (securityClasses == null) {
             try {
                 securityClasses = ClassUtil.getClasses("com.gwt.ss.client.exceptions");
