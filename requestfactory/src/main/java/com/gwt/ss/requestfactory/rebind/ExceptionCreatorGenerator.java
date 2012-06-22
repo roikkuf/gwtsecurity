@@ -9,6 +9,7 @@ import java.lang.reflect.Modifier;
 import com.google.gwt.core.ext.Generator;
 import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.TreeLogger;
+import com.google.gwt.core.ext.TreeLogger.Type;
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
 import com.google.gwt.user.rebind.SourceWriter;
@@ -37,7 +38,7 @@ public class ExceptionCreatorGenerator extends Generator {
             SourceWriter writer = composer.createSourceWriter(context, printWriter);
             writer.println("ExceptionCreatorImpl( ) {");
             writer.println("}");
-            printFactoryMethod(writer);
+            printFactoryMethod(logger, writer);
             writer.commit(logger);
         }
         return composer.getCreatedClassName();
@@ -49,21 +50,26 @@ public class ExceptionCreatorGenerator extends Generator {
      * @param writer the writer to write to.
      * @throws UnableToCompleteException unable to complete generation.
      */
-    private void printFactoryMethod(SourceWriter writer) {
+    private void printFactoryMethod(TreeLogger logger, SourceWriter writer) throws UnableToCompleteException {
         writer.println();
         writer.println("public <T extends GwtSecurityException> T create( String type, String msg ) {");
         writer.indent();
         writer.println("if (type != null) {");
         writer.indent();
-        for (Class<?> clazz : ClassUtil.getClasses("com.gwt.ss.client.exceptions")) {
-            if (Modifier.isAbstract(clazz.getModifiers()) || Modifier.isInterface(clazz.getModifiers())) {
-                continue;
+        try {
+            for (Class<?> clazz : ClassUtil.getClasses("com.gwt.ss.client.exceptions")) {
+                if (Modifier.isAbstract(clazz.getModifiers()) || Modifier.isInterface(clazz.getModifiers())) {
+                    continue;
+                }
+                writer.indent();
+                writer.println("if (type.startsWith(\"" + clazz.getName() + "\")) {");
+                writer.indentln("return (T) new " + clazz.getName() + "(msg);");
+                writer.println("}");
+                writer.outdent();
             }
-            writer.indent();
-            writer.println("if (type.startsWith(\"" + clazz.getName() + "\")) {");
-            writer.indentln("return (T) new " + clazz.getName() + "(msg);");
-            writer.println("}");
-            writer.outdent();
+        } catch (Exception e) {
+            logger.log(Type.ERROR, e.getMessage(), e);
+            throw new UnableToCompleteException();
         }
         writer.outdent();
         writer.println("}");

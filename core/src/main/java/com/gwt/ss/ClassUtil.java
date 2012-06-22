@@ -4,7 +4,9 @@
 package com.gwt.ss;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -20,59 +22,67 @@ public final class ClassUtil {
     private static final String SUFFIX = ".class";
 
     /**
-     * Find the classes in a directory.
+     * Recursive method used to find all classes in a given directory and subdirs.
      * 
-     * @param directory the directory to search.
-     * @param packageName the package name.
-     * @return a list of classes in the package
-     * @throws ClassNotFoundException an error occurred.
+     * @param directory The base directory
+     * @param packageName The package name for classes found inside the base directory
+     * @return The classes
+     * @throws ClassNotFoundException
      */
-    public static List<Class<?>> findClasses(File directory, String packageName) {
+    public static List<Class<?>> findClasses(File directory, String packageName) throws ClassNotFoundException {
         List<Class<?>> classes = new ArrayList<Class<?>>();
-        if (!directory.isDirectory()) { return classes; }
-        for (File file : directory.listFiles()) {
-            String filename = file.getName();
+        if (!directory.exists()) { return classes; }
+        File[] files = directory.listFiles();
+        for (File file : files) {
+            String fileName = file.getName();
             if (file.isDirectory()) {
-                assert !filename.contains(".");
-                classes.addAll(findClasses(file, packageName + "." + filename));
-            } else if (filename.endsWith(SUFFIX)) {
-                filename = filename.substring(0, filename.length() - SUFFIX.length());
+                assert !fileName.contains(".");
+                classes.addAll(findClasses(file, packageName + "." + fileName));
+            } else if (fileName.endsWith(SUFFIX) && !fileName.contains("$")) {
+                Class<?> _class;
                 try {
-                    classes.add(Class.forName(packageName + '.' + filename));
-                } catch (Exception e) {
-                    e.printStackTrace();
+                    _class = Class.forName(packageName + '.'
+                            + fileName.substring(0, fileName.length() - SUFFIX.length()));
+                } catch (ExceptionInInitializerError e) {
+                    // happen, for example, in classes, which depend on
+                    // Spring to inject some beans, and which fail,
+                    // if dependency is not fulfilled
+                    _class = Class.forName(
+                        packageName + '.' + fileName.substring(0, fileName.length() - SUFFIX.length()), false, Thread
+                            .currentThread().getContextClassLoader());
                 }
+                classes.add(_class);
             }
         }
         return classes;
     }
 
     /**
-     * Get the classes in a package.
+     * Scans all classes accessible from the context class loader which belong to the given package and
+     * subpackages.
      * 
-     * @param packageName the package to find.
-     * @return an array of classes in the package.
-     * @throws ClassNotFoundException an error occurred.
+     * @param packageName The base package
+     * @return The classes
+     * @throws ClassNotFoundException
+     * @throws IOException
      */
-    public static Class<?>[] getClasses(String packageName) {
+    public static List<Class<?>> getClasses(String packageName) throws ClassNotFoundException, IOException {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         assert classLoader != null;
         String path = packageName.replace('.', '/');
+        Enumeration<URL> resources = classLoader.getResources(path);
         List<File> dirs = new ArrayList<File>();
-        try {
-            Enumeration<URL> resources = classLoader.getResources(path);
-            while (resources.hasMoreElements()) {
-                URL resource = resources.nextElement();
-                dirs.add(new File(resource.getFile()));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        while (resources.hasMoreElements()) {
+            URL resource = resources.nextElement();
+            String fileName = resource.getFile();
+            String fileNameDecoded = URLDecoder.decode(fileName, "UTF-8");
+            dirs.add(new File(fileNameDecoded));
         }
-        ArrayList<Class<?>> classes = new ArrayList<Class<?>>();
+        List<Class<?>> classes = new ArrayList<Class<?>>();
         for (File directory : dirs) {
             classes.addAll(findClasses(directory, packageName));
         }
-        return classes.toArray(new Class[classes.size()]);
+        return classes;
     }
 
     /**
