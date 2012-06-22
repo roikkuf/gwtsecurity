@@ -9,9 +9,6 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  * Utility class to find classes in a package.
  * 
@@ -19,8 +16,6 @@ import org.slf4j.LoggerFactory;
  * @author Steven Jardine
  */
 public final class ClassUtil {
-
-    private static final Logger LOG = LoggerFactory.getLogger(ClassUtil.class);
 
     private static final String SUFFIX = ".class";
 
@@ -45,7 +40,7 @@ public final class ClassUtil {
                 try {
                     classes.add(Class.forName(packageName + '.' + filename));
                 } catch (Exception e) {
-                    LOG.debug(e.getMessage(), e);
+                    e.printStackTrace();
                 }
             }
         }
@@ -71,7 +66,7 @@ public final class ClassUtil {
                 dirs.add(new File(resource.getFile()));
             }
         } catch (Exception e) {
-            LOG.debug(e.getMessage(), e);
+            e.printStackTrace();
         }
         ArrayList<Class<?>> classes = new ArrayList<Class<?>>();
         for (File directory : dirs) {

@@ -31,13 +31,13 @@ public final class GwtResponseUtil {
 
     private static final Logger LOG = LoggerFactory.getLogger(GwtResponseUtil.class);
 
-    private static Class<?>[] securityClasses = ClassUtil.getClasses("com.gwt.ss.client.exceptions");
+    private static Class<?>[] securityClasses = null;
 
     public static GwtSecurityException createGwtException(Exception ex) {
         if (ex == null) { return null; }
         String className = ex.getClass().getSimpleName();
         try {
-            for (Class<?> rawClass : securityClasses) {
+            for (Class<?> rawClass : getSecurityClasses()) {
                 Class<? extends GwtSecurityException> securityClass = rawClass.asSubclass(GwtSecurityException.class);
                 String gwtClassName = securityClass.getSimpleName();
                 if (gwtClassName.equals("Gwt" + className)) {
@@ -72,6 +72,16 @@ public final class GwtResponseUtil {
                 }
             }
         }
+    }
+
+    /**
+     * @return the available security exception classes in the com.gwt.ss.client.exceptions package.
+     */
+    private synchronized static Class<?>[] getSecurityClasses() {
+        if (securityClasses == null) {
+            securityClasses = ClassUtil.getClasses("com.gwt.ss.client.exceptions");
+        }
+        return securityClasses;
     }
 
     public static boolean isAnonymous(Authentication authentication) {
