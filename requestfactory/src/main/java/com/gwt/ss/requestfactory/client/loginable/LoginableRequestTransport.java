@@ -9,8 +9,10 @@ import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.Response;
+import com.google.gwt.user.client.rpc.SerializationStreamFactory;
 import com.google.web.bindery.requestfactory.gwt.client.DefaultRequestTransport;
 import com.google.web.bindery.requestfactory.shared.ServerFailure;
+import com.gwt.ss.client.GwtLogin;
 import com.gwt.ss.client.exceptions.GwtSecurityException;
 import com.gwt.ss.client.loginable.AbstractLoginHandler;
 import com.gwt.ss.client.loginable.HasLoginHandler;
@@ -26,33 +28,28 @@ import com.gwt.ss.shared.GwtConst;
  */
 public class LoginableRequestTransport extends DefaultRequestTransport {
 
-    private static final String EXCEPTION_PKG = "com.gwt.ss.client.exceptions";
-
     private static final String EXCEPTION_PREFIX = "//EX[";
 
+    private static SerializationStreamFactory streamFactory = null;
+
     /**
-     * Parse the rpc exception.
+     * Deserialize the rpc exception.
      * 
-     * @param text the rpc exception to parse.
-     * @return an array with the msg in index 0 and type in index 1.
+     * @param payload the exception payload to deserialize.
+     * @return the deserialized security exception.
      */
-    private static GwtSecurityException parseRpcSecurityException(String payload) {
-        String type = null;
-        String msg = null;
-        if (payload != null && payload.indexOf(EXCEPTION_PREFIX) != -1 && payload.indexOf(EXCEPTION_PKG) != -1) {
+    private static GwtSecurityException deserializeSecurityException(String payload) {
+        if (payload != null && payload.indexOf(EXCEPTION_PREFIX) != -1) {
             try {
-                String value = payload.substring(payload.indexOf("[\"" + EXCEPTION_PKG));
-                value = value.substring(2);
-                int index= value.indexOf("\",\"");
-                type = value.substring(0, index);
-                value = value.substring(index + 3);
-                msg = value.substring(0, value.indexOf("\"]"));
-            } catch (IllegalArgumentException e) {
+                if (streamFactory == null) {
+                    streamFactory = GWT.create(GwtLogin.class);
+                }
+                return (GwtSecurityException) streamFactory.createStreamReader(payload).readObject();
+            } catch (Exception e) {
                 GWT.log(e.getMessage(), e);
-                return null;
             }
         }
-        return ((ExceptionCreator) GWT.create(ExceptionCreator.class)).create(type, msg);
+        return null;
     }
 
     private final HasLoginHandler loginHandler;
@@ -86,7 +83,7 @@ public class LoginableRequestTransport extends DefaultRequestTransport {
             public void onResponseReceived(final Request request, final Response response) {
                 if (Response.SC_OK == response.getStatusCode()) {
                     String responsePayload = response.getText();
-                    GwtSecurityException caught = parseRpcSecurityException(responsePayload);
+                    GwtSecurityException caught = deserializeSecurityException(responsePayload);
                     if (loginHandler != null && caught != null) {
                         LoginHandler lh = new AbstractLoginHandler() {
                             @Override
