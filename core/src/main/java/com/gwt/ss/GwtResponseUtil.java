@@ -33,6 +33,10 @@ public final class GwtResponseUtil {
 
     private static Class<?>[] securityClasses = null;
 
+    /**
+     * @param ex the gwt exception.
+     * @return the gwt equivalent exception.
+     */
     public static GwtSecurityException createGwtException(Exception ex) {
         if (ex == null) { return null; }
         String className = ex.getClass().getSimpleName();
@@ -56,6 +60,10 @@ public final class GwtResponseUtil {
         return null;
     }
 
+    /**
+     * @param response the response.
+     * @param e the error.
+     */
     public static void doUnexpectedFailure(HttpServletResponse response, Throwable e) {
         if (LOG.isErrorEnabled()) {
             LOG.error("Encode eunexceptable exception!", e);
@@ -90,14 +98,18 @@ public final class GwtResponseUtil {
         return securityClasses;
     }
 
+    /**
+     * @param authentication the current authentication.
+     * @return is the user anonymous?
+     */
     public static boolean isAnonymous(Authentication authentication) {
         return authenticationTrustResolver.isAnonymous(authentication);
     }
 
     /**
-     * Determine whether request comes from GWT RPC<br/>
-     * 判斷request是否來自GWT RPC
-     * @param request
+     * Determine whether request comes from GWT.
+     * 
+     * @param request the request.
      * @return is the request from GWT RPC?
      */
     public static boolean isGwt(HttpServletRequest request) {
@@ -115,16 +127,23 @@ public final class GwtResponseUtil {
             HttpServletResponse response, Exception ex) {
         try {
             GwtSecurityException gwtEx = createGwtException(ex);
-            if (gwtEx != null && LOG.isErrorEnabled()) {
-                String extra = "";
-                if (ex instanceof AccessDeniedException) {
-                    extra = "(user is ";
-                    if (!isAnonymous(SecurityContextHolder.getContext().getAuthentication())) {
-                        extra += "not ";
-                    }
-                    extra += "anonymous)";
+            if (gwtEx != null) {
+                // Get the authentication information.
+                Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+                boolean anonymous = authentication != null && isAnonymous(authentication);
+                if (!anonymous) {
+                    // Add authentications information to the exception.
+                    gwtEx.setAuthenticated(authentication.isAuthenticated());
+                    gwtEx.setAuthenticatedUser(authentication.getName());
                 }
-                LOG.error("Encode " + gwtEx.getClass().getSimpleName() + extra + ":" + gwtEx.getMessage());
+                if (LOG.isErrorEnabled()) {
+                    String extra = "";
+                    if (ex instanceof AccessDeniedException) {
+                        extra = String.format(" (user is%1$s anonymous)", anonymous ? "" : " not");
+                    }
+                    LOG.error("Encode {}{}: {}",
+                        new Object[] { gwtEx.getClass().getSimpleName(), extra, gwtEx.getMessage() });
+                }
             }
             String payload = RPC.encodeResponseForFailure(null, gwtEx == null ? ex : gwtEx);
             writeResponse(servletContext, request, response, payload);
