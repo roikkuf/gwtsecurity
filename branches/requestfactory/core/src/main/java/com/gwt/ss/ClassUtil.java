@@ -9,9 +9,13 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.Set;
 import java.util.TreeSet;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Utility class to find classes in a package.
@@ -20,6 +24,8 @@ import java.util.zip.ZipInputStream;
  * @author Steven Jardine
  */
 public final class ClassUtil {
+
+    private static final Logger LOG = LoggerFactory.getLogger(ClassUtil.class);
 
     /**
      * Recursive method used to find all classes in a given directory and subdirs. Adapted from
@@ -30,21 +36,25 @@ public final class ClassUtil {
      * @return The classes
      * @throws ClassNotFoundException
      */
-    private static TreeSet<String> findClasses(String directory, String packageName) throws Exception {
-        TreeSet<String> classes = new TreeSet<String>();
+    private static Set<String> findClasses(String directory, String packageName) throws Exception {
+        Set<String> classes = new TreeSet<String>();
         if (directory.startsWith("file:") && directory.contains("!")) {
             String[] split = directory.split("!");
             URL jar = new URL(split[0]);
             ZipInputStream zip = new ZipInputStream(jar.openStream());
-            ZipEntry entry = null;
-            while ((entry = zip.getNextEntry()) != null) {
-                if (entry.getName().endsWith(".class")) {
-                    String className = entry.getName().replaceAll("[$].*", "").replaceAll("[.]class", "")
-                        .replace('/', '.');
-                    if (className.startsWith(packageName)) {
-                        classes.add(className);
+            try {
+                ZipEntry entry = null;
+                while ((entry = zip.getNextEntry()) != null) {
+                    if (entry.getName().endsWith(".class")) {
+                        String className = entry.getName().replaceAll("[$].*", "").replaceAll("[.]class", "")
+                            .replace('/', '.');
+                        if (className.startsWith(packageName)) {
+                            classes.add(className);
+                        }
                     }
                 }
+            } finally {
+                zip.close();
             }
         }
         File dir = new File(directory);
@@ -92,7 +102,7 @@ public final class ClassUtil {
             }
             return classList.toArray(new Class[classes.size()]);
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error(e.getMessage(), e);
             return null;
         }
     }

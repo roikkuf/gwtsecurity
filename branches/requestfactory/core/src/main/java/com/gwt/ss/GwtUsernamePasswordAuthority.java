@@ -318,7 +318,7 @@ public class GwtUsernamePasswordAuthority implements ServletContextAware, Initia
         }
     }
 
-    private class RemeberRequestWrapper extends HttpServletRequestWrapper {
+    private static class RemeberRequestWrapper extends HttpServletRequestWrapper {
 
         private String rememberMeParameter = "_spring_security_remember_me";
 
