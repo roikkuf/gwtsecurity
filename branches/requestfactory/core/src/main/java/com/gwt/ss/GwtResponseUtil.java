@@ -85,7 +85,7 @@ public final class GwtResponseUtil {
     /**
      * @return the available security exception classes in the com.gwt.ss.client.exceptions package.
      */
-    private synchronized static Class<?>[] getSecurityClasses() {
+    private static synchronized Class<?>[] getSecurityClasses() {
         if (securityClasses == null) {
             try {
                 securityClasses = ClassUtil.getClasses("com.gwt.ss.client.exceptions");
