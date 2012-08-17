@@ -28,6 +28,55 @@ import com.gwt.ss.shared.GwtConst;
  */
 public class LoginableRequestTransport extends DefaultRequestTransport {
 
+    private class LoginableRequestCallback implements RequestCallback {
+
+        private final String payload;
+
+        private final TransportReceiver receiver;
+
+        public LoginableRequestCallback(final String payload, final TransportReceiver receiver) {
+            this.payload = payload;
+            this.receiver = receiver;
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public void onError(final Request request, final Throwable exception) {
+            receiver.onTransportFailure(new ServerFailure(exception.getMessage()));
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public void onResponseReceived(final Request request, final Response response) {
+            if (Response.SC_OK == response.getStatusCode()) {
+                String responsePayload = response.getText();
+                GwtSecurityException caught = deserializeSecurityException(responsePayload);
+                if (loginHandler != null && caught != null) {
+                    LoginHandler lh = new AbstractLoginHandler() {
+                        @Override
+                        public void onCancelled() {
+                            ServerFailure failure = new ServerFailure(CANCELLED_MSG,
+                                LoginCancelException.class.getName(), null, false);
+                            receiver.onTransportFailure(failure);
+                        }
+
+                        @Override
+                        public void resendPayload() {
+                            send(payload, receiver);
+                        }
+                    };
+                    lh.setLoginHandlerRegistration(loginHandler.addLoginHandler(lh));
+                    loginHandler.startLogin(caught);
+                } else {
+                    receiver.onTransportSuccess(responsePayload);
+                }
+            } else {
+                String message = response.getStatusCode() + " " + response.getText();
+                receiver.onTransportFailure(new ServerFailure(message));
+            }
+        }
+    }
+
     private static final String EXCEPTION_PREFIX = "//EX[";
 
     private static SerializationStreamFactory streamFactory = null;
@@ -71,44 +120,7 @@ public class LoginableRequestTransport extends DefaultRequestTransport {
         builder.setHeader(GwtConst.GWT_RF_HEADER, "true");
         configureRequestBuilder(builder);
         builder.setRequestData(payload);
-        builder.setCallback(new RequestCallback() {
-            /** {@inheritDoc} */
-            @Override
-            public void onError(final Request request, final Throwable exception) {
-                receiver.onTransportFailure(new ServerFailure(exception.getMessage()));
-            }
-
-            /** {@inheritDoc} */
-            @Override
-            public void onResponseReceived(final Request request, final Response response) {
-                if (Response.SC_OK == response.getStatusCode()) {
-                    String responsePayload = response.getText();
-                    GwtSecurityException caught = deserializeSecurityException(responsePayload);
-                    if (loginHandler != null && caught != null) {
-                        LoginHandler lh = new AbstractLoginHandler() {
-                            @Override
-                            public void onCancelled() {
-                                ServerFailure failure = new ServerFailure(CANCELLED_MSG, LoginCancelException.class
-                                    .getName(), null, false);
-                                receiver.onTransportFailure(failure);
-                            }
-
-                            @Override
-                            public void resendPayload() {
-                                send(payload, receiver);
-                            }
-                        };
-                        lh.setLoginHandlerRegistration(loginHandler.addLoginHandler(lh));
-                        loginHandler.startLogin(caught);
-                    } else {
-                        receiver.onTransportSuccess(responsePayload);
-                    }
-                } else {
-                    String message = response.getStatusCode() + " " + response.getText();
-                    receiver.onTransportFailure(new ServerFailure(message));
-                }
-            }
-        });
+        builder.setCallback(new LoginableRequestCallback(payload, receiver));
         try {
             builder.send();
         } catch (RequestException e) {
