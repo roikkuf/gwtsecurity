@@ -130,7 +130,7 @@ public final class GwtResponseUtil {
             if (gwtEx != null) {
                 // Get the authentication information.
                 Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-                boolean anonymous = authentication != null && isAnonymous(authentication);
+                boolean anonymous = authentication == null || isAnonymous(authentication);
                 if (!anonymous) {
                     // Add authentications information to the exception.
                     gwtEx.setAuthenticated(authentication.isAuthenticated());

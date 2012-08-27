@@ -179,13 +179,9 @@ public class GwtUsernamePasswordAuthority implements ServletContextAware, Initia
                 authRequest.setDetails(((AuthenticationDetailsSource) f.get(filter)).buildDetails(httpHolder
                     .getRequest()));
                 Authentication authResult = getAuthenticationManager().authenticate(authRequest);
-                SecurityContextHolder.getContext().setAuthentication(authResult);
-                filter.getRememberMeServices().loginSuccess(
-                    pi.isRememberMe() ? new RemeberRequestWrapper(httpHolder.getRequest(), rememberMeParameter)
-                            : httpHolder.getRequest(), httpHolder.getResponse(), authResult);
 
-                // Patch provided by Steven Jardine steven.j...@gmail.com
-                // http://code.google.com/u/@UhVVQ1JZAxVEXgF4/
+                // Authentication was successful. Now make sure we haven't violated the session authentication
+                // strategy.
                 f = c.getDeclaredField("sessionStrategy");
                 f.setAccessible(true);
                 SessionAuthenticationStrategy sessionStrategy = (SessionAuthenticationStrategy) f.get(filter);
@@ -204,6 +200,12 @@ public class GwtUsernamePasswordAuthority implements ServletContextAware, Initia
                         throw e;
                     }
                 }
+
+                // Everything looks good. Publish the authentication result.
+                SecurityContextHolder.getContext().setAuthentication(authResult);
+                filter.getRememberMeServices().loginSuccess(
+                    pi.isRememberMe() ? new RemeberRequestWrapper(httpHolder.getRequest(), rememberMeParameter)
+                            : httpHolder.getRequest(), httpHolder.getResponse(), authResult);
                 applicationContext.publishEvent(new InteractiveAuthenticationSuccessEvent(authResult, this.getClass()));
                 return null;
             } catch (Exception e) {
