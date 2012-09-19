@@ -14,6 +14,8 @@ import com.google.gwt.core.ext.typeinfo.TypeOracle;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
 import com.google.gwt.user.rebind.SourceWriter;
+import com.gwt.ss.client.exceptions.GwtAccessDeniedException;
+import com.gwt.ss.client.exceptions.GwtSecurityException;
 import com.gwt.ss.client.loginable.LoginableAsync;
 import com.gwt.ss.client.loginable.LoginableService;
 
@@ -195,14 +197,11 @@ public class LoginableGenerator extends Generator {
         writer.println("@Override");
         writer.println("public void onFailure(Throwable caught) {");
         writer.indent();
-        writer
-            .println("if(caught instanceof GwtAccessDeniedException || !(caught instanceof GwtSecurityException) || getHasLoginHandler()==null){");
-        writer.indentln("callback.onFailure(caught);");
-        writer.println("} else {");
+        writer.println("if (getHasLoginHandler() != null && caught instanceof GwtSecurityException");
+        writer.indentln("&& (!(caught instanceof GwtAccessDeniedException) || getHasLoginHandler().getCanHandleAccessDeniedExceptions())) {");
         writer.indent();
         writer.println("LoginHandler lh = new AbstractLoginHandler() {");
         writer.indent();
-        writer.println();
         writer.println("@Override");
         writer.println("public void onCancelled() {");
         writer.indentln("callback.onFailure(new LoginCancelException(CANCELLED_MSG));");
@@ -221,6 +220,8 @@ public class LoginableGenerator extends Generator {
         writer.outdent();
         writer.println("};");
         writer.outdent();
+        writer.println("} else {");
+        writer.indentln("callback.onFailure(caught);");
         writer.println("}");
         writer.outdent();
         writer.println("}");
