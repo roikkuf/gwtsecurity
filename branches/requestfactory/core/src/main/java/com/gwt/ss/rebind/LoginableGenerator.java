@@ -197,8 +197,7 @@ public class LoginableGenerator extends Generator {
         writer.println("@Override");
         writer.println("public void onFailure(Throwable caught) {");
         writer.indent();
-        writer.println("if (getHasLoginHandler() != null && caught instanceof GwtSecurityException");
-        writer.indentln("&& (!(caught instanceof GwtAccessDeniedException) || getHasLoginHandler().getCanHandleAccessDeniedExceptions())) {");
+        writer.println("if (getHasLoginHandler() != null && caught instanceof GwtSecurityException && !(caught instanceof GwtAccessDeniedException)) {");
         writer.indent();
         writer.println("LoginHandler lh = new AbstractLoginHandler() {");
         writer.indent();
