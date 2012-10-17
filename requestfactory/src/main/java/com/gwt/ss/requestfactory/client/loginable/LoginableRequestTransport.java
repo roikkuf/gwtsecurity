@@ -13,6 +13,7 @@ import com.google.gwt.user.client.rpc.SerializationStreamFactory;
 import com.google.web.bindery.requestfactory.gwt.client.DefaultRequestTransport;
 import com.google.web.bindery.requestfactory.shared.ServerFailure;
 import com.gwt.ss.client.GwtLogin;
+import com.gwt.ss.client.exceptions.GwtAccessDeniedException;
 import com.gwt.ss.client.exceptions.GwtSecurityException;
 import com.gwt.ss.client.loginable.AbstractLoginHandler;
 import com.gwt.ss.client.loginable.HasLoginHandler;
@@ -42,7 +43,8 @@ public class LoginableRequestTransport extends DefaultRequestTransport {
         /** {@inheritDoc} */
         @Override
         public void onError(final Request request, final Throwable exception) {
-            receiver.onTransportFailure(new ServerFailure(exception.getMessage()));
+            receiver.onTransportFailure(new ServerFailure(exception.getMessage(), exception.getClass().getName(), null,
+                false));
         }
 
         /** {@inheritDoc} */
@@ -52,21 +54,23 @@ public class LoginableRequestTransport extends DefaultRequestTransport {
                 String responsePayload = response.getText();
                 GwtSecurityException caught = deserializeSecurityException(responsePayload);
                 if (loginHandler != null && caught != null) {
-                    LoginHandler lh = new AbstractLoginHandler() {
-                        @Override
-                        public void onCancelled() {
-                            ServerFailure failure = new ServerFailure(CANCELLED_MSG,
-                                LoginCancelException.class.getName(), null, false);
-                            receiver.onTransportFailure(failure);
-                        }
+                    if (caught.isAuthenticated() && caught instanceof GwtAccessDeniedException) {
+                        onError(request, caught);
+                    } else {
+                        LoginHandler lh = new AbstractLoginHandler() {
+                            @Override
+                            public void onCancelled() {
+                                onError(request, new LoginCancelException("Login Cancelled"));
+                            }
 
-                        @Override
-                        public void resendPayload() {
-                            send(payload, receiver);
-                        }
-                    };
-                    lh.setLoginHandlerRegistration(loginHandler.addLoginHandler(lh));
-                    loginHandler.startLogin(caught);
+                            @Override
+                            public void resendPayload() {
+                                send(payload, receiver);
+                            }
+                        };
+                        lh.setLoginHandlerRegistration(loginHandler.addLoginHandler(lh));
+                        loginHandler.startLogin(caught);
+                    }
                 } else {
                     receiver.onTransportSuccess(responsePayload);
                 }
