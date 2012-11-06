@@ -7,30 +7,6 @@ import org.aspectj.lang.JoinPoint;
 
 public class HttpHolder {
 
-    private HttpServletRequest request;
-
-    private HttpServletResponse response;
-
-    public HttpServletRequest getRequest() {
-        return request;
-    }
-
-    public void setRequest(HttpServletRequest request) {
-        this.request = request;
-    }
-
-    public HttpServletResponse getResponse() {
-        return response;
-    }
-
-    public void setResponse(HttpServletResponse response) {
-        this.response = response;
-    }
-
-    public boolean isGwt() {
-        return GwtResponseUtil.isGwt(request);
-    }
-
     public static HttpHolder getInstance(JoinPoint jp) {
         if (jp == null) {
             return null;
@@ -50,5 +26,29 @@ public class HttpHolder {
             }
             return holder;
         }
+    }
+
+    private HttpServletRequest request;
+
+    private HttpServletResponse response;
+
+    public HttpServletRequest getRequest() {
+        return request;
+    }
+
+    public HttpServletResponse getResponse() {
+        return response;
+    }
+
+    public boolean isGwt() {
+        return GwtResponseUtil.isGwt(request);
+    }
+
+    public void setRequest(HttpServletRequest request) {
+        this.request = request;
+    }
+
+    public void setResponse(HttpServletResponse response) {
+        this.response = response;
     }
 }
