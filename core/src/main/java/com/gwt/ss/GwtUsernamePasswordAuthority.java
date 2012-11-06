@@ -204,7 +204,7 @@ public class GwtUsernamePasswordAuthority implements ServletContextAware, Initia
                 // Everything looks good. Publish the authentication result.
                 SecurityContextHolder.getContext().setAuthentication(authResult);
                 filter.getRememberMeServices().loginSuccess(
-                    pi.isRememberMe() ? new RemeberRequestWrapper(httpHolder.getRequest(), rememberMeParameter)
+                    pi.isRememberMe() ? new RememberMeRequestWrapper(httpHolder.getRequest(), rememberMeParameter)
                             : httpHolder.getRequest(), httpHolder.getResponse(), authResult);
                 applicationContext.publishEvent(new InteractiveAuthenticationSuccessEvent(authResult, this.getClass()));
                 return null;
@@ -320,11 +320,11 @@ public class GwtUsernamePasswordAuthority implements ServletContextAware, Initia
         }
     }
 
-    private static class RemeberRequestWrapper extends HttpServletRequestWrapper {
+    private static class RememberMeRequestWrapper extends HttpServletRequestWrapper {
 
         private String rememberMeParameter = "_spring_security_remember_me";
 
-        public RemeberRequestWrapper(HttpServletRequest request, String rememberMeParameter) {
+        public RememberMeRequestWrapper(HttpServletRequest request, String rememberMeParameter) {
             super(request);
             if (rememberMeParameter != null && !rememberMeParameter.isEmpty()) {
                 this.rememberMeParameter = rememberMeParameter;
