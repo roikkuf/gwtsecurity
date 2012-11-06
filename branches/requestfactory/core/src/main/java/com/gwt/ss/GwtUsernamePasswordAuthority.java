@@ -57,9 +57,85 @@ import com.gwt.ss.shared.GwtConst;
 public class GwtUsernamePasswordAuthority implements ServletContextAware, InitializingBean, ApplicationContextAware,
         ApplicationListener<InteractiveAuthenticationSuccessEvent> {
 
-    protected static final Logger LOG = LoggerFactory.getLogger(GwtUsernamePasswordAuthority.class);
+    /**
+     * Provide by Amit Khanna<br/>
+     * 由Amit Khanna提供
+     */
+    private static class DefaultSerializationPolicyProvider implements SerializationPolicyProvider {
 
-    private ServletContext servletContext;
+        private static DefaultSerializationPolicyProvider instance = new DefaultSerializationPolicyProvider();
+
+        public static DefaultSerializationPolicyProvider getInstance() {
+            return instance;
+        }
+
+        @Override
+        public SerializationPolicy getSerializationPolicy(String moduleBaseURL, String serializationPolicyStrongName) {
+            return RPC.getDefaultSerializationPolicy();
+        }
+    }
+
+    private static class PayloadInfo {
+
+        private boolean forceLogout = false;
+
+        private HttpHolder httpHolder;
+
+        private String password;
+
+        private boolean rememberMe = false;
+
+        private String username;
+
+        public PayloadInfo(String username, String password, HttpHolder httpHolder, boolean rememberMe,
+                boolean forceLogout) {
+            this.username = username;
+            this.password = password;
+            this.httpHolder = httpHolder;
+            this.rememberMe = rememberMe;
+            this.forceLogout = forceLogout;
+        }
+
+        public HttpHolder getHttpHolder() {
+            return httpHolder;
+        }
+
+        public String getPassword() {
+            return password;
+        }
+
+        public String getUsername() {
+            return username;
+        }
+
+        public boolean isForceLogout() {
+            return forceLogout;
+        }
+
+        public boolean isRememberMe() {
+            return rememberMe;
+        }
+
+    }
+
+    private static class RememberMeRequestWrapper extends HttpServletRequestWrapper {
+
+        private String rememberMeParameter = "_spring_security_remember_me";
+
+        public RememberMeRequestWrapper(HttpServletRequest request, String rememberMeParameter) {
+            super(request);
+            if (rememberMeParameter != null && !rememberMeParameter.isEmpty()) {
+                this.rememberMeParameter = rememberMeParameter;
+            }
+        }
+
+        @Override
+        public String getParameter(String name) {
+            return name.equals(rememberMeParameter) ? "true" : super.getParameter(name);
+        }
+    }
+
+    protected static final Logger LOG = LoggerFactory.getLogger(GwtUsernamePasswordAuthority.class);
 
     private static ThreadLocal<PayloadInfo> payloadHolder = new InheritableThreadLocal<PayloadInfo>();
 
@@ -67,88 +143,17 @@ public class GwtUsernamePasswordAuthority implements ServletContextAware, Initia
 
     private AuthenticationManager authenticationManager;
 
+    private String rememberMeParameter = "_spring_security_remember_me";
+
     private SerializationPolicyProvider serializationPolicyProvider = DefaultSerializationPolicyProvider.getInstance();
 
-    private String rememberMeParameter = "_spring_security_remember_me";
+    private ServletContext servletContext;
 
     private boolean suppressLoginErrorMessages = false;
 
     @Override
-    public void setServletContext(ServletContext servletContext) {
-        this.servletContext = servletContext;
-    }
-
-    @Override
     public void afterPropertiesSet() {
         Assert.notNull(authenticationManager, "authenticationManager must be specified");
-    }
-
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        this.applicationContext = applicationContext;
-    }
-
-    public AuthenticationManager getAuthenticationManager() {
-        return authenticationManager;
-    }
-
-    public void setAuthenticationManager(AuthenticationManager authenticationManager) {
-        this.authenticationManager = authenticationManager;
-    }
-
-    public String getRememberMeParameter() {
-        return rememberMeParameter;
-    }
-
-    public void setRememberMeParameter(String rememberMeParameter) {
-        this.rememberMeParameter = rememberMeParameter;
-    }
-
-    public boolean isSuppressLoginErrorMessages() {
-        return suppressLoginErrorMessages;
-    }
-
-    public void setSuppressLoginErrorMessages(boolean suppressLoginErrorMessages) {
-        this.suppressLoginErrorMessages = suppressLoginErrorMessages;
-    }
-
-    /**
-     * Provide by Amit Khanna<br/>
-     * 由Amit Khanna提供
-     */
-    private PayloadInfo extract(JoinPoint jp) throws IOException, ServletException {
-        PayloadInfo result = payloadHolder.get();
-        HttpHolder httpHolder = HttpHolder.getInstance(jp);
-        HttpServletRequest request = httpHolder.getRequest();
-        String username = null;
-        String password = null;
-        boolean rememberMe = false;
-        boolean forceLogout = false;
-        if (result == null && request != null) {
-            String payload = RPCServletUtils.readContentAsGwtRpc(request);
-            RPCRequest rpcRequest = RPC.decodeRequest(payload, null, serializationPolicyProvider);
-            Object[] requestParams = rpcRequest.getParameters();
-            assert requestParams.length > 1 : "parameter count incorrect";
-            username = (String) requestParams[0];
-            password = (String) requestParams[1];
-            if (requestParams.length > 2) {
-                try {
-                    rememberMe = (Boolean) requestParams[2];
-                } catch (Exception e) {
-                }
-            }
-            if (requestParams.length > 3) {
-                try {
-                    forceLogout = (Boolean) requestParams[3];
-                } catch (Exception e) {
-                }
-            }
-            if (username != null && password != null) {
-                result = new PayloadInfo(username, password, httpHolder, rememberMe, forceLogout);
-                payloadHolder.set(result);
-            }
-        }
-        return result;
     }
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
@@ -223,6 +228,72 @@ public class GwtUsernamePasswordAuthority implements ServletContextAware, Initia
         }
     }
 
+    /**
+     * Provide by Amit Khanna<br/>
+     * 由Amit Khanna提供
+     */
+    private PayloadInfo extract(JoinPoint jp) throws IOException, ServletException {
+        PayloadInfo result = payloadHolder.get();
+        HttpHolder httpHolder = HttpHolder.getInstance(jp);
+        HttpServletRequest request = httpHolder.getRequest();
+        String username = null;
+        String password = null;
+        boolean rememberMe = false;
+        boolean forceLogout = false;
+        if (result == null && request != null) {
+            String payload = RPCServletUtils.readContentAsGwtRpc(request);
+            RPCRequest rpcRequest = RPC.decodeRequest(payload, null, serializationPolicyProvider);
+            Object[] requestParams = rpcRequest.getParameters();
+            assert requestParams.length > 1 : "parameter count incorrect";
+            username = (String) requestParams[0];
+            password = (String) requestParams[1];
+            if (requestParams.length > 2) {
+                try {
+                    rememberMe = (Boolean) requestParams[2];
+                } catch (Exception e) {
+                }
+            }
+            if (requestParams.length > 3) {
+                try {
+                    forceLogout = (Boolean) requestParams[3];
+                } catch (Exception e) {
+                }
+            }
+            if (username != null && password != null) {
+                result = new PayloadInfo(username, password, httpHolder, rememberMe, forceLogout);
+                payloadHolder.set(result);
+            }
+        }
+        return result;
+    }
+
+    public AuthenticationManager getAuthenticationManager() {
+        return authenticationManager;
+    }
+
+    public String getRememberMeParameter() {
+        return rememberMeParameter;
+    }
+
+    public boolean isSuppressLoginErrorMessages() {
+        return suppressLoginErrorMessages;
+    }
+
+    @Override
+    public void onApplicationEvent(InteractiveAuthenticationSuccessEvent event) {
+        PayloadInfo pi = payloadHolder.get();
+        if (pi != null && pi.getHttpHolder().isGwt()) {
+            HttpServletRequest request = pi.getHttpHolder().getRequest();
+            Authentication authResult = event.getAuthentication();
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Gwt authentication success. Updating SecurityContextHolder to contain: " + authResult);
+            }
+            GwtResponseUtil.writeResponse(servletContext, request, pi.getHttpHolder().getResponse(), String.format(
+                "//OK[[],%s,%s]", AbstractSerializationStream.DEFAULT_FLAGS,
+                AbstractSerializationStream.SERIALIZATION_STREAM_VERSION));
+        }
+    }
+
     protected boolean requiresAuthentication(AbstractAuthenticationProcessingFilter filter, HttpServletRequest request) {
         String uri = request.getRequestURI();
         if (LOG.isDebugEnabled()) {
@@ -245,96 +316,25 @@ public class GwtUsernamePasswordAuthority implements ServletContextAware, Initia
     }
 
     @Override
-    public void onApplicationEvent(InteractiveAuthenticationSuccessEvent event) {
-        PayloadInfo pi = payloadHolder.get();
-        if (pi != null && pi.getHttpHolder().isGwt()) {
-            HttpServletRequest request = pi.getHttpHolder().getRequest();
-            Authentication authResult = event.getAuthentication();
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Gwt authentication success. Updating SecurityContextHolder to contain: " + authResult);
-            }
-            GwtResponseUtil.writeResponse(servletContext, request, pi.getHttpHolder().getResponse(), String.format(
-                "//OK[[],%s,%s]", AbstractSerializationStream.DEFAULT_FLAGS,
-                AbstractSerializationStream.SERIALIZATION_STREAM_VERSION));
-        }
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = applicationContext;
     }
 
-    private static class PayloadInfo {
-
-        private String username;
-
-        private String password;
-
-        private HttpHolder httpHolder;
-
-        private boolean rememberMe = false;
-
-        private boolean forceLogout = false;
-
-        public PayloadInfo(String username, String password, HttpHolder httpHolder, boolean rememberMe,
-                boolean forceLogout) {
-            this.username = username;
-            this.password = password;
-            this.httpHolder = httpHolder;
-            this.rememberMe = rememberMe;
-            this.forceLogout = forceLogout;
-        }
-
-        public String getPassword() {
-            return password;
-        }
-
-        public String getUsername() {
-            return username;
-        }
-
-        public HttpHolder getHttpHolder() {
-            return httpHolder;
-        }
-
-        public boolean isRememberMe() {
-            return rememberMe;
-        }
-
-        public boolean isForceLogout() {
-            return forceLogout;
-        }
-
+    public void setAuthenticationManager(AuthenticationManager authenticationManager) {
+        this.authenticationManager = authenticationManager;
     }
 
-    /**
-     * Provide by Amit Khanna<br/>
-     * 由Amit Khanna提供
-     */
-    private static class DefaultSerializationPolicyProvider implements SerializationPolicyProvider {
-
-        private static DefaultSerializationPolicyProvider instance = new DefaultSerializationPolicyProvider();
-
-        public static DefaultSerializationPolicyProvider getInstance() {
-            return instance;
-        }
-
-        @Override
-        public SerializationPolicy getSerializationPolicy(String moduleBaseURL, String serializationPolicyStrongName) {
-            return RPC.getDefaultSerializationPolicy();
-        }
+    public void setRememberMeParameter(String rememberMeParameter) {
+        this.rememberMeParameter = rememberMeParameter;
     }
 
-    private static class RememberMeRequestWrapper extends HttpServletRequestWrapper {
+    @Override
+    public void setServletContext(ServletContext servletContext) {
+        this.servletContext = servletContext;
+    }
 
-        private String rememberMeParameter = "_spring_security_remember_me";
-
-        public RememberMeRequestWrapper(HttpServletRequest request, String rememberMeParameter) {
-            super(request);
-            if (rememberMeParameter != null && !rememberMeParameter.isEmpty()) {
-                this.rememberMeParameter = rememberMeParameter;
-            }
-        }
-
-        @Override
-        public String getParameter(String name) {
-            return name.equals(rememberMeParameter) ? "true" : super.getParameter(name);
-        }
+    public void setSuppressLoginErrorMessages(boolean suppressLoginErrorMessages) {
+        this.suppressLoginErrorMessages = suppressLoginErrorMessages;
     }
 
 }
