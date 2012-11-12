@@ -46,7 +46,7 @@
 			<groupId>com.google.web.bindery</groupId>
 			<artifactId>requestfactory-server</artifactId>
 			<version>${gwt.version}</version>
-			<scope>compile</scope>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 
