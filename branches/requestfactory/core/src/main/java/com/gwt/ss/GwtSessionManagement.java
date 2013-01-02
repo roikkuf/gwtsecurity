@@ -81,21 +81,20 @@ public class GwtSessionManagement implements ServletContextAware {
             .getSessionInformation(holder.getRequest().getSession(false).getId()) : null;
         if (info != null) {
             if (info.isExpired()) {
+                String msg = "Session is expired (Possibly do to multiple concurrent logins being attempted as the same user).";
                 if (LOG.isDebugEnabled()) {
-                    LOG.debug("Concurrent Session ready logout");
+                    LOG.debug(msg);
                 }
                 Authentication auth = SecurityContextHolder.getContext().getAuthentication();
                 for (LogoutHandler handler : getLogoutHandlers(getCSTarget(pjp))) {
                     handler.logout(holder.getRequest(), holder.getResponse(), auth);
                 }
                 GwtResponseUtil.processGwtException(servletContext, holder.getRequest(), holder.getResponse(),
-                    new SessionAuthenticationException(
-                        "This session has been expired (possibly due to multiple concurrent "
-                                + "logins being attempted as the same user)."));
+                    new SessionAuthenticationException(msg));
                 return null;
             } else {
                 if (LOG.isDebugEnabled()) {
-                    LOG.debug("Concurrent info not expired");
+                    LOG.debug("Session is not expired.");
                 }
                 // Non-expired - update last request date/time
                 info.refreshLastRequest();
@@ -112,11 +111,11 @@ public class GwtSessionManagement implements ServletContextAware {
         HttpHolder holder = HttpHolder.getInstance(pjp);
         if (holder.isGwt()) {
             if (LOG.isDebugEnabled()) {
-                LOG.debug("GwtSessionManagementFilter instead of  SessionManagementFilter");
+                LOG.debug("GwtSessionManagementFilter instead of SessionManagementFilter");
             }
             if (holder.getRequest().getAttribute(FILTER_APPLIED) != null) {
                 if (LOG.isDebugEnabled()) {
-                    LOG.debug("Request already filter applied.");
+                    LOG.debug("SessionManagementFilter already applied.");
                 }
                 // do next filter
                 getFilterChain(pjp).doFilter(holder.getRequest(), holder.getResponse());
@@ -150,8 +149,8 @@ public class GwtSessionManagement implements ServletContextAware {
                     if (holder.getRequest().getRequestedSessionId() != null
                             && !holder.getRequest().isRequestedSessionIdValid()) {
                         if (LOG.isDebugEnabled()) {
-                            LOG.debug("Requested session ID" + holder.getRequest().getRequestedSessionId()
-                                    + " is invalid.");
+                            LOG.debug("Requested session id {} is invalid", holder.getRequest()
+                                .getRequestedSessionId());
                         }
                         if (getInvalidSessionUrl(getSMTarget(pjp)) != null
                                 || getInvalidSessionStrategy(getSMTarget(pjp)) != null) {
@@ -160,7 +159,7 @@ public class GwtSessionManagement implements ServletContextAware {
                             }
                             holder.getRequest().getSession();
                             GwtResponseUtil.processGwtException(servletContext, holder.getRequest(),
-                                holder.getResponse(), new SessionAuthenticationException("Session had invalid."));
+                                holder.getResponse(), new SessionAuthenticationException("Session is invalid"));
                             return null;
                         }
                     }
