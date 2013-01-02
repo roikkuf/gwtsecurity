@@ -6,32 +6,32 @@ This project is developed under [http://maven.apache.org/ Maven].
 So you need to setup maven first.
 
 All prebuilt jars for download are available here:
-|| [http://code.google.com/p/gwtsecurity/downloads/detail?name=gwtsecurity-1.1.0.jar gwtsecurity-1.1.0.jar] || Primary Library  ||
-|| [http://code.google.com/p/gwtsecurity/downloads/detail?name=GssDemo-Simple-1.1.0.war GssDemo-Simple-1.1.0.war] || Simple demonstration using spring security for security only without integration with any spring bean .||
-|| [http://code.google.com/p/gwtsecurity/downloads/detail?name=GssDemo-GwtSL-1.1.0.war GssDemo-GwtSL-1.1.0.war] || Secure demonstration  if you're using  [http://code.google.com/p/gwt-sl/ gwt-sl] with spring integration .  ||
-|| [http://code.google.com/p/gwtsecurity/downloads/detail?name=GssDemo-spring4gwt-1.1.0.war GssDemo-spring4gwt-1.1.0.war] || Secure demonstration  if you're using  [http://code.google.com/p/spring4gwt/ spring4gwt] with spring integration .  ||
+|| [http://code.google.com/p/gwtsecurity/downloads/detail?name=gwtsecurity-1.2.0.jar gwtsecurity-1.2.0.jar] || Primary Library  ||
+|| [http://code.google.com/p/gwtsecurity/downloads/detail?name=GssDemo-Simple-1.2.0.war GssDemo-Simple-1.2.0.war] || Simple demonstration using spring security for security only without integration with any spring bean .||
+|| [http://code.google.com/p/gwtsecurity/downloads/detail?name=GssDemo-GwtSL-1.2.0.war GssDemo-GwtSL-1.2.0.war] || Secure demonstration  if you're using  [http://code.google.com/p/gwt-sl/ gwt-sl] with spring integration .  ||
+|| [http://code.google.com/p/gwtsecurity/downloads/detail?name=GssDemo-spring4gwt-1.2.0.war GssDemo-spring4gwt-1.2.0.war] || Secure demonstration  if you're using  [http://code.google.com/p/spring4gwt/ spring4gwt] with spring integration .  ||
 
 = Details =
 
 You can download this code using [http://subversion.tigris.org/ Subversion].  Run the command:
 {{{ 
-svn co https://gwtsecurity.googlecode.com/svn/tags/gwtsecurity-1.1.0 
+svn co https://gwtsecurity.googlecode.com/svn/tags/gwtsecurity-1.2.0 
 }}}
 
 Then, run the command:
 {{{ 
-cd gwtsecurity-1.1.0
+cd gwtsecurity-1.2.0
 mvn install
 }}}
 to install library to your local repository. 
 
 You can download the demo application using [http://subversion.tigris.org/ Subversion].  Run the command:
 {{{ 
-svn co https://gwtsecurity.googlecode.com/svn/tags/gwt4ssdemo-1.1.0
+svn co https://gwtsecurity.googlecode.com/svn/tags/gwt4ssdemo-1.2.0
 }}}
 
 Then, run the command:
 {{{
-cd gwt4ssdemo-1.1.0
+cd gwt4ssdemo-1.2.0
 mvn package
 }}}
