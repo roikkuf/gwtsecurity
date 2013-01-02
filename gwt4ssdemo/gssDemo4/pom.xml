@@ -10,7 +10,7 @@
 	<parent>
 		<groupId>com.google.code.gwtsecurity</groupId>
 		<artifactId>gwt4ssdemo</artifactId>
-		<version>1.1.2-SNAPSHOT</version>
+		<version>1.2.0</version>
 	</parent>
 
 	<!-- TODO Remove when the gwt-sl dependency is in the Maven Central Repository -->
@@ -46,7 +46,7 @@
 		</dependency>
 		<dependency>
 			<groupId>com.google.code.gwtsecurity</groupId>
-			<artifactId>gwtsecurity</artifactId>
+			<artifactId>gwtsecurity-core</artifactId>
 			<exclusions>
 				<exclusion>
 					<groupId>org.springframework</groupId>
@@ -192,8 +192,9 @@
 			<groupId>${project.groupId}</groupId>
 			<artifactId>sharedService</artifactId>
 			<version>${project.version}</version>
-			<!-- If you want to debug in devmode, 1. first package shareService module 2. activate this comment section 
-				3. execute gwt:run goal <scope>system</scope> <systemPath>${basedir}\..\sharedService\target\sharedService-${project.version}.jar</systemPath> -->
+			<!-- If you want to debug in devmode, 1. first package shareService module 
+				2. activate this comment section 3. execute gwt:run goal <scope>system</scope> 
+				<systemPath>${basedir}\..\sharedService\target\sharedService-${project.version}.jar</systemPath> -->
 		</dependency>
 		<dependency>
 			<groupId>commons-logging</groupId>
@@ -203,10 +204,6 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>javax.annotation</groupId>
@@ -238,7 +235,8 @@
 						</goals>
 					</execution>
 				</executions>
-				<!-- Plugin configuration. There are many available options, see gwt-maven-plugin documentation at codehaus.org -->
+				<!-- Plugin configuration. There are many available options, see gwt-maven-plugin 
+					documentation at codehaus.org -->
 				<configuration>
 					<runTarget>index.jsp</runTarget>
 					<hostedWebapp>${webappDirectory}</hostedWebapp>

@@ -5,10 +5,10 @@
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
         <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
         <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
-        <dependent-module archiveName="sharedService-1.1.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/sharedService/sharedService">
+        <dependent-module archiveName="sharedService-1.2.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/gwt4ssdemo-shared/gwt4ssdemo-shared">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <property name="java-output-path" value="/gssDemo2/target/GssDemo-GwtSL-1.0.3/WEB-INF/classes"/>
-        <property name="context-root" value="GssDemo-GwtSL-1.1.1-SNAPSHOT"/>
+        <property name="context-root" value="GssDemo-GwtSL-1.1.2-SNAPSHOT"/>
   </wb-module>
 </project-modules>
