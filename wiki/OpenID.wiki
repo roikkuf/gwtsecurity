@@ -1,4 +1,4 @@
-#summary OpenId Issue.
+#summary OpenId Issues
 
 = Introduction =
 Sometimes, we can't put it all into a single page when authentication need.

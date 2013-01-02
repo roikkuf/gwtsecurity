@@ -1,4 +1,4 @@
-#summary Design guide
+#summary Design Guidelines
 
 = Introduction =
 [http://static.springsource.org/spring-security/site/ Spring Security ] always require a login entry when security exception occur, 
