@@ -7,7 +7,7 @@
 
 	<groupId>com.google.code.gwtsecurity</groupId>
 	<artifactId>gwt4ssdemo</artifactId>
-	<version>1.2.0</version>
+	<version>1.2.1</version>
 
 	<name>Gwt4SpringSecurity Demo</name>
 	<description>Gwt for Spring Security Demo Application</description>
