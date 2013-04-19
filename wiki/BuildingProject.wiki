@@ -6,30 +6,30 @@ This project is developed under [http://maven.apache.org/ Maven].
 So you need to setup maven first.
 
 All prebuilt jars for download are available here:
-|| [http://code.google.com/p/gwtsecurity/downloads/detail?name=gwtsecurity-core-1.2.0.jar gwtsecurity-core-1.2.0.jar] || Core Library ||
-|| [http://code.google.com/p/gwtsecurity/downloads/detail?name=gwtsecurity-requestfactory-1.2.0.jar gwtsecurity-requestfactory-1.2.0.jar] || Request Factory Library ||
+|| [http://code.google.com/p/gwtsecurity/downloads/detail?name=gwtsecurity-core-1.2.1.jar gwtsecurity-core-1.2.1.jar] || Core Library ||
+|| [http://code.google.com/p/gwtsecurity/downloads/detail?name=gwtsecurity-requestfactory-1.2.1.jar gwtsecurity-requestfactory-1.2.1.jar] || Request Factory Library ||
 
 = Details =
 
 You can download this code using [http://subversion.tigris.org/ Subversion].  Run the command:
 {{{ 
-svn co https://gwtsecurity.googlecode.com/svn/tags/gwtsecurity-1.2.0 
+svn co https://gwtsecurity.googlecode.com/svn/tags/gwtsecurity-1.2.1 
 }}}
 
 Then, run the command:
 {{{ 
-cd gwtsecurity-1.2.0
+cd gwtsecurity-1.2.1
 mvn install
 }}}
 to install library to your local repository. 
 
 You can download the demo application using [http://subversion.tigris.org/ Subversion].  Run the command:
 {{{ 
-svn co https://gwtsecurity.googlecode.com/svn/tags/gwt4ssdemo-1.2.0
+svn co https://gwtsecurity.googlecode.com/svn/tags/gwt4ssdemo-1.2.1
 }}}
 
 Then, run the command:
 {{{
-cd gwt4ssdemo-1.2.0
+cd gwt4ssdemo-1.2.1
 mvn package
 }}}
