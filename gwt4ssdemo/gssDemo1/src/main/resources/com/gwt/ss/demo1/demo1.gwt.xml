@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<module rename-to='demo1'>
-  <inherits name='com.google.gwt.user.User'/>
-  <inherits name='com.google.gwt.user.theme.standard.Standard'/>
-  <inherits name='com.gwt.ss.sharedservice.sharedService'/>
-  <entry-point class='com.gwt.ss.demo1.client.demo1'/>
-  <!-- Specify the paths for translatable code                    -->
-  <source path='client'/>
-</module>
