@@ -6,8 +6,8 @@ This project is developed under [http://maven.apache.org/ Maven].
 So you need to setup maven first.
 
 All prebuilt jars for download are available here:
-|| [http://code.google.com/p/gwtsecurity/downloads/detail?name=gwtsecurity-core-1.2.2.jar gwtsecurity-core-1.2.2.jar] || Core Library ||
-|| [http://code.google.com/p/gwtsecurity/downloads/detail?name=gwtsecurity-requestfactory-1.2.2.jar gwtsecurity-requestfactory-1.2.2.jar] || Request Factory Library ||
+|| [http://code.google.com/p/gwtsecurity/downloads/detail?name=gwtsecurity-core-1.2.3.jar gwtsecurity-core-1.2.3.jar] || Core Library ||
+|| [http://code.google.com/p/gwtsecurity/downloads/detail?name=gwtsecurity-requestfactory-1.2.3.jar gwtsecurity-requestfactory-1.2.3.jar] || Request Factory Library ||
 
 = Details =
 
