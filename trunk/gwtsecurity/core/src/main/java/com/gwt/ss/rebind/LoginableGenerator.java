@@ -196,13 +196,13 @@ public class LoginableGenerator extends Generator {
         writer.println("@Override");
         writer.println("public void onFailure(Throwable caught) {");
         writer.indent();
+        writer.println("boolean handled = false;");
         writer.println("if (getHasLoginHandler() != null && caught instanceof GwtSecurityException) {");
         writer.indent();
         writer.println("GwtSecurityException e = (GwtSecurityException) caught;");
-        writer.println("if (e.isAuthenticated() && e instanceof GwtAccessDeniedException) {");
-        writer.indentln("onFailure(e);");
-        writer.println("} else {");
+        writer.println("if (!(e.isAuthenticated() && e instanceof GwtAccessDeniedException)) {");
         writer.indent();
+        writer.println("handled = true;");
         writer.println("LoginHandler lh = new AbstractLoginHandler() {");
         writer.indent();
         writer.println("@Override");
@@ -228,6 +228,10 @@ public class LoginableGenerator extends Generator {
         writer.println("}");
         writer.outdent();
         writer.println("}");
+        writer.println("if (!handled) {");
+        writer.indentln("callback.onFailure(caught);");
+        writer.println("}");
+
         writer.outdent();
         writer.println("}");
         writer.outdent();
