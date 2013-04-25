@@ -13,23 +13,23 @@ All prebuilt jars for download are available here:
 
 You can download this code using [http://subversion.tigris.org/ Subversion].  Run the command:
 {{{ 
-svn co https://gwtsecurity.googlecode.com/svn/tags/gwtsecurity-1.2.2 
+svn co https://gwtsecurity.googlecode.com/svn/tags/gwtsecurity-1.2.3 
 }}}
 
 Then, run the command:
 {{{ 
-cd gwtsecurity-1.2.2
+cd gwtsecurity-1.2.3
 mvn install
 }}}
 to install library to your local repository. 
 
 You can download the demo application using [http://subversion.tigris.org/ Subversion].  Run the command:
 {{{ 
-svn co https://gwtsecurity.googlecode.com/svn/tags/gwt4ssdemo-1.2.2
+svn co https://gwtsecurity.googlecode.com/svn/tags/gwt4ssdemo-1.2.3
 }}}
 
 Then, run the command:
 {{{
-cd gwt4ssdemo-1.2.2
+cd gwt4ssdemo-1.2.3
 mvn package
 }}}
