@@ -294,7 +294,8 @@ public class GwtUsernamePasswordAuthority implements ServletContextAware, Initia
         }
     }
 
-    protected boolean requiresAuthentication(AbstractAuthenticationProcessingFilter filter, HttpServletRequest request) {
+    @SuppressWarnings("deprecation")
+	protected boolean requiresAuthentication(AbstractAuthenticationProcessingFilter filter, HttpServletRequest request) {
         String uri = request.getRequestURI();
         if (LOG.isDebugEnabled()) {
             LOG.debug("RequiresAuthentication check for \n" + "url = " + uri + "\ncontext path = "
