@@ -6,7 +6,7 @@
 
 	<groupId>com.google.code.gwtsecurity</groupId>
 	<artifactId>gwtsecurity</artifactId>
-	<version>1.2.4-SNAPSHOT</version>
+	<version>1.2.4</version>
 
 	<name>gwtsecurity</name>
 	<description>Provides integration for gwt and Spring Security</description>
@@ -112,9 +112,9 @@
 	</build>
 
 	<scm>
-		<url>scm:svn:https://gwtsecurity.googlecode.com/svn/tags/gwtsecurity-1.1.0</url>
-		<connection>scm:svn:https://gwtsecurity.googlecode.com/svn/tags/gwtsecurity-1.1.0</connection>
-		<developerConnection>scm:svn:https://gwtsecurity.googlecode.com/svn/tags/gwtsecurity-1.1.0</developerConnection>
+		<url>scm:svn:https://gwtsecurity.googlecode.com/svn/tags/gwtsecurity-1.2.4</url>
+		<connection>scm:svn:https://gwtsecurity.googlecode.com/svn/tags/gwtsecurity-1.2.4</connection>
+		<developerConnection>scm:svn:https://gwtsecurity.googlecode.com/svn/tags/gwtsecurity-1.2.4</developerConnection>
 	</scm>
 
 	<parent>
