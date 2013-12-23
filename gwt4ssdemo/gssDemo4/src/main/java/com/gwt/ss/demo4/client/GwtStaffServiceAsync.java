@@ -1,8 +1,8 @@
 package com.gwt.ss.demo4.client;
 
 import com.google.gwt.core.client.GWT;
-import com.gwt.ss.client.loginable.LoginableService;
 import com.google.gwt.user.client.rpc.ServiceDefTarget;
+import com.gwt.ss.client.loginable.LoginableService;
 import com.gwt.ss.sharedservice.client.RemoteAsync;
 
 public interface GwtStaffServiceAsync extends RemoteAsync{
@@ -20,7 +20,8 @@ public interface GwtStaffServiceAsync extends RemoteAsync{
                 ServiceDefTarget target = (ServiceDefTarget) rs;
                 target.setServiceEntryPoint(GWT.getModuleBaseURL() + "../gwtsl/staff");
                 instance = GWT.create(GwtStaffServiceAsync.class);
-                LoginableService<GwtStaffServiceAsync> ls = (LoginableService<GwtStaffServiceAsync>) instance;
+				@SuppressWarnings("unchecked")
+				LoginableService<GwtStaffServiceAsync> ls = (LoginableService<GwtStaffServiceAsync>) instance;
                 ls.setRemoteService(rs);
                 ls.setHasLoginHandler(OpenIdSelector.getInstance(
                     GWT.getModuleBaseURL() + "../gwtsl/staff/gwt.openid.verify"));

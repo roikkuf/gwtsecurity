@@ -1,12 +1,14 @@
 package com.gwt.ss.demo4.server;
 
 import java.util.Collection;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
 /**
  * Code from Luke Taylor  spring example
  */
+@SuppressWarnings("serial")
 public class OpenIdUserDetails extends User {
 
     private String email;
