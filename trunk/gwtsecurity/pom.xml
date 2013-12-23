@@ -12,6 +12,7 @@
 	<description>Provides integration for gwt and Spring Security</description>
 	<url>http://code.google.com/p/gwtsecurity</url>
 
+
 	<licenses>
 		<license>
 			<name>Apache 2</name>
