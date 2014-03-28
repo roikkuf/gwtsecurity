@@ -119,8 +119,7 @@ public final class GwtResponseUtil {
         if (header != null && header.equalsIgnoreCase("true")) { return true; }
         // Check for the gwt-rpc content type.
         String contentType = request.getContentType();
-        if (contentType != null && contentType.startsWith(GwtConst.GWT_RPC_CONTENT_TYPE)) { return true; }
-        return false;
+        return contentType != null && contentType.startsWith(GwtConst.GWT_RPC_CONTENT_TYPE);
     }
 
     public static void processGwtException(ServletContext servletContext, HttpServletRequest request,
