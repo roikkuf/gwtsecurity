@@ -32,6 +32,7 @@ import org.springframework.security.web.authentication.AbstractAuthenticationPro
 import org.springframework.security.web.authentication.session.SessionAuthenticationException;
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
 import org.springframework.security.web.util.TextEscapeUtils;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.util.Assert;
 import org.springframework.web.context.ServletContextAware;
 
@@ -185,7 +186,8 @@ public class GwtUsernamePasswordAuthority implements ServletContextAware, Initia
                     .getRequest()));
                 Authentication authResult = getAuthenticationManager().authenticate(authRequest);
 
-                // Authentication was successful. Now make sure we haven't violated the session authentication
+                // Authentication was successful. Now make sure we haven't
+                // violated the session authentication
                 // strategy.
                 f = c.getDeclaredField("sessionStrategy");
                 f.setAccessible(true);
@@ -294,26 +296,17 @@ public class GwtUsernamePasswordAuthority implements ServletContextAware, Initia
         }
     }
 
-    @SuppressWarnings("deprecation")
-	protected boolean requiresAuthentication(AbstractAuthenticationProcessingFilter filter, HttpServletRequest request) {
-        String uri = request.getRequestURI();
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("RequiresAuthentication check for \n" + "url = " + uri + "\ncontext path = "
-                    + request.getContextPath() + "\nprocessUrl = " + filter.getFilterProcessesUrl());
+    protected boolean requiresAuthentication(AbstractAuthenticationProcessingFilter filter, HttpServletRequest request) {
+        try {
+            Class<AbstractAuthenticationProcessingFilter> c = AbstractAuthenticationProcessingFilter.class;
+            Field f = c.getDeclaredField("requiresAuthenticationRequestMatcher");
+            f.setAccessible(true);
+            RequestMatcher matcher = (RequestMatcher) f.get(filter);
+            return matcher.matches(request);
+        } catch (Exception e) {
+            LOG.warn(e.getMessage(), e);
         }
-        if (uri == null || uri.isEmpty()) {
-            return false;
-        } else {
-            int pathParamIndex = uri.indexOf(';');
-
-            if (pathParamIndex > 0) {
-                // strip everything after the first semi-colon
-                uri = uri.substring(0, pathParamIndex);
-            }
-
-            if ("".equals(request.getContextPath())) { return uri.endsWith(filter.getFilterProcessesUrl()); }
-            return uri.endsWith(request.getContextPath() + filter.getFilterProcessesUrl());
-        }
+        return false;
     }
 
     @Override
