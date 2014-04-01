@@ -6,10 +6,10 @@
 所以您的電腦必須存在Maven 的環境.
 
 您也可以直接下載已打事件編譯好的程式:
-|| [http://code.google.com/p/gwtsecurity/downloads/detail?name=gwtsecurity-1.2.4.jar gwtsecurity-1.2.4.jar] || 主要函式庫 ||
-|| [http://code.google.com/p/gwtsecurity/downloads/detail?name=GssDemo-Simple-1.2.4.war GssDemo-Simple-1.2.4.war] || 簡單的GWT程式範例,Spring Security 只是用來設定安全性，程式內完全不引用Spring的功能。 ||
-|| [http://code.google.com/p/gwtsecurity/downloads/detail?name=GssDemo-GwtSL-1.2.4.war GssDemo-GwtSL-1.2.4.war] || 以[http://code.google.com/p/gwt-sl/ gwt-sl]整合Spring Framework開發的GWT安全示範程式。 ||
-|| [http://code.google.com/p/gwtsecurity/downloads/detail?name=GssDemo-spring4gwt-1.2.4.war GssDemo-spring4gwt-1.2.4.war] || 以[http://code.google.com/p/spring4gwt/ spring4gwt]整合Spring Framework開發的GWT安全示範程式。 ||
+|| [http://code.google.com/p/gwtsecurity/downloads/detail?name=gwtsecurity-1.3.0.jar gwtsecurity-1.3.0.jar] || 主要函式庫 ||
+|| [http://code.google.com/p/gwtsecurity/downloads/detail?name=GssDemo-Simple-1.3.0.war GssDemo-Simple-1.3.0.war] || 簡單的GWT程式範例,Spring Security 只是用來設定安全性，程式內完全不引用Spring的功能。 ||
+|| [http://code.google.com/p/gwtsecurity/downloads/detail?name=GssDemo-GwtSL-1.3.0.war GssDemo-GwtSL-1.3.0.war] || 以[http://code.google.com/p/gwt-sl/ gwt-sl]整合Spring Framework開發的GWT安全示範程式。 ||
+|| [http://code.google.com/p/gwtsecurity/downloads/detail?name=GssDemo-spring4gwt-1.3.0.war GssDemo-spring4gwt-1.3.0.war] || 以[http://code.google.com/p/spring4gwt/ spring4gwt]整合Spring Framework開發的GWT安全示範程式。 ||
 
 = 說明 =
 
