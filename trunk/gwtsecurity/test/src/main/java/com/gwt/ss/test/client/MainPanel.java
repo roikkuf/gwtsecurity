@@ -16,6 +16,8 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.gwt.ss.client.GwtLoginAsync;
+import com.gwt.ss.client.GwtLogoutAsync;
 
 /**
  * @author steve
@@ -39,21 +41,28 @@ public class MainPanel extends VerticalPanel {
 
 	}
 
+	public static final String ADMIN_LOGIN_BTN_ID = "adminLoginBtn";
+	public static final String ADMIN_SECURED_BTN_ID = "adminSecuredBtn";
 	public static final String DEBUG_ID = "mainPanelId";
+	private static final String LOGOUT_LOGIN_BTN_ID = "logoutBtn";
 	public static final String RETURN_VALUE_ID = "returnValueId";
 	public static final String UNRESTRICTED_BTN_ID = "unrestrictedBtn";
+	public static final String USER_LOGIN_BTN_ID = "userLoginBtn";
 	public static final String USER_SECURED_BTN_ID = "userSecuredBtn";
-	public static final String ADMIN_SECURED_BTN_ID = "adminSecuredBtn";
-
-	public Object returnValue = null;
-
-	private MainServiceAsync mainSvc = GWT.create(MainServiceAsync.class);
 
 	private static Label createReturnValueLabel(String msg) {
 		Label label = new Label(msg);
 		label.ensureDebugId(RETURN_VALUE_ID);
 		return label;
 	}
+
+	private GwtLoginAsync loginSvc = GwtLoginAsync.Util.getInstance();
+	private GwtLogoutAsync logoutSvc = GwtLogoutAsync.Util.getInstance();
+	private MainServiceAsync mainSvc = GWT.create(MainServiceAsync.class);
+
+	private final FlowPanel returnPanel;
+
+	public Object returnValue = null;
 
 	/**
 	 * 
@@ -132,6 +141,89 @@ public class MainPanel extends VerticalPanel {
 		table.setWidget(row, 1, button);
 		row++;
 
+		// User Login Btn
+		button = new Button("User Login");
+		button.ensureDebugId(USER_LOGIN_BTN_ID);
+		button.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				returnPanel.clear();
+				loginSvc.j_gwt_security_check("user", "user", false,
+						new AsyncCallback<Void>() {
+							ReturnValueCallback callback = new ReturnValueCallback();
+
+							@Override
+							public void onFailure(Throwable caught) {
+								callback.onFailure(caught);
+							}
+
+							@Override
+							public void onSuccess(Void result) {
+								callback.onSuccess("UserLoginSuccess");
+							}
+
+						});
+			}
+		});
+		button.setWidth("150px");
+		table.setWidget(row, 1, button);
+		row++;
+
+		// Admin Login Btn
+		button = new Button("Admin Login");
+		button.ensureDebugId(ADMIN_LOGIN_BTN_ID);
+		button.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				returnPanel.clear();
+				loginSvc.j_gwt_security_check("admin", "admin", false,
+						new AsyncCallback<Void>() {
+							ReturnValueCallback callback = new ReturnValueCallback();
+
+							@Override
+							public void onFailure(Throwable caught) {
+								callback.onFailure(caught);
+							}
+
+							@Override
+							public void onSuccess(Void result) {
+								callback.onSuccess("UserLoginSuccess");
+							}
+
+						});
+			}
+		});
+		button.setWidth("150px");
+		table.setWidget(row, 1, button);
+		row++;
+
+		// Logout Btn
+		button = new Button("Logout");
+		button.ensureDebugId(LOGOUT_LOGIN_BTN_ID);
+		button.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				returnPanel.clear();
+				logoutSvc.j_gwt_security_logout(new AsyncCallback<Void>() {
+					ReturnValueCallback callback = new ReturnValueCallback();
+
+					@Override
+					public void onFailure(Throwable caught) {
+						callback.onFailure(caught);
+					}
+
+					@Override
+					public void onSuccess(Void result) {
+						callback.onSuccess("LogoutSuccess");
+					}
+
+				});
+			}
+		});
+		button.setWidth("150px");
+		table.setWidget(row, 1, button);
+		row++;
+
 		label = new Label("Return Value");
 		style = label.getElement().getStyle();
 		style.setFontSize(16, Unit.PX);
@@ -148,8 +240,6 @@ public class MainPanel extends VerticalPanel {
 		setCellHorizontalAlignment(returnPanel,
 				HasHorizontalAlignment.ALIGN_CENTER);
 	}
-
-	private final FlowPanel returnPanel;
 
 	/**
 	 * @return the returnValue
