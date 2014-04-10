@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE module PUBLIC
+  "-//Google Inc.//DTD Google Web Toolkit 2.6.0//EN"
+  "http://google-web-toolkit.googlecode.com/svn/trunk/distro-source/core/src/gwt-module.dtd">
+<module>
+	<inherits name='com.google.gwt.user.Debug' />
+	<inherits name='com.google.gwt.core.Core' />
+	<inherits name='com.google.gwt.user.User' />
+	<inherits name='com.google.gwt.user.theme.standard.Standard' />
+	<inherits name="com.gwt.ss.requestfactory.GwtSecurityWithRequestFactory" />
+	<entry-point class='com.gwt.ss.test.client.TestMain' />
+	<source path='client' />
+</module>
