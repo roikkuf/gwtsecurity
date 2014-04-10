@@ -44,7 +44,7 @@ public class MainPanel extends VerticalPanel {
 	public static final String ADMIN_LOGIN_BTN_ID = "adminLoginBtn";
 	public static final String ADMIN_SECURED_BTN_ID = "adminSecuredBtn";
 	public static final String DEBUG_ID = "mainPanelId";
-	private static final String LOGOUT_LOGIN_BTN_ID = "logoutBtn";
+	public static final String LOGOUT_BTN_ID = "logoutBtn";
 	public static final String RETURN_VALUE_ID = "returnValueId";
 	public static final String UNRESTRICTED_BTN_ID = "unrestrictedBtn";
 	public static final String USER_LOGIN_BTN_ID = "userLoginBtn";
@@ -187,7 +187,7 @@ public class MainPanel extends VerticalPanel {
 
 							@Override
 							public void onSuccess(Void result) {
-								callback.onSuccess("UserLoginSuccess");
+								callback.onSuccess("AdminLoginSuccess");
 							}
 
 						});
@@ -199,7 +199,7 @@ public class MainPanel extends VerticalPanel {
 
 		// Logout Btn
 		button = new Button("Logout");
-		button.ensureDebugId(LOGOUT_LOGIN_BTN_ID);
+		button.ensureDebugId(LOGOUT_BTN_ID);
 		button.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
