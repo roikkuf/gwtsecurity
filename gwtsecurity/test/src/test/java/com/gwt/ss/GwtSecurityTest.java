@@ -75,7 +75,65 @@ public class GwtSecurityTest extends TestCase {
 				.presenceOfElementLocated(By.id("gwt-debug-"
 						+ MainPanel.DEBUG_ID)));
 
+		// Not logged in.
 		String result = doRPCClick(MainPanel.UNRESTRICTED_BTN_ID);
+		assertTrue(result != null);
+		assertTrue(result.equals("unrestricted"));
+
+		result = doRPCClick(MainPanel.USER_SECURED_BTN_ID);
+		assertTrue(result != null);
+		assertFalse(result.equals("userSecured"));
+
+		result = doRPCClick(MainPanel.ADMIN_SECURED_BTN_ID);
+		assertTrue(result != null);
+		assertFalse(result.equals("adminSecured"));
+
+		// Logged in as user.
+		result = doRPCClick(MainPanel.USER_LOGIN_BTN_ID);
+		assertTrue(result != null);
+		assertTrue(result.equals("UserLoginSuccess"));
+
+		result = doRPCClick(MainPanel.UNRESTRICTED_BTN_ID);
+		assertTrue(result != null);
+		assertTrue(result.equals("unrestricted"));
+
+		result = doRPCClick(MainPanel.USER_SECURED_BTN_ID);
+		assertTrue(result != null);
+		assertTrue(result.equals("userSecured"));
+
+		result = doRPCClick(MainPanel.ADMIN_SECURED_BTN_ID);
+		assertTrue(result != null);
+		assertFalse(result.equals("adminSecured"));
+
+		// Logout user.
+		result = doRPCClick(MainPanel.LOGOUT_BTN_ID);
+		assertTrue(result != null);
+		assertTrue(result.equals("LogoutSuccess"));
+
+		// Logged in as admin.
+		result = doRPCClick(MainPanel.ADMIN_LOGIN_BTN_ID);
+		assertTrue(result != null);
+		assertTrue(result.equals("AdminLoginSuccess"));
+
+		result = doRPCClick(MainPanel.UNRESTRICTED_BTN_ID);
+		assertTrue(result != null);
+		assertTrue(result.equals("unrestricted"));
+
+		result = doRPCClick(MainPanel.USER_SECURED_BTN_ID);
+		assertTrue(result != null);
+		assertTrue(result.equals("userSecured"));
+
+		result = doRPCClick(MainPanel.ADMIN_SECURED_BTN_ID);
+		assertTrue(result != null);
+		assertTrue(result.equals("adminSecured"));
+
+		// Logout user.
+		result = doRPCClick(MainPanel.LOGOUT_BTN_ID);
+		assertTrue(result != null);
+		assertTrue(result.equals("LogoutSuccess"));
+
+		// Not logged in.
+		result = doRPCClick(MainPanel.UNRESTRICTED_BTN_ID);
 		assertTrue(result != null);
 		assertTrue(result.equals("unrestricted"));
 
