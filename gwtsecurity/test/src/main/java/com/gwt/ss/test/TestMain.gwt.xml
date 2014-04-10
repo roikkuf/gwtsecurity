@@ -8,6 +8,7 @@
 	<inherits name='com.google.gwt.user.User' />
 	<inherits name='com.google.gwt.user.theme.standard.Standard' />
 	<inherits name="com.gwt.ss.requestfactory.GwtSecurityWithRequestFactory" />
+	<set-property name="user.agent" value="safari" />
 	<entry-point class='com.gwt.ss.test.client.TestMain' />
 	<source path='client' />
 </module>
