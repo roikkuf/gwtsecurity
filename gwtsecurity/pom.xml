@@ -125,6 +125,9 @@
 										<versionRange>[2.5.0,)</versionRange>
 										<goals>
 											<goal>compile</goal>
+											<goal>test</goal>
+											<goal>i18n</goal>
+											<goal>generateAsync</goal>
 										</goals>
 									</pluginExecutionFilter>
 									<action>

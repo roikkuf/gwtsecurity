@@ -26,7 +26,7 @@ import com.gwt.ss.test.client.MainPanel;
  * 
  */
 @RunWith(BlockJUnit4ClassRunner.class)
-public class GwtSecurityTest extends TestCase {
+public class ITGwtSecurity extends TestCase {
 
 	private static WebDriver driver;
 
