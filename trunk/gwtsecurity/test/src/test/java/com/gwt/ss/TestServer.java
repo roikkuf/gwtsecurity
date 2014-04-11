@@ -61,7 +61,7 @@ public class TestServer {
 			WebAppContext webAppContext = new ThrowyWebAppContext();
 			webAppContext.setContextPath("/");
 			webAppContext
-					.setWar("target/gwtsecurity-test-1.3.1-SNAPSHOT/com.gwt.ss.test.TestMain");
+					.setWar("target/gwtsecurity-test-1.3.1-SNAPSHOT/");
 			handlers.addHandler(webAppContext);
 
 			server.setHandler(handlers);
