@@ -1,3 +1,9 @@
+/**
+ * $Id$
+ * 
+ * Copyright (c) 2014 Steven Jardine, All Rights Reserved.
+ * Copyright (c) 2014 MJN Services, Inc., All Rights Reserved.
+ */
 package com.gwt.ss;
 
 import java.io.IOException;
@@ -26,25 +32,35 @@ import com.google.gwt.user.client.rpc.impl.AbstractSerializationStream;
  */
 public class GwtLogoutSuccessHandler implements LogoutSuccessHandler, InitializingBean, ServletContextAware {
 
+    /** The default handler. */
     private SimpleUrlLogoutSuccessHandler defaultHandler = new SimpleUrlLogoutSuccessHandler();
 
+    /** The logout success url. */
     private String logoutSuccessUrl = "/";
 
+    /** The servlet context. */
     private ServletContext servletContext;
 
+    /** {@inheritDoc} */
     @Override
     public void afterPropertiesSet() {
         Assert.notNull(logoutSuccessUrl, "logoutSuccessUrl must be specified");
         defaultHandler.setDefaultTargetUrl(logoutSuccessUrl);
     }
 
+    /**
+     * Gets the logout success url.
+     * 
+     * @return the logout success url
+     */
     public String getLogoutSuccessUrl() {
         return logoutSuccessUrl;
     }
 
+    /** {@inheritDoc} */
     @Override
-    public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
-            throws IOException, ServletException {
+    public void onLogoutSuccess(final HttpServletRequest request, final HttpServletResponse response,
+            final Authentication authentication) throws IOException, ServletException {
         if (GwtResponseUtil.isGwt(request)) {
             String responsePayload = String.format("//OK[[],%d,%s]", AbstractSerializationStream.DEFAULT_FLAGS,
                 AbstractSerializationStream.SERIALIZATION_STREAM_VERSION);
@@ -55,13 +71,19 @@ public class GwtLogoutSuccessHandler implements LogoutSuccessHandler, Initializi
 
     }
 
-    public void setLogoutSuccessUrl(String logoutSuccessUrl) {
+    /**
+     * Sets the logout success url.
+     * 
+     * @param logoutSuccessUrl the new logout success url
+     */
+    public void setLogoutSuccessUrl(final String logoutSuccessUrl) {
         this.logoutSuccessUrl = logoutSuccessUrl;
         defaultHandler.setDefaultTargetUrl(logoutSuccessUrl);
     }
 
+    /** {@inheritDoc} */
     @Override
-    public void setServletContext(ServletContext servletContext) {
+    public void setServletContext(final ServletContext servletContext) {
         this.servletContext = servletContext;
     }
 }

@@ -1,5 +1,8 @@
 /**
  * $Id$
+ * 
+ * Copyright (c) 2014 Steven Jardine, All Rights Reserved.
+ * Copyright (c) 2014 MJN Services, Inc., All Rights Reserved.
  */
 package com.gwt.ss.requestfactory.client.loginable;
 
@@ -24,17 +27,28 @@ import com.gwt.ss.shared.GwtConst;
 /**
  * Intercepts the requestfactory requests and starts the login process if necessary.
  * 
- * @version $Rev$
  * @author Steven Jardine
+ * @version $Rev$
  */
 public class LoginableRequestTransport extends DefaultRequestTransport {
 
+    /**
+     * The Class LoginableRequestCallback.
+     */
     private class LoginableRequestCallback implements RequestCallback {
 
+        /** The payload. */
         private final String payload;
 
+        /** The receiver. */
         private final TransportReceiver receiver;
 
+        /**
+         * Instantiates a new {@link LoginableRequestTransport}.
+         * 
+         * @param payload the payload
+         * @param receiver the receiver
+         */
         public LoginableRequestCallback(final String payload, final TransportReceiver receiver) {
             this.payload = payload;
             this.receiver = receiver;
@@ -81,8 +95,10 @@ public class LoginableRequestTransport extends DefaultRequestTransport {
         }
     }
 
+    /** The Constant EXCEPTION_PREFIX. */
     private static final String EXCEPTION_PREFIX = "//EX[";
 
+    /** The stream factory. */
     private static SerializationStreamFactory streamFactory = null;
 
     /**
@@ -91,7 +107,7 @@ public class LoginableRequestTransport extends DefaultRequestTransport {
      * @param payload the exception payload to deserialize.
      * @return the deserialized security exception.
      */
-    private static GwtSecurityException deserializeSecurityException(String payload) {
+    private static GwtSecurityException deserializeSecurityException(final String payload) {
         if (payload != null && payload.indexOf(EXCEPTION_PREFIX) != -1) {
             try {
                 if (streamFactory == null) {
@@ -105,6 +121,7 @@ public class LoginableRequestTransport extends DefaultRequestTransport {
         return null;
     }
 
+    /** The login handler. */
     private final HasLoginHandler loginHandler;
 
     /**

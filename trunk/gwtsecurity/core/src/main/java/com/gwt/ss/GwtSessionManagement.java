@@ -1,3 +1,9 @@
+/**
+ * $Id$
+ * 
+ * Copyright (c) 2014 Steven Jardine, All Rights Reserved.
+ * Copyright (c) 2014 MJN Services, Inc., All Rights Reserved.
+ */
 package com.gwt.ss;
 
 import java.lang.reflect.Field;
@@ -51,30 +57,48 @@ import org.springframework.web.context.ServletContextAware;
 @Aspect
 public class GwtSessionManagement implements ServletContextAware {
 
+    /** The Constant FILTER_APPLIED. */
     static final String FILTER_APPLIED = "__spring_security_session_mgmt_filter_applied";
 
+    /** The Constant LOG. */
     private static final Logger LOG = LoggerFactory.getLogger(GwtSessionManagement.class);
 
+    /** The cs target. */
     private ConcurrentSessionFilter csTarget = null;
 
+    /** The invalid session strategy. */
     private Object invalidSessionStrategy = null;
 
+    /** The invalid session url. */
     private String invalidSessionUrl = null;
 
+    /** The logout handlers. */
     private LogoutHandler[] logoutHandlers = null;
 
+    /** The security context repository. */
     private SecurityContextRepository securityContextRepository = null;
 
+    /** The servlet context. */
     private ServletContext servletContext;
 
+    /** The session registry. */
     private SessionRegistry sessionRegistry;
 
+    /** The session strategy. */
     private SessionAuthenticationStrategy sessionStrategy = new SessionFixationProtectionStrategy();
 
+    /** The sm target. */
     private SessionManagementFilter smTarget = null;
 
+    /**
+     * Do cs filter.
+     * 
+     * @param pjp the pjp
+     * @return the object
+     * @throws Throwable the throwable
+     */
     @Around("execution(* org.springframework.security.web.session.ConcurrentSessionFilter.doFilter(..))")
-    public Object doCSFilter(ProceedingJoinPoint pjp) throws Throwable {
+    public Object doCSFilter(final ProceedingJoinPoint pjp) throws Throwable {
         HttpHolder holder = HttpHolder.getInstance(pjp);
         SessionInformation info = holder.getRequest().getSession(false) != null
                 && GwtResponseUtil.isGwt(holder.getRequest()) ? getSessionRegistry(getCSTarget(pjp))
@@ -106,8 +130,15 @@ public class GwtSessionManagement implements ServletContextAware {
         }
     }
 
+    /**
+     * Do sm filter.
+     * 
+     * @param pjp the pjp
+     * @return the object
+     * @throws Throwable the throwable
+     */
     @Around("execution(* org.springframework.security.web.session.SessionManagementFilter.doFilter(..))")
-    public Object doSMFilter(ProceedingJoinPoint pjp) throws Throwable {
+    public Object doSMFilter(final ProceedingJoinPoint pjp) throws Throwable {
         HttpHolder holder = HttpHolder.getInstance(pjp);
         if (holder.isGwt()) {
             if (LOG.isDebugEnabled()) {
@@ -149,8 +180,7 @@ public class GwtSessionManagement implements ServletContextAware {
                     if (holder.getRequest().getRequestedSessionId() != null
                             && !holder.getRequest().isRequestedSessionIdValid()) {
                         if (LOG.isDebugEnabled()) {
-                            LOG.debug("Requested session id {} is invalid", holder.getRequest()
-                                .getRequestedSessionId());
+                            LOG.debug("Requested session id {} is invalid", holder.getRequest().getRequestedSessionId());
                         }
                         if (getInvalidSessionUrl(getSMTarget(pjp)) != null
                                 || getInvalidSessionStrategy(getSMTarget(pjp)) != null) {
@@ -174,14 +204,26 @@ public class GwtSessionManagement implements ServletContextAware {
         }
     }
 
-    private ConcurrentSessionFilter getCSTarget(ProceedingJoinPoint pjp) {
+    /**
+     * Gets the CS target.
+     * 
+     * @param pjp the pjp
+     * @return the CS target
+     */
+    private ConcurrentSessionFilter getCSTarget(final ProceedingJoinPoint pjp) {
         if (csTarget == null) {
             csTarget = (ConcurrentSessionFilter) pjp.getTarget();
         }
         return csTarget;
     }
 
-    private FilterChain getFilterChain(JoinPoint jp) {
+    /**
+     * Gets the filter chain.
+     * 
+     * @param jp the jp
+     * @return the filter chain
+     */
+    private FilterChain getFilterChain(final JoinPoint jp) {
         if (jp == null) {
             return null;
         } else {
@@ -192,7 +234,15 @@ public class GwtSessionManagement implements ServletContextAware {
         }
     }
 
-    private Object getInvalidSessionStrategy(SessionManagementFilter target) throws IllegalArgumentException,
+    /**
+     * Gets the invalid session strategy.
+     * 
+     * @param target the target
+     * @return the invalid session strategy
+     * @throws IllegalArgumentException the illegal argument exception
+     * @throws IllegalAccessException the illegal access exception
+     */
+    private Object getInvalidSessionStrategy(final SessionManagementFilter target) throws IllegalArgumentException,
             IllegalAccessException {
         if (invalidSessionStrategy == null) {
             try {
@@ -200,13 +250,22 @@ public class GwtSessionManagement implements ServletContextAware {
                 f.setAccessible(true);
                 invalidSessionStrategy = f.get(target);
             } catch (NoSuchFieldException e) {
-                // Do nothing. We are probably using Spring Security 3.0.5.RELEASE.
+                // We are probably using Spring Security 3.0.5.RELEASE.
+                LOG.debug(e.getMessage(), e);
             }
         }
         return invalidSessionStrategy;
     }
 
-    private String getInvalidSessionUrl(SessionManagementFilter target) throws IllegalArgumentException,
+    /**
+     * Gets the invalid session url.
+     * 
+     * @param target the target
+     * @return the invalid session url
+     * @throws IllegalArgumentException the illegal argument exception
+     * @throws IllegalAccessException the illegal access exception
+     */
+    private String getInvalidSessionUrl(final SessionManagementFilter target) throws IllegalArgumentException,
             IllegalAccessException {
         if (invalidSessionUrl == null) {
             try {
@@ -214,13 +273,23 @@ public class GwtSessionManagement implements ServletContextAware {
                 f.setAccessible(true);
                 invalidSessionUrl = (String) f.get(target);
             } catch (NoSuchFieldException e) {
-                // Do nothing. We are probably using Spring Security 3.1.0.RELEASE.
+                // We are probably using Spring Security 3.1.0.RELEASE.
+                LOG.debug(e.getMessage(), e);
             }
         }
         return invalidSessionUrl == null ? null : invalidSessionUrl.isEmpty() ? null : invalidSessionUrl;
     }
 
-    private LogoutHandler[] getLogoutHandlers(ConcurrentSessionFilter target) throws NoSuchFieldException,
+    /**
+     * Gets the logout handlers.
+     * 
+     * @param target the target
+     * @return the logout handlers
+     * @throws NoSuchFieldException the no such field exception
+     * @throws IllegalArgumentException the illegal argument exception
+     * @throws IllegalAccessException the illegal access exception
+     */
+    private LogoutHandler[] getLogoutHandlers(final ConcurrentSessionFilter target) throws NoSuchFieldException,
             IllegalArgumentException, IllegalAccessException {
         if (logoutHandlers == null) {
             Field f = ConcurrentSessionFilter.class.getDeclaredField("handlers");
@@ -230,7 +299,16 @@ public class GwtSessionManagement implements ServletContextAware {
         return logoutHandlers;
     }
 
-    private SecurityContextRepository getSecurityContextRepository(SessionManagementFilter target)
+    /**
+     * Gets the security context repository.
+     * 
+     * @param target the target
+     * @return the security context repository
+     * @throws NoSuchFieldException the no such field exception
+     * @throws IllegalArgumentException the illegal argument exception
+     * @throws IllegalAccessException the illegal access exception
+     */
+    private SecurityContextRepository getSecurityContextRepository(final SessionManagementFilter target)
             throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
         if (securityContextRepository == null) {
             Field f = SessionManagementFilter.class.getDeclaredField("securityContextRepository");
@@ -240,7 +318,16 @@ public class GwtSessionManagement implements ServletContextAware {
         return securityContextRepository;
     }
 
-    private SessionRegistry getSessionRegistry(ConcurrentSessionFilter target) throws NoSuchFieldException,
+    /**
+     * Gets the session registry.
+     * 
+     * @param target the target
+     * @return the session registry
+     * @throws NoSuchFieldException the no such field exception
+     * @throws IllegalArgumentException the illegal argument exception
+     * @throws IllegalAccessException the illegal access exception
+     */
+    private SessionRegistry getSessionRegistry(final ConcurrentSessionFilter target) throws NoSuchFieldException,
             IllegalArgumentException, IllegalAccessException {
         if (sessionRegistry == null) {
             Field f = ConcurrentSessionFilter.class.getDeclaredField("sessionRegistry");
@@ -250,15 +337,22 @@ public class GwtSessionManagement implements ServletContextAware {
         return sessionRegistry;
     }
 
-    private SessionManagementFilter getSMTarget(ProceedingJoinPoint pjp) {
+    /**
+     * Gets the SM target.
+     * 
+     * @param pjp the pjp
+     * @return the SM target
+     */
+    private SessionManagementFilter getSMTarget(final ProceedingJoinPoint pjp) {
         if (smTarget == null) {
             smTarget = (SessionManagementFilter) pjp.getTarget();
         }
         return smTarget;
     }
 
+    /** {@inheritDoc} */
     @Override
-    public void setServletContext(ServletContext servletContext) {
+    public void setServletContext(final ServletContext servletContext) {
         this.servletContext = servletContext;
     }
 

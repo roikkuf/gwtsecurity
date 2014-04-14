@@ -1,3 +1,9 @@
+/**
+ * $Id$
+ * 
+ * Copyright (c) 2014 Steven Jardine, All Rights Reserved.
+ * Copyright (c) 2014 MJN Services, Inc., All Rights Reserved.
+ */
 package com.gwt.ss;
 
 import javax.servlet.ServletContext;
@@ -12,7 +18,7 @@ import org.springframework.security.access.event.AuthorizationFailureEvent;
 import org.springframework.web.context.ServletContextAware;
 
 /**
- * Rquired
+ * Required.
  * <ul>
  * <li>Intruduce aop naming space</li>
  * <li>Declare &lt;aop:aspectj-autoproxy&gt;</li>
@@ -28,14 +34,24 @@ import org.springframework.web.context.ServletContextAware;
 @Aspect
 public class GwtExceptionTranslator implements ServletContextAware, ApplicationListener<AuthorizationFailureEvent> {
 
+    /** The http holder. */
     private static ThreadLocal<HttpHolder> httpHolder = new InheritableThreadLocal<HttpHolder>();
 
+    /** The Constant LOG. */
     protected static final Logger LOG = LoggerFactory.getLogger(GwtExceptionTranslator.class);
 
+    /** The servlet context. */
     private ServletContext servletContext;
 
+    /**
+     * Do filter.
+     * 
+     * @param pjp the pjp
+     * @return the object
+     * @throws Throwable the throwable
+     */
     @Around("execution(* org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(..))")
-    public Object doFilter(ProceedingJoinPoint pjp) throws Throwable {
+    public Object doFilter(final ProceedingJoinPoint pjp) throws Throwable {
         HttpHolder holder = HttpHolder.getInstance(pjp);
         if (LOG.isDebugEnabled()) {
             LOG.debug("Capture of " + (holder.isGwt() ? "Gwt" : "Non Gwt") + " ExceptionTranslationFilter.doFilter!"
@@ -55,7 +71,7 @@ public class GwtExceptionTranslator implements ServletContextAware, ApplicationL
 
     /** {@inheritDoc} */
     @Override
-    public void onApplicationEvent(AuthorizationFailureEvent event) {
+    public void onApplicationEvent(final AuthorizationFailureEvent event) {
         if (LOG.isErrorEnabled()) {
             LOG.error("Receive AuthorizationFailureEvent:" + event.getAccessDeniedException().getMessage(),
                 event.getAccessDeniedException());
@@ -69,7 +85,7 @@ public class GwtExceptionTranslator implements ServletContextAware, ApplicationL
 
     /** {@inheritDoc} */
     @Override
-    public void setServletContext(ServletContext servletContext) {
+    public void setServletContext(final ServletContext servletContext) {
         this.servletContext = servletContext;
     }
 

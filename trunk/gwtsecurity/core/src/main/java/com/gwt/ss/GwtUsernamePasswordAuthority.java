@@ -1,3 +1,9 @@
+/**
+ * $Id$
+ * 
+ * Copyright (c) 2014 Steven Jardine, All Rights Reserved.
+ * Copyright (c) 2014 MJN Services, Inc., All Rights Reserved.
+ */
 package com.gwt.ss;
 
 import java.io.IOException;
@@ -60,36 +66,61 @@ public class GwtUsernamePasswordAuthority implements ServletContextAware, Initia
 
     /**
      * Provide by Amit Khanna<br/>
-     * 由Amit Khanna提供
+     * 由Amit Khanna提供.
      */
     private static class DefaultSerializationPolicyProvider implements SerializationPolicyProvider {
 
+        /** The instance. */
         private static DefaultSerializationPolicyProvider instance = new DefaultSerializationPolicyProvider();
 
+        /**
+         * Gets the instance.
+         * 
+         * @return the instance
+         */
         public static DefaultSerializationPolicyProvider getInstance() {
             return instance;
         }
 
+        /** {@inheritDoc} */
         @Override
-        public SerializationPolicy getSerializationPolicy(String moduleBaseURL, String serializationPolicyStrongName) {
+        public SerializationPolicy getSerializationPolicy(final String moduleBaseURL,
+                final String serializationPolicyStrongName) {
             return RPC.getDefaultSerializationPolicy();
         }
     }
 
+    /**
+     * The Class PayloadInfo.
+     */
     private static class PayloadInfo {
 
+        /** The force logout. */
         private boolean forceLogout = false;
 
+        /** The http holder. */
         private HttpHolder httpHolder;
 
+        /** The password. */
         private String password;
 
+        /** The remember me. */
         private boolean rememberMe = false;
 
+        /** The username. */
         private String username;
 
-        public PayloadInfo(String username, String password, HttpHolder httpHolder, boolean rememberMe,
-                boolean forceLogout) {
+        /**
+         * Instantiates a new payload info.
+         * 
+         * @param username the username
+         * @param password the password
+         * @param httpHolder the http holder
+         * @param rememberMe the remember me
+         * @param forceLogout the force logout
+         */
+        public PayloadInfo(final String username, final String password, final HttpHolder httpHolder,
+                final boolean rememberMe, final boolean forceLogout) {
             this.username = username;
             this.password = password;
             this.httpHolder = httpHolder;
@@ -97,69 +128,121 @@ public class GwtUsernamePasswordAuthority implements ServletContextAware, Initia
             this.forceLogout = forceLogout;
         }
 
+        /**
+         * Gets the http holder.
+         * 
+         * @return the http holder
+         */
         public HttpHolder getHttpHolder() {
             return httpHolder;
         }
 
+        /**
+         * Gets the password.
+         * 
+         * @return the password
+         */
         public String getPassword() {
             return password;
         }
 
+        /**
+         * Gets the username.
+         * 
+         * @return the username
+         */
         public String getUsername() {
             return username;
         }
 
+        /**
+         * Checks if is the force logout.
+         * 
+         * @return the force logout
+         */
         public boolean isForceLogout() {
             return forceLogout;
         }
 
+        /**
+         * Checks if is the remember me.
+         * 
+         * @return the remember me
+         */
         public boolean isRememberMe() {
             return rememberMe;
         }
 
     }
 
+    /**
+     * The Class RememberMeRequestWrapper.
+     */
     private static class RememberMeRequestWrapper extends HttpServletRequestWrapper {
 
+        /** The remember me parameter. */
         private String rememberMeParameter = "_spring_security_remember_me";
 
-        public RememberMeRequestWrapper(HttpServletRequest request, String rememberMeParameter) {
+        /**
+         * Instantiates a new remember me request wrapper.
+         * 
+         * @param request the request
+         * @param rememberMeParameter the remember me parameter
+         */
+        public RememberMeRequestWrapper(final HttpServletRequest request, final String rememberMeParameter) {
             super(request);
             if (rememberMeParameter != null && !rememberMeParameter.isEmpty()) {
                 this.rememberMeParameter = rememberMeParameter;
             }
         }
 
+        /** {@inheritDoc} */
         @Override
-        public String getParameter(String name) {
+        public String getParameter(final String name) {
             return name.equals(rememberMeParameter) ? "true" : super.getParameter(name);
         }
     }
 
+    /** The Constant LOG. */
     protected static final Logger LOG = LoggerFactory.getLogger(GwtUsernamePasswordAuthority.class);
 
+    /** The payload holder. */
     private static ThreadLocal<PayloadInfo> payloadHolder = new InheritableThreadLocal<PayloadInfo>();
 
+    /** The application context. */
     private ApplicationContext applicationContext;
 
+    /** The authentication manager. */
     private AuthenticationManager authenticationManager;
 
+    /** The remember me parameter. */
     private String rememberMeParameter = "_spring_security_remember_me";
 
+    /** The serialization policy provider. */
     private SerializationPolicyProvider serializationPolicyProvider = DefaultSerializationPolicyProvider.getInstance();
 
+    /** The servlet context. */
     private ServletContext servletContext;
 
+    /** The suppress login error messages. */
     private boolean suppressLoginErrorMessages = false;
 
+    /** {@inheritDoc} */
     @Override
     public void afterPropertiesSet() {
         Assert.notNull(authenticationManager, "authenticationManager must be specified");
     }
 
+    /**
+     * Do filter.
+     * 
+     * @param pjp the pjp
+     * @return the object
+     * @throws Throwable the throwable
+     */
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @Around("execution(* org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(..))")
-    public Object doFilter(ProceedingJoinPoint pjp) throws Throwable {
+    public Object doFilter(final ProceedingJoinPoint pjp) throws Throwable {
         HttpHolder httpHolder = HttpHolder.getInstance(pjp);
         AbstractAuthenticationProcessingFilter filter = (AbstractAuthenticationProcessingFilter) pjp.getTarget();
         if (httpHolder.isGwt() && requiresAuthentication(filter, httpHolder.getRequest())) {
@@ -230,11 +313,18 @@ public class GwtUsernamePasswordAuthority implements ServletContextAware, Initia
         }
     }
 
+    private static final int FORCE_LOGOUT_POSITION = 3;
+
     /**
-     * Provide by Amit Khanna<br/>
+     * Provided by Amit Khanna.<br/>
      * 由Amit Khanna提供
+     * 
+     * @param jp the jp
+     * @return the payload info
+     * @throws IOException Signals that an I/O exception has occurred.
+     * @throws ServletException the servlet exception
      */
-    private PayloadInfo extract(JoinPoint jp) throws IOException, ServletException {
+    private PayloadInfo extract(final JoinPoint jp) throws IOException, ServletException {
         PayloadInfo result = payloadHolder.get();
         HttpHolder httpHolder = HttpHolder.getInstance(jp);
         HttpServletRequest request = httpHolder.getRequest();
@@ -253,12 +343,14 @@ public class GwtUsernamePasswordAuthority implements ServletContextAware, Initia
                 try {
                     rememberMe = (Boolean) requestParams[2];
                 } catch (Exception e) {
+                    LOG.debug(e.getMessage(), e);
                 }
             }
-            if (requestParams.length > 3) {
+            if (requestParams.length > FORCE_LOGOUT_POSITION) {
                 try {
-                    forceLogout = (Boolean) requestParams[3];
+                    forceLogout = (Boolean) requestParams[FORCE_LOGOUT_POSITION];
                 } catch (Exception e) {
+                    LOG.debug(e.getMessage(), e);
                 }
             }
             if (username != null && password != null) {
@@ -269,20 +361,36 @@ public class GwtUsernamePasswordAuthority implements ServletContextAware, Initia
         return result;
     }
 
+    /**
+     * Gets the authentication manager.
+     * 
+     * @return the authentication manager
+     */
     public AuthenticationManager getAuthenticationManager() {
         return authenticationManager;
     }
 
+    /**
+     * Gets the remember me parameter.
+     * 
+     * @return the remember me parameter
+     */
     public String getRememberMeParameter() {
         return rememberMeParameter;
     }
 
+    /**
+     * Checks if is the suppress login error messages.
+     * 
+     * @return the suppress login error messages
+     */
     public boolean isSuppressLoginErrorMessages() {
         return suppressLoginErrorMessages;
     }
 
+    /** {@inheritDoc} */
     @Override
-    public void onApplicationEvent(InteractiveAuthenticationSuccessEvent event) {
+    public void onApplicationEvent(final InteractiveAuthenticationSuccessEvent event) {
         PayloadInfo pi = payloadHolder.get();
         if (pi != null && pi.getHttpHolder().isGwt()) {
             HttpServletRequest request = pi.getHttpHolder().getRequest();
@@ -296,7 +404,15 @@ public class GwtUsernamePasswordAuthority implements ServletContextAware, Initia
         }
     }
 
-    protected boolean requiresAuthentication(AbstractAuthenticationProcessingFilter filter, HttpServletRequest request) {
+    /**
+     * Requires authentication.
+     * 
+     * @param filter the filter
+     * @param request the request
+     * @return true, if successful
+     */
+    protected boolean requiresAuthentication(final AbstractAuthenticationProcessingFilter filter,
+            final HttpServletRequest request) {
         try {
             Class<AbstractAuthenticationProcessingFilter> c = AbstractAuthenticationProcessingFilter.class;
             Field f = c.getDeclaredField("requiresAuthenticationRequestMatcher");
@@ -309,25 +425,42 @@ public class GwtUsernamePasswordAuthority implements ServletContextAware, Initia
         return false;
     }
 
+    /** {@inheritDoc} */
     @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+    public void setApplicationContext(final ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext;
     }
 
-    public void setAuthenticationManager(AuthenticationManager authenticationManager) {
+    /**
+     * Sets the authentication manager.
+     * 
+     * @param authenticationManager the new authentication manager
+     */
+    public void setAuthenticationManager(final AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
     }
 
-    public void setRememberMeParameter(String rememberMeParameter) {
+    /**
+     * Sets the remember me parameter.
+     * 
+     * @param rememberMeParameter the new remember me parameter
+     */
+    public void setRememberMeParameter(final String rememberMeParameter) {
         this.rememberMeParameter = rememberMeParameter;
     }
 
+    /** {@inheritDoc} */
     @Override
-    public void setServletContext(ServletContext servletContext) {
+    public void setServletContext(final ServletContext servletContext) {
         this.servletContext = servletContext;
     }
 
-    public void setSuppressLoginErrorMessages(boolean suppressLoginErrorMessages) {
+    /**
+     * Sets the suppress login error messages.
+     * 
+     * @param suppressLoginErrorMessages the new suppress login error messages
+     */
+    public void setSuppressLoginErrorMessages(final boolean suppressLoginErrorMessages) {
         this.suppressLoginErrorMessages = suppressLoginErrorMessages;
     }
 
