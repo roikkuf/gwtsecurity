@@ -54,11 +54,6 @@ public class GwtRpcController extends RemoteServiceServlet implements Controller
     @Override
     public final ModelAndView handleRequest(final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
-        // if (remoteService instanceof GwtService) {
-        // GwtService gwtSvc = (GwtService) remoteService;
-        // gwtSvc.setRequest(request);
-        // gwtSvc.setSession(request.getSession(false));
-        // }
         super.doPost(request, response);
         return null;
     }
