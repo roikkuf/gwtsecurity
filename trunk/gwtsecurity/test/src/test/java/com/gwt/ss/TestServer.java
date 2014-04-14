@@ -4,6 +4,11 @@
  */
 package com.gwt.ss;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.util.Properties;
+
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.HandlerCollection;
 import org.eclipse.jetty.webapp.WebAppContext;
@@ -31,37 +36,63 @@ public class TestServer {
 
 	private static final Logger LOG = LoggerFactory.getLogger(TestServer.class);
 
-	private Server server;
+	private static final int PORT = 17000;
 
-	private static final int port = 17000;
+	private static final String PROP_FILENAME = "gwtsecurity-test.properties";
+
+	private static Properties PROPS = null;
+
+	public static final Properties loadProperties() {
+		Properties result = new Properties();
+		File propFile = new File(new File(System.getProperty("user.home")),
+				PROP_FILENAME);
+		try {
+			InputStream in = null;
+			try {
+				if (propFile.exists()) {
+					in = new FileInputStream(propFile);
+				} else {
+					in = TestServer.class.getResourceAsStream("/"
+							+ PROP_FILENAME);
+				}
+				if (in != null) {
+					result.load(in);
+				}
+			} finally {
+				if (in != null) {
+					in.close();
+				}
+			}
+		} catch (Exception e) {
+			LOG.error(e.getMessage(), e);
+		}
+		return result;
+	}
 
 	public static void main(String[] args) {
 		new TestServer();
 	}
+
+	private Server server;
 
 	/**
      * 
      */
 	public TestServer() {
 		try {
+			PROPS = TestServer.loadProperties();
+			assert PROPS != null;
 			LOG.info("Starting Jetty Server.");
-
 			// Server config.
-			server = new Server(port);
-			server.setAttribute(
-					"org.eclipse.jetty.server.Request.maxFormContentSize", -1);
-			server.setAttribute("maxFormContentSize", -1);
-			server.setAttribute("org.eclipse.jetty.server.Request.maxFormKeys",
-					-1);
-			server.setAttribute("maxFormKeys", -1);
+			server = new Server(Integer.valueOf(PROPS.getProperty(
+					"webapp.port", "" + PORT)));
 
 			// Handlers config.
 			HandlerCollection handlers = new HandlerCollection();
 
 			WebAppContext webAppContext = new ThrowyWebAppContext();
 			webAppContext.setContextPath("/");
-			webAppContext
-					.setWar("target/gwtsecurity-test-1.3.1-SNAPSHOT/");
+			webAppContext.setWar(PROPS.getProperty("webapp.location"));
 			handlers.addHandler(webAppContext);
 
 			server.setHandler(handlers);
@@ -71,12 +102,12 @@ public class TestServer {
 		}
 	}
 
-	public void stop() throws Exception {
-		server.stop();
-	}
-
 	public void start() throws Exception {
 		server.start();
+	}
+
+	public void stop() throws Exception {
+		server.stop();
 	}
 
 }
