@@ -1,17 +1,27 @@
+/**
+ * $Id$
+ * 
+ * Copyright (c) 2014 Steven Jardine, All Rights Reserved.
+ * Copyright (c) 2014 MJN Services, Inc., All Rights Reserved.
+ */
 package com.gwt.ss.client;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
+/**
+ * The Interface GwtLogoutAsync.
+ */
 public interface GwtLogoutAsync {
 
     /**
      * Maintain singleton {@link GwtLogoutAsync GwtLogoutAsync} instance.<br/>
      * 管控{@link GwtLogoutAsync GwtLogoutAsync}單一實例工具
      */
-     static final class Util {
+    static final class Util {
 
-        private static final AsyncUtil<GwtLogoutAsync> util = new AsyncUtil<GwtLogoutAsync>("j_spring_security_logout") {
+        /** The Constant util. */
+        private static final AsyncUtil<GwtLogoutAsync> UTIL = new AsyncUtil<GwtLogoutAsync>("j_spring_security_logout") {
             @Override
             protected GwtLogoutAsync newInstance() {
                 return (GwtLogoutAsync) GWT.create(GwtLogout.class);
@@ -19,13 +29,12 @@ public interface GwtLogoutAsync {
         };
 
         /**
-         * return {@link GwtLoginAsync GwtLoginAsync} instance with default service entry point
-         * &quot;j_spring_security_check&quot;<br/>
-         * 取得預設進入點為&quot;j_spring_security_check&quot;之{@link GwtLoginAsync GwtLoginAsync} 實例
-         * @return the instance.
+         * Gets the single instance of Util.
+         * 
+         * @return single instance of Util
          */
         public static GwtLogoutAsync getInstance() {
-            return util.getInstance();
+            return UTIL.getInstance();
         }
 
         /**
@@ -34,24 +43,44 @@ public interface GwtLogoutAsync {
          * @param processUrl Spring login processing url
          * @return the instance.
          */
-        public static GwtLogoutAsync getInstance(String processUrl) {
-            return util.getInstance(processUrl);
+        public static GwtLogoutAsync getInstance(final String processUrl) {
+            return UTIL.getInstance(processUrl);
         }
 
+        /**
+         * Gets the process url.
+         * 
+         * @return the process url
+         */
         public static String getProcessUrl() {
-            return util.getProcessUrl();
+            return UTIL.getProcessUrl();
         }
 
-        public static void setProcessUrl(String processUrl) {
-            util.setProcessUrl(processUrl);
+        /**
+         * Sets the process url.
+         * 
+         * @param processUrl the new process url
+         */
+        public static void setProcessUrl(final String processUrl) {
+            UTIL.setProcessUrl(processUrl);
         }
 
+        /**
+         * Instantiates a new util.
+         */
         private Util() {
             // Utility class should not be instantiated.
         }
 
     }
 
+    // CHECKSTYLE:OFF
+
+    /**
+     * J_gwt_security_logout.
+     * 
+     * @param callback the callback
+     */
     void j_gwt_security_logout(AsyncCallback<Void> callback);
 
 }

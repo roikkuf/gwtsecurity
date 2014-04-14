@@ -1,6 +1,8 @@
 /**
  * $Id$
- * Copyright (c) 2012 MJN Services, Inc., All Rights Reserved.
+ * 
+ * Copyright (c) 2014 Steven Jardine, All Rights Reserved.
+ * Copyright (c) 2014 MJN Services, Inc., All Rights Reserved.
  */
 package com.gwt.ss.client.loginable;
 
@@ -9,10 +11,10 @@ import com.google.gwt.core.client.Scheduler;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 
 /**
- * Common login request code for
- * 
- * @version $Rev$
+ * Common login request code.
+ *
  * @author Steven Jardine
+ * @version $Rev$
  */
 public abstract class AbstractLoginHandler implements LoginHandler {
 
@@ -21,6 +23,7 @@ public abstract class AbstractLoginHandler implements LoginHandler {
      */
     public static final String CANCELLED_MSG = "User cancelled login process.";
 
+    /** The registration. */
     private HandlerRegistration registration;
 
     /**

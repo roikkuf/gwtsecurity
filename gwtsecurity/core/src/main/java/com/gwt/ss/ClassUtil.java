@@ -1,10 +1,12 @@
 /**
  * $Id$
+ * 
+ * Copyright (c) 2014 Steven Jardine, All Rights Reserved.
+ * Copyright (c) 2014 MJN Services, Inc., All Rights Reserved.
  */
 package com.gwt.ss;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -20,11 +22,12 @@ import org.slf4j.LoggerFactory;
 /**
  * Utility class to find classes in a package.
  * 
- * @version $Rev$
  * @author Steven Jardine
+ * @version $Rev$
  */
 public final class ClassUtil {
 
+    /** The Constant LOG. */
     private static final Logger LOG = LoggerFactory.getLogger(ClassUtil.class);
 
     /**
@@ -34,9 +37,9 @@ public final class ClassUtil {
      * @param directory The base directory
      * @param packageName The package name for classes found inside the base directory
      * @return The classes
-     * @throws ClassNotFoundException
+     * @throws Exception the exception
      */
-    private static Set<String> findClasses(String directory, String packageName) throws Exception {
+    private static Set<String> findClasses(final String directory, final String packageName) throws Exception {
         Set<String> classes = new TreeSet<String>();
         if (directory.startsWith("file:") && directory.contains("!")) {
             String[] split = directory.split("!");
@@ -65,7 +68,8 @@ public final class ClassUtil {
                 assert !file.getName().contains(".");
                 classes.addAll(findClasses(file.getAbsolutePath(), packageName + "." + file.getName()));
             } else if (file.getName().endsWith(".class")) {
-                classes.add(packageName + '.' + file.getName().substring(0, file.getName().length() - 6));
+                classes.add(packageName + '.'
+                        + file.getName().substring(0, file.getName().length() - ".class".length()));
             }
         }
         return classes;
@@ -78,10 +82,8 @@ public final class ClassUtil {
      * 
      * @param packageName The base package
      * @return The classes
-     * @throws ClassNotFoundException
-     * @throws IOException
      */
-    public static Class<?>[] getClasses(String packageName) {
+    public static Class<?>[] getClasses(final String packageName) {
         try {
             ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
             assert classLoader != null;

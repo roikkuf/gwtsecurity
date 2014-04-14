@@ -1,3 +1,9 @@
+/**
+ * $Id$
+ * 
+ * Copyright (c) 2014 Steven Jardine, All Rights Reserved.
+ * Copyright (c) 2014 MJN Services, Inc., All Rights Reserved.
+ */
 package com.gwt.ss.rebind;
 
 import java.io.PrintWriter;
@@ -25,27 +31,49 @@ import com.gwt.ss.client.loginable.LoginableService;
  * 
  * @author Kent Yeh
  */
+// CHECKSTYLE:OFF
 public class LoginableGenerator extends Generator {
 
+    /** The context. */
     private GeneratorContext context;
 
+    /** The type name. */
     private String typeName;
 
+    /** The service name. */
     private String serviceName;
 
+    /** The package name. */
     private String packageName;
 
+    /** The class name. */
     private String className;
 
+    /** The source type. */
     private JClassType sourceType;
 
+    /** The service type. */
     private JClassType serviceType;
 
-    private String format(String s, Object... args) {
+    /**
+     * Format.
+     * 
+     * @param s the s
+     * @param args the args
+     * @return the string
+     */
+    private String format(final String s, final Object... args) {
         return String.format(s, args);
     }
 
-    private void validate(TreeLogger logger, String typeName) throws UnableToCompleteException {
+    /**
+     * Validate.
+     * 
+     * @param logger the logger
+     * @param typeName the type name
+     * @throws UnableToCompleteException the unable to complete exception
+     */
+    private void validate(final TreeLogger logger, final String typeName) throws UnableToCompleteException {
         if (!typeName.endsWith("Async")) {
             logger.log(TreeLogger.ERROR,
                 format("Asynchronous service's name must ends with \"Async\",Obviously \"%s\" doesn't", typeName));
@@ -89,8 +117,9 @@ public class LoginableGenerator extends Generator {
         }
     }
 
+    /** {@inheritDoc} */
     @Override
-    public String generate(TreeLogger logger, GeneratorContext context, String typeName)
+    public String generate(final TreeLogger logger, final GeneratorContext context, final String typeName)
             throws UnableToCompleteException {
         this.context = context;
         validate(logger, typeName);
@@ -99,7 +128,12 @@ public class LoginableGenerator extends Generator {
         return this.packageName + "." + this.className;
     }
 
-    private void generateClass(TreeLogger logger) {
+    /**
+     * Generate class.
+     * 
+     * @param logger the logger
+     */
+    private void generateClass(final TreeLogger logger) {
         PrintWriter printWriter = context.tryCreate(logger, this.packageName, this.className);
         if (printWriter == null) { return; }
         ClassSourceFileComposerFactory composer = new ClassSourceFileComposerFactory(this.packageName, this.className);
@@ -125,7 +159,12 @@ public class LoginableGenerator extends Generator {
         context.commit(logger, printWriter);
     }
 
-    private void generateFields(SourceWriter writer) {
+    /**
+     * Generate fields.
+     * 
+     * @param writer the writer
+     */
+    private void generateFields(final SourceWriter writer) {
         String serviceTypeName = this.typeName.substring(0, this.typeName.length() - 5);
         writer.println("private HasLoginHandler hasLoginHandler = null;");
         writer.println("private %s service = null;", this.typeName);
@@ -157,7 +196,12 @@ public class LoginableGenerator extends Generator {
         writer.println();
     }
 
-    private void generateMethods(SourceWriter writer) {
+    /**
+     * Generate methods.
+     * 
+     * @param writer the writer
+     */
+    private void generateMethods(final SourceWriter writer) {
         for (JMethod method : this.serviceType.getMethods()) {
             generateMethod(writer, method);
         }
@@ -169,7 +213,13 @@ public class LoginableGenerator extends Generator {
         }
     }
 
-    private void generateMethod(SourceWriter writer, JMethod method) {
+    /**
+     * Generate method.
+     * 
+     * @param writer the writer
+     * @param method the method
+     */
+    private void generateMethod(final SourceWriter writer, final JMethod method) {
         String returnType = method.getReturnType().getParameterizedQualifiedSourceName();
         if (returnType.equals("void")) {
             returnType = "Void";

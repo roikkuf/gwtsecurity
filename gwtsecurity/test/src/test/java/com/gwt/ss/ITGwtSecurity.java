@@ -1,9 +1,13 @@
 /**
+ * $Id$
  * 
+ * Copyright (c) 2014 Steven Jardine, All Rights Reserved.
+ * Copyright (c) 2014 MJN Services, Inc., All Rights Reserved.
  */
 package com.gwt.ss;
 
 import java.io.IOException;
+import java.util.Properties;
 
 import junit.framework.TestCase;
 
@@ -32,6 +36,8 @@ public class ITGwtSecurity extends TestCase {
 
 	private static WebDriver driver;
 
+	private static Properties props;
+
 	private static TestServer server;
 
 	public static void destroyWebDriver() {
@@ -39,8 +45,11 @@ public class ITGwtSecurity extends TestCase {
 	}
 
 	public static void initWebDriver() throws IOException {
-		System.setProperty("webdriver.chrome.driver",
-				"/home/steve/bin/chromedriver");
+		props = TestServer.loadProperties();
+		assertNotNull(props);
+		String cdl = props.getProperty("chromedriver.location");
+		assertNotNull(cdl);
+		System.setProperty("webdriver.chrome.driver", cdl);
 		driver = new ChromeDriver();
 	}
 

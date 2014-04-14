@@ -1,10 +1,16 @@
+/**
+ * $Id$
+ * 
+ * Copyright (c) 2014 Steven Jardine, All Rights Reserved.
+ * Copyright (c) 2014 MJN Services, Inc., All Rights Reserved.
+ */
 package com.gwt.ss.client;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 
 /**
  * &lt;logout&gt; direct from GWT RPC,you need instantiate a {@link com.gwt.ss.GwtLogoutSuccessHandler
- * GwtLogoutSuccessHandler} and assign to &lt;logout success-handler-ref=&quot;hander-reference&quot;/&gt;<br/>
+ * GwtLogoutSuccessHandler} and assign to &lt;logout success-handler-ref=&quot;hander-reference&quot;/&gt;. <br/>
  * This interface did not annotated with {@link com.google.gwt.user.client.rpc.RemoteServiceRelativePath
  * @RemoteServiceRelativePath}, Do not generate instance by
  * {@link com.google.gwt.core.client.GWT#create(java.lang.Class) GWT.create}, Just invoke
@@ -17,5 +23,11 @@ import com.google.gwt.user.client.rpc.RemoteService;
  */
 public interface GwtLogout extends RemoteService {
 
+    // CHECKSTYLE:OFF
+
+    /**
+     * J_gwt_security_logout.
+     */
     void j_gwt_security_logout();
+
 }

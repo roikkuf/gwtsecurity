@@ -1,3 +1,9 @@
+/**
+ * $Id$
+ * 
+ * Copyright (c) 2014 Steven Jardine, All Rights Reserved.
+ * Copyright (c) 2014 MJN Services, Inc., All Rights Reserved.
+ */
 package com.gwt.ss.client;
 
 import com.google.gwt.user.client.rpc.RemoteService;
@@ -16,10 +22,28 @@ import com.gwt.ss.client.exceptions.GwtSecurityException;
  * {@link com.google.gwt.core.client.GWT#create(java.lang.Class) GWT.create}建立intance，請改用
  * {@link GwtLoginAsync.Util#getInstance() GwtLoginAsync.Util.getInstance}
  */
+// CHECKSTYLE:OFF
 public interface GwtLogin extends RemoteService {
 
+    /**
+     * J_gwt_security_check.
+     * 
+     * @param username the username
+     * @param password the password
+     * @param rememberMe the remember me
+     * @throws GwtSecurityException the gwt security exception
+     */
     void j_gwt_security_check(String username, String password, boolean rememberMe) throws GwtSecurityException;
 
+    /**
+     * J_gwt_security_check.
+     * 
+     * @param username the username
+     * @param password the password
+     * @param rememberMe the remember me
+     * @param forceLogout the force logout
+     * @throws GwtSecurityException the gwt security exception
+     */
     void j_gwt_security_check(String username, String password, boolean rememberMe, boolean forceLogout)
             throws GwtSecurityException;
 

@@ -1,3 +1,9 @@
+/**
+ * $Id$
+ * 
+ * Copyright (c) 2014 Steven Jardine, All Rights Reserved.
+ * Copyright (c) 2014 MJN Services, Inc., All Rights Reserved.
+ */
 package com.gwt.ss;
 
 import java.io.IOException;
@@ -27,17 +33,22 @@ import com.gwt.ss.shared.GwtConst;
  */
 public final class GwtResponseUtil {
 
+    /** The authentication trust resolver. */
     private static AuthenticationTrustResolver authenticationTrustResolver = new AuthenticationTrustResolverImpl();
 
+    /** The Constant LOG. */
     private static final Logger LOG = LoggerFactory.getLogger(GwtResponseUtil.class);
 
+    /** The security classes. */
     private static Class<?>[] securityClasses = null;
 
     /**
+     * Creates the gwt exception.
+     * 
      * @param ex the gwt exception.
      * @return the gwt equivalent exception.
      */
-    public static GwtSecurityException createGwtException(Exception ex) {
+    public static GwtSecurityException createGwtException(final Exception ex) {
         if (ex == null) { return null; }
         String className = ex.getClass().getSimpleName();
         try {
@@ -61,10 +72,12 @@ public final class GwtResponseUtil {
     }
 
     /**
+     * Do unexpected failure.
+     * 
      * @param response the response.
      * @param e the error.
      */
-    public static void doUnexpectedFailure(HttpServletResponse response, Throwable e) {
+    public static void doUnexpectedFailure(final HttpServletResponse response, final Throwable e) {
         if (LOG.isErrorEnabled()) {
             LOG.error("Encode eunexceptable exception!", e);
         }
@@ -83,7 +96,9 @@ public final class GwtResponseUtil {
     }
 
     /**
-     * @return the available security exception classes in the com.gwt.ss.client.exceptions package.
+     * Gets the security classes.
+     * 
+     * @return the security classes
      */
     private static synchronized Class<?>[] getSecurityClasses() {
         if (securityClasses == null) {
@@ -99,10 +114,12 @@ public final class GwtResponseUtil {
     }
 
     /**
+     * Checks if is anonymous.
+     * 
      * @param authentication the current authentication.
      * @return is the user anonymous?
      */
-    public static boolean isAnonymous(Authentication authentication) {
+    public static boolean isAnonymous(final Authentication authentication) {
         return authenticationTrustResolver.isAnonymous(authentication);
     }
 
@@ -112,7 +129,7 @@ public final class GwtResponseUtil {
      * @param request the request.
      * @return is the request from GWT RPC?
      */
-    public static boolean isGwt(HttpServletRequest request) {
+    public static boolean isGwt(final HttpServletRequest request) {
         if (request == null) { return false; }
         // Check for the request factory header.
         String header = request.getHeader(GwtConst.GWT_RF_HEADER);
@@ -122,8 +139,16 @@ public final class GwtResponseUtil {
         return contentType != null && contentType.startsWith(GwtConst.GWT_RPC_CONTENT_TYPE);
     }
 
-    public static void processGwtException(ServletContext servletContext, HttpServletRequest request,
-            HttpServletResponse response, Exception ex) {
+    /**
+     * Process gwt exception.
+     * 
+     * @param servletContext the servlet context
+     * @param request the request
+     * @param response the response
+     * @param ex the ex
+     */
+    public static void processGwtException(final ServletContext servletContext, final HttpServletRequest request,
+            final HttpServletResponse response, final Exception ex) {
         try {
             GwtSecurityException gwtEx = createGwtException(ex);
             if (gwtEx != null) {
@@ -151,12 +176,26 @@ public final class GwtResponseUtil {
         }
     }
 
-    public static boolean shouldCompressResponse(String responsePayload) {
+    /**
+     * Should compress response.
+     * 
+     * @param responsePayload the response payload
+     * @return true, if successful
+     */
+    public static boolean shouldCompressResponse(final String responsePayload) {
         return RPCServletUtils.exceedsUncompressedContentLengthLimit(responsePayload);
     }
 
-    public static void writeResponse(ServletContext servletContext, HttpServletRequest request,
-            HttpServletResponse response, String responsePayload) {
+    /**
+     * Write response.
+     * 
+     * @param servletContext the servlet context
+     * @param request the request
+     * @param response the response
+     * @param responsePayload the response payload
+     */
+    public static void writeResponse(final ServletContext servletContext, final HttpServletRequest request,
+            final HttpServletResponse response, final String responsePayload) {
         if (!response.isCommitted()) {
             try {
                 boolean gzipEncode = RPCServletUtils.acceptsGzipEncoding(request)
