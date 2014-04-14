@@ -75,6 +75,8 @@
 	</modules>
 
 	<build>
+
+
 		<pluginManagement>
 			<plugins>
 				<plugin>
@@ -138,14 +140,45 @@
 						</lifecycleMappingMetadata>
 					</configuration>
 				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-release-plugin</artifactId>
+					<version>2.5</version>
+					<configuration>
+						<releaseProfiles>do-release</releaseProfiles>
+					</configuration>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 	</build>
 
+	<profiles>
+		<profile>
+			<id>do-release</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>sonar-maven-plugin</artifactId>
+						<version>2.2</version>
+						<executions>
+							<execution>
+								<phase>package</phase>
+								<goals>
+									<goal>sonar</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
 	<scm>
-		<url>scm:svn:https://gwtsecurity.googlecode.com/svn/tags/gwtsecurity-1.1.0</url>
-		<connection>scm:svn:https://gwtsecurity.googlecode.com/svn/tags/gwtsecurity-1.1.0</connection>
-		<developerConnection>scm:svn:https://gwtsecurity.googlecode.com/svn/tags/gwtsecurity-1.1.0</developerConnection>
+		<url>scm:svn:https://gwtsecurity.googlecode.com/svn/trunk/gwtsecurity</url>
+		<connection>scm:svn:https://gwtsecurity.googlecode.com/svn/trunk/gwtsecurity</connection>
+		<developerConnection>scm:svn:https://gwtsecurity.googlecode.com/trunk/gwtsecurity</developerConnection>
 	</scm>
 
 	<parent>
