@@ -28,6 +28,8 @@ import com.gwt.ss.test.client.MainPanel;
 @RunWith(BlockJUnit4ClassRunner.class)
 public class ITGwtSecurity extends TestCase {
 
+	private static final String ACCESS_DENIED = "com.gwt.ss.client.exceptions.GwtAccessDeniedException: Access is denied";
+
 	private static WebDriver driver;
 
 	private static TestServer server;
@@ -82,11 +84,11 @@ public class ITGwtSecurity extends TestCase {
 
 		result = doRPCClick(MainPanel.USER_SECURED_BTN_ID);
 		assertTrue(result != null);
-		assertFalse(result.equals("userSecured"));
+		assertTrue(result.equals(ACCESS_DENIED));
 
 		result = doRPCClick(MainPanel.ADMIN_SECURED_BTN_ID);
 		assertTrue(result != null);
-		assertFalse(result.equals("adminSecured"));
+		assertTrue(result.equals(ACCESS_DENIED));
 
 		// Logged in as user.
 		result = doRPCClick(MainPanel.USER_LOGIN_BTN_ID);
@@ -103,7 +105,7 @@ public class ITGwtSecurity extends TestCase {
 
 		result = doRPCClick(MainPanel.ADMIN_SECURED_BTN_ID);
 		assertTrue(result != null);
-		assertFalse(result.equals("adminSecured"));
+		assertTrue(result.equals(ACCESS_DENIED));
 
 		// Logout user.
 		result = doRPCClick(MainPanel.LOGOUT_BTN_ID);
@@ -139,11 +141,11 @@ public class ITGwtSecurity extends TestCase {
 
 		result = doRPCClick(MainPanel.USER_SECURED_BTN_ID);
 		assertTrue(result != null);
-		assertFalse(result.equals("userSecured"));
+		assertTrue(result.equals(ACCESS_DENIED));
 
 		result = doRPCClick(MainPanel.ADMIN_SECURED_BTN_ID);
 		assertTrue(result != null);
-		assertFalse(result.equals("adminSecured"));
+		assertTrue(result.equals(ACCESS_DENIED));
 	}
 
 }
