@@ -82,6 +82,7 @@
 						<remoteTagging>false</remoteTagging>
 						<tagBase>https://gwtsecurity.googlecode.com/svn/tags</tagBase>
 						<releaseProfiles>do-release</releaseProfiles>
+						<preparationGoals>sonar:sonar</preparationGoals>
 					</configuration>
 				</plugin>
 				<plugin>
