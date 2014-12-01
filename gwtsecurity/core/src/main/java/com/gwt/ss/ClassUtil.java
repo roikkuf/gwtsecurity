@@ -7,6 +7,7 @@
 package com.gwt.ss;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -37,9 +38,9 @@ public final class ClassUtil {
      * @param directory The base directory
      * @param packageName The package name for classes found inside the base directory
      * @return The classes
-     * @throws Exception the exception
+     * @throws IOException an error occurred.
      */
-    private static Set<String> findClasses(final String directory, final String packageName) throws Exception {
+    private static Set<String> findClasses(final String directory, final String packageName) throws IOException {
         Set<String> classes = new TreeSet<String>();
         if (directory.startsWith("file:") && directory.contains("!")) {
             String[] split = directory.split("!");
@@ -50,7 +51,7 @@ public final class ClassUtil {
                 while ((entry = zip.getNextEntry()) != null) {
                     if (entry.getName().endsWith(".class")) {
                         String className = entry.getName().replaceAll("[$].*", "").replaceAll("[.]class", "")
-                                .replace('/', '.');
+                            .replace('/', '.');
                         if (className.startsWith(packageName)) {
                             classes.add(className);
                         }
@@ -71,7 +72,7 @@ public final class ClassUtil {
                 classes.addAll(findClasses(file.getAbsolutePath(), packageName + "." + file.getName()));
             } else if (file.getName().endsWith(".class")) {
                 classes.add(packageName + '.'
-                    + file.getName().substring(0, file.getName().length() - ".class".length()));
+                        + file.getName().substring(0, file.getName().length() - ".class".length()));
             }
         }
         return classes;
@@ -107,7 +108,7 @@ public final class ClassUtil {
             return classList.toArray(new Class[classes.size()]);
         } catch (Exception e) {
             LOG.error(e.getMessage(), e);
-            return null;
+            return new Class[] {};
         }
     }
 
