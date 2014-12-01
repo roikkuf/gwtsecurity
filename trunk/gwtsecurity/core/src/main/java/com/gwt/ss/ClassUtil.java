@@ -96,11 +96,11 @@ public final class ClassUtil {
                 URL resource = resources.nextElement();
                 dirs.add(resource.getFile());
             }
-            TreeSet<String> classes = new TreeSet<String>();
+            Set<String> classes = new TreeSet<String>();
             for (String directory : dirs) {
                 classes.addAll(findClasses(directory, packageName));
             }
-            ArrayList<Class<?>> classList = new ArrayList<Class<?>>();
+            List<Class<?>> classList = new ArrayList<Class<?>>();
             for (String clazz : classes) {
                 classList.add(Class.forName(clazz));
             }
