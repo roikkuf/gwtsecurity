@@ -1,6 +1,6 @@
 /**
  * $Id$
- * 
+ *
  * Copyright (c) 2014 Steven Jardine, All Rights Reserved.
  * Copyright (c) 2014 MJN Services, Inc., All Rights Reserved.
  */
@@ -25,7 +25,7 @@ public class GwtActiveDirectoryAuthenticationException extends GwtAuthentication
 
     /**
      * Instantiates a new {@link GwtActiveDirectoryAuthenticationException}.
-     * 
+     *
      * @param message the message
      */
     public GwtActiveDirectoryAuthenticationException(final String message) {
@@ -34,7 +34,7 @@ public class GwtActiveDirectoryAuthenticationException extends GwtAuthentication
 
     /**
      * Instantiates a new {@link GwtActiveDirectoryAuthenticationException}.
-     * 
+     *
      * @param message the message
      * @param cause the cause
      */
@@ -44,7 +44,7 @@ public class GwtActiveDirectoryAuthenticationException extends GwtAuthentication
 
     /**
      * Instantiates a new {@link GwtActiveDirectoryAuthenticationException}.
-     * 
+     *
      * @param cause the cause
      */
     public GwtActiveDirectoryAuthenticationException(final Throwable cause) {

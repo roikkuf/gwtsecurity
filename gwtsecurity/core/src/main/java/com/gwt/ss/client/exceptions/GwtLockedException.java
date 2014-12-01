@@ -1,6 +1,6 @@
 /**
  * $Id$
- * 
+ *
  * Copyright (c) 2014 Steven Jardine, All Rights Reserved.
  * Copyright (c) 2014 MJN Services, Inc., All Rights Reserved.
  */
@@ -24,7 +24,7 @@ public class GwtLockedException extends GwtAccountStatusException {
 
     /**
      * Instantiates a new {@link GwtLockedException}.
-     * 
+     *
      * @param message the message
      */
     public GwtLockedException(final String message) {
@@ -33,7 +33,7 @@ public class GwtLockedException extends GwtAccountStatusException {
 
     /**
      * Instantiates a new {@link GwtLockedException}.
-     * 
+     *
      * @param message the message
      * @param cause the cause
      */
@@ -43,7 +43,7 @@ public class GwtLockedException extends GwtAccountStatusException {
 
     /**
      * Instantiates a new {@link GwtLockedException}.
-     * 
+     *
      * @param cause the cause
      */
     public GwtLockedException(final Throwable cause) {

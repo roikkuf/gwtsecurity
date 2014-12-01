@@ -1,6 +1,6 @@
 /**
  * $Id$
- * 
+ *
  * Copyright (c) 2014 Steven Jardine, All Rights Reserved.
  * Copyright (c) 2014 MJN Services, Inc., All Rights Reserved.
  */
@@ -26,7 +26,7 @@ import com.gwt.ss.shared.GwtConst;
 
 /**
  * Intercepts the requestfactory requests and starts the login process if necessary.
- * 
+ *
  * @author Steven Jardine
  * @version $Rev$
  */
@@ -45,7 +45,7 @@ public class LoginableRequestTransport extends DefaultRequestTransport {
 
         /**
          * Instantiates a new {@link LoginableRequestTransport}.
-         * 
+         *
          * @param payload the payload
          * @param receiver the receiver
          */
@@ -103,7 +103,7 @@ public class LoginableRequestTransport extends DefaultRequestTransport {
 
     /**
      * Deserialize the rpc exception.
-     * 
+     *
      * @param payload the exception payload to deserialize.
      * @return the deserialized security exception.
      */
@@ -126,7 +126,7 @@ public class LoginableRequestTransport extends DefaultRequestTransport {
 
     /**
      * Constructor.
-     * 
+     *
      * @param loginHandler the login handler.
      */
     public LoginableRequestTransport(final HasLoginHandler loginHandler) {

@@ -1,6 +1,6 @@
 /**
  * $Id$
- * 
+ *
  * Copyright (c) 2014 Steven Jardine, All Rights Reserved.
  * Copyright (c) 2014 MJN Services, Inc., All Rights Reserved.
  */
@@ -44,12 +44,14 @@ public final class GwtResponseUtil {
 
     /**
      * Creates the gwt exception.
-     * 
+     *
      * @param ex the gwt exception.
      * @return the gwt equivalent exception.
      */
     public static GwtSecurityException createGwtException(final Exception ex) {
-        if (ex == null) { return null; }
+        if (ex == null) {
+            return null;
+        }
         String className = ex.getClass().getSimpleName();
         try {
             for (Class<?> rawClass : getSecurityClasses()) {
@@ -73,7 +75,7 @@ public final class GwtResponseUtil {
 
     /**
      * Do unexpected failure.
-     * 
+     *
      * @param response the response.
      * @param e the error.
      */
@@ -97,7 +99,7 @@ public final class GwtResponseUtil {
 
     /**
      * Gets the security classes.
-     * 
+     *
      * @return the security classes
      */
     private static synchronized Class<?>[] getSecurityClasses() {
@@ -115,7 +117,7 @@ public final class GwtResponseUtil {
 
     /**
      * Checks if is anonymous.
-     * 
+     *
      * @param authentication the current authentication.
      * @return is the user anonymous?
      */
@@ -125,15 +127,19 @@ public final class GwtResponseUtil {
 
     /**
      * Determine whether request comes from GWT.
-     * 
+     *
      * @param request the request.
      * @return is the request from GWT RPC?
      */
     public static boolean isGwt(final HttpServletRequest request) {
-        if (request == null) { return false; }
+        if (request == null) {
+            return false;
+        }
         // Check for the request factory header.
         String header = request.getHeader(GwtConst.GWT_RF_HEADER);
-        if (header != null && header.equalsIgnoreCase("true")) { return true; }
+        if (header != null && header.equalsIgnoreCase("true")) {
+            return true;
+        }
         // Check for the gwt-rpc content type.
         String contentType = request.getContentType();
         return contentType != null && contentType.startsWith(GwtConst.GWT_RPC_CONTENT_TYPE);
@@ -141,7 +147,7 @@ public final class GwtResponseUtil {
 
     /**
      * Process gwt exception.
-     * 
+     *
      * @param servletContext the servlet context
      * @param request the request
      * @param response the response
@@ -178,7 +184,7 @@ public final class GwtResponseUtil {
 
     /**
      * Should compress response.
-     * 
+     *
      * @param responsePayload the response payload
      * @return true, if successful
      */
@@ -188,7 +194,7 @@ public final class GwtResponseUtil {
 
     /**
      * Write response.
-     * 
+     *
      * @param servletContext the servlet context
      * @param request the request
      * @param response the response

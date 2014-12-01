@@ -1,6 +1,6 @@
 /**
  * $Id$
- * 
+ *
  * Copyright (c) 2014 Steven Jardine, All Rights Reserved.
  * Copyright (c) 2014 MJN Services, Inc., All Rights Reserved.
  */
@@ -62,7 +62,7 @@ import com.gwt.ss.shared.GwtConst;
  */
 @Aspect
 public class GwtUsernamePasswordAuthority implements ServletContextAware, InitializingBean, ApplicationContextAware,
-        ApplicationListener<InteractiveAuthenticationSuccessEvent> {
+ApplicationListener<InteractiveAuthenticationSuccessEvent> {
 
     /**
      * Provide by Amit Khanna<br/>
@@ -75,7 +75,7 @@ public class GwtUsernamePasswordAuthority implements ServletContextAware, Initia
 
         /**
          * Gets the instance.
-         * 
+         *
          * @return the instance
          */
         public static DefaultSerializationPolicyProvider getInstance() {
@@ -112,7 +112,7 @@ public class GwtUsernamePasswordAuthority implements ServletContextAware, Initia
 
         /**
          * Instantiates a new payload info.
-         * 
+         *
          * @param username the username
          * @param password the password
          * @param httpHolder the http holder
@@ -130,7 +130,7 @@ public class GwtUsernamePasswordAuthority implements ServletContextAware, Initia
 
         /**
          * Gets the http holder.
-         * 
+         *
          * @return the http holder
          */
         public HttpHolder getHttpHolder() {
@@ -139,7 +139,7 @@ public class GwtUsernamePasswordAuthority implements ServletContextAware, Initia
 
         /**
          * Gets the password.
-         * 
+         *
          * @return the password
          */
         public String getPassword() {
@@ -148,7 +148,7 @@ public class GwtUsernamePasswordAuthority implements ServletContextAware, Initia
 
         /**
          * Gets the username.
-         * 
+         *
          * @return the username
          */
         public String getUsername() {
@@ -157,7 +157,7 @@ public class GwtUsernamePasswordAuthority implements ServletContextAware, Initia
 
         /**
          * Checks if is the force logout.
-         * 
+         *
          * @return the force logout
          */
         public boolean isForceLogout() {
@@ -166,7 +166,7 @@ public class GwtUsernamePasswordAuthority implements ServletContextAware, Initia
 
         /**
          * Checks if is the remember me.
-         * 
+         *
          * @return the remember me
          */
         public boolean isRememberMe() {
@@ -185,7 +185,7 @@ public class GwtUsernamePasswordAuthority implements ServletContextAware, Initia
 
         /**
          * Instantiates a new remember me request wrapper.
-         * 
+         *
          * @param request the request
          * @param rememberMeParameter the remember me parameter
          */
@@ -235,7 +235,7 @@ public class GwtUsernamePasswordAuthority implements ServletContextAware, Initia
 
     /**
      * Do filter.
-     * 
+     *
      * @param pjp the pjp
      * @return the object
      * @throws Throwable the throwable
@@ -258,10 +258,10 @@ public class GwtUsernamePasswordAuthority implements ServletContextAware, Initia
                 HttpSession session = httpHolder.getRequest().getSession(allowSessionCreation);
                 if (session != null) {
                     httpHolder
-                        .getRequest()
-                        .getSession()
-                        .setAttribute(GwtConst.SPRING_SECURITY_LAST_USERNAME_KEY,
-                            TextEscapeUtils.escapeEntities(pi.getUsername()));
+                    .getRequest()
+                    .getSession()
+                    .setAttribute(GwtConst.SPRING_SECURITY_LAST_USERNAME_KEY,
+                        TextEscapeUtils.escapeEntities(pi.getUsername()));
                 }
                 f = c.getDeclaredField("authenticationDetailsSource");
                 f.setAccessible(true);
@@ -295,7 +295,7 @@ public class GwtUsernamePasswordAuthority implements ServletContextAware, Initia
                 SecurityContextHolder.getContext().setAuthentication(authResult);
                 filter.getRememberMeServices().loginSuccess(
                     pi.isRememberMe() ? new RememberMeRequestWrapper(httpHolder.getRequest(), rememberMeParameter)
-                            : httpHolder.getRequest(), httpHolder.getResponse(), authResult);
+                    : httpHolder.getRequest(), httpHolder.getResponse(), authResult);
                 applicationContext.publishEvent(new InteractiveAuthenticationSuccessEvent(authResult, this.getClass()));
                 return null;
             } catch (Exception e) {
@@ -318,7 +318,7 @@ public class GwtUsernamePasswordAuthority implements ServletContextAware, Initia
     /**
      * Provided by Amit Khanna.<br/>
      * 由Amit Khanna提供
-     * 
+     *
      * @param jp the jp
      * @return the payload info
      * @throws IOException Signals that an I/O exception has occurred.
@@ -363,7 +363,7 @@ public class GwtUsernamePasswordAuthority implements ServletContextAware, Initia
 
     /**
      * Gets the authentication manager.
-     * 
+     *
      * @return the authentication manager
      */
     public AuthenticationManager getAuthenticationManager() {
@@ -372,7 +372,7 @@ public class GwtUsernamePasswordAuthority implements ServletContextAware, Initia
 
     /**
      * Gets the remember me parameter.
-     * 
+     *
      * @return the remember me parameter
      */
     public String getRememberMeParameter() {
@@ -381,7 +381,7 @@ public class GwtUsernamePasswordAuthority implements ServletContextAware, Initia
 
     /**
      * Checks if is the suppress login error messages.
-     * 
+     *
      * @return the suppress login error messages
      */
     public boolean isSuppressLoginErrorMessages() {
@@ -406,7 +406,7 @@ public class GwtUsernamePasswordAuthority implements ServletContextAware, Initia
 
     /**
      * Requires authentication.
-     * 
+     *
      * @param filter the filter
      * @param request the request
      * @return true, if successful
@@ -433,7 +433,7 @@ public class GwtUsernamePasswordAuthority implements ServletContextAware, Initia
 
     /**
      * Sets the authentication manager.
-     * 
+     *
      * @param authenticationManager the new authentication manager
      */
     public void setAuthenticationManager(final AuthenticationManager authenticationManager) {
@@ -442,7 +442,7 @@ public class GwtUsernamePasswordAuthority implements ServletContextAware, Initia
 
     /**
      * Sets the remember me parameter.
-     * 
+     *
      * @param rememberMeParameter the new remember me parameter
      */
     public void setRememberMeParameter(final String rememberMeParameter) {
@@ -457,7 +457,7 @@ public class GwtUsernamePasswordAuthority implements ServletContextAware, Initia
 
     /**
      * Sets the suppress login error messages.
-     * 
+     *
      * @param suppressLoginErrorMessages the new suppress login error messages
      */
     public void setSuppressLoginErrorMessages(final boolean suppressLoginErrorMessages) {

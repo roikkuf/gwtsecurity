@@ -1,6 +1,6 @@
 /**
  * $Id$
- * 
+ *
  * Copyright (c) 2014 Steven Jardine, All Rights Reserved.
  * Copyright (c) 2014 MJN Services, Inc., All Rights Reserved.
  */
@@ -28,13 +28,13 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 /**
  * Controller for gwt rpc.
- * 
+ *
  * @version $Rev$
  * @author Steven Jardine
  */
 @SuppressWarnings("serial")
 public class GwtRpcController extends RemoteServiceServlet implements Controller, ServletConfigAware,
-        ServletContextAware {
+ServletContextAware {
 
     private static final Logger LOG = LoggerFactory.getLogger(GwtRpcController.class);
 
@@ -83,7 +83,9 @@ public class GwtRpcController extends RemoteServiceServlet implements Controller
     /** {@inheritDoc} */
     @Override
     public void setServletConfig(final ServletConfig servletConfig) {
-        if (servletConfig == null) { return; }
+        if (servletConfig == null) {
+            return;
+        }
         try {
             super.init(servletConfig);
         } catch (ServletException e) {

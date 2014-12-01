@@ -1,6 +1,6 @@
 /**
  * $Id$
- * 
+ *
  * Copyright (c) 2014 Steven Jardine, All Rights Reserved.
  * Copyright (c) 2014 MJN Services, Inc., All Rights Reserved.
  */
@@ -23,240 +23,242 @@ import com.gwt.ss.client.GwtLoginAsync;
 import com.gwt.ss.client.GwtLogoutAsync;
 
 /**
- * @author steve
- * 
+ * @version $Rev$
+ * @author Steven Jardine
  */
 public class MainPanel extends VerticalPanel {
 
-	class ReturnValueCallback implements AsyncCallback<String> {
+    class ReturnValueCallback implements AsyncCallback<String> {
 
-		@Override
-		public void onFailure(Throwable caught) {
-			returnValue = caught;
-			returnPanel.add(createReturnValueLabel(returnValue.toString()));
-		}
+        @Override
+        public void onFailure(final Throwable caught) {
+            returnValue = caught;
+            returnPanel.add(createReturnValueLabel(returnValue.toString()));
+        }
 
-		@Override
-		public void onSuccess(String result) {
-			returnValue = result;
-			returnPanel.add(createReturnValueLabel(returnValue.toString()));
-		}
+        @Override
+        public void onSuccess(final String result) {
+            returnValue = result;
+            returnPanel.add(createReturnValueLabel(returnValue.toString()));
+        }
 
-	}
+    }
 
-	public static final String ADMIN_LOGIN_BTN_ID = "adminLoginBtn";
-	public static final String ADMIN_SECURED_BTN_ID = "adminSecuredBtn";
-	public static final String DEBUG_ID = "mainPanelId";
-	public static final String LOGOUT_BTN_ID = "logoutBtn";
-	public static final String RETURN_VALUE_ID = "returnValueId";
-	public static final String UNRESTRICTED_BTN_ID = "unrestrictedBtn";
-	public static final String USER_LOGIN_BTN_ID = "userLoginBtn";
-	public static final String USER_SECURED_BTN_ID = "userSecuredBtn";
+    public static final String ADMIN_LOGIN_BTN_ID = "adminLoginBtn";
 
-	private static Label createReturnValueLabel(String msg) {
-		Label label = new Label(msg);
-		label.ensureDebugId(RETURN_VALUE_ID);
-		return label;
-	}
+    public static final String ADMIN_SECURED_BTN_ID = "adminSecuredBtn";
 
-	private GwtLoginAsync loginSvc = GwtLoginAsync.Util.getInstance();
-	private GwtLogoutAsync logoutSvc = GwtLogoutAsync.Util.getInstance();
-	private MainServiceAsync mainSvc = GWT.create(MainServiceAsync.class);
+    public static final String DEBUG_ID = "mainPanelId";
 
-	private final FlowPanel returnPanel;
+    public static final String LOGOUT_BTN_ID = "logoutBtn";
 
-	public Object returnValue = null;
+    public static final String RETURN_VALUE_ID = "returnValueId";
 
-	/**
-	 * 
-	 */
-	public MainPanel() {
-		super();
-		ensureDebugId(DEBUG_ID);
-		getElement().getStyle().setProperty("margin", "auto");
-		getElement().getStyle().setMarginTop(25, Unit.PX);
-		setSpacing(5);
+    public static final String UNRESTRICTED_BTN_ID = "unrestrictedBtn";
 
-		// Title
-		Label title = new Label("GWTSecurity Test Application");
-		Style style = title.getElement().getStyle();
-		style.setFontSize(20, Unit.PX);
-		style.setPaddingBottom(20, Unit.PX);
-		style.setTextDecoration(TextDecoration.UNDERLINE);
-		style.setColor("blue");
-		add(title);
-		setCellHorizontalAlignment(title, HasHorizontalAlignment.ALIGN_CENTER);
+    public static final String USER_LOGIN_BTN_ID = "userLoginBtn";
 
-		FlexTable table = new FlexTable();
-		table.setCellSpacing(5);
-		add(table);
+    public static final String USER_SECURED_BTN_ID = "userSecuredBtn";
 
-		int row = 0;
+    private static Label createReturnValueLabel(final String msg) {
+        Label label = new Label(msg);
+        label.ensureDebugId(RETURN_VALUE_ID);
+        return label;
+    }
 
-		// Unrestricted RPC.
-		Label label = new Label("Unrestricted RPC (Should always succeed):");
-		Button button = new Button("Unrestricted RPC");
-		button.ensureDebugId(UNRESTRICTED_BTN_ID);
-		button.addClickHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-				returnPanel.clear();
-				mainSvc.unrestricted(new ReturnValueCallback());
-			}
-		});
+    private GwtLoginAsync loginSvc = GwtLoginAsync.Util.getInstance();
 
-		button.setWidth("150px");
-		table.setWidget(row, 0, label);
-		table.setWidget(row, 1, button);
-		row++;
+    private GwtLogoutAsync logoutSvc = GwtLogoutAsync.Util.getInstance();
 
-		// User Secured RPC.
-		label = new Label(
-				"User Secured RPC (Should only succeed if admin or user is logged in):");
-		button = new Button("User Secured RPC");
-		button.ensureDebugId(USER_SECURED_BTN_ID);
-		button.addClickHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-				returnPanel.clear();
-				mainSvc.userSecured(new ReturnValueCallback());
-			}
-		});
-		button.setWidth("150px");
-		table.setWidget(row, 0, label);
-		table.setWidget(row, 1, button);
-		row++;
+    private MainServiceAsync mainSvc = GWT.create(MainServiceAsync.class);
 
-		// Admin Secured RPC.
-		label = new Label(
-				"Admin Secured RPC (Should only succeed if admin is logged in):");
-		button = new Button("Admin Secured RPC");
-		button.ensureDebugId(ADMIN_SECURED_BTN_ID);
-		button.addClickHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-				returnPanel.clear();
-				mainSvc.adminSecured(new ReturnValueCallback());
-			}
-		});
-		button.setWidth("150px");
-		table.setWidget(row, 0, label);
-		table.setWidget(row, 1, button);
-		row++;
+    private final FlowPanel returnPanel;
 
-		// User Login Btn
-		button = new Button("User Login");
-		button.ensureDebugId(USER_LOGIN_BTN_ID);
-		button.addClickHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-				returnPanel.clear();
-				loginSvc.j_gwt_security_check("user", "user", false,
-						new AsyncCallback<Void>() {
-							ReturnValueCallback callback = new ReturnValueCallback();
+    public Object returnValue = null;
 
-							@Override
-							public void onFailure(Throwable caught) {
-								callback.onFailure(caught);
-							}
+    /**
+     *
+     */
+    public MainPanel() {
+        super();
+        ensureDebugId(DEBUG_ID);
+        getElement().getStyle().setProperty("margin", "auto");
+        getElement().getStyle().setMarginTop(25, Unit.PX);
+        setSpacing(5);
 
-							@Override
-							public void onSuccess(Void result) {
-								callback.onSuccess("UserLoginSuccess");
-							}
+        // Title
+        Label title = new Label("GWTSecurity Test Application");
+        Style style = title.getElement().getStyle();
+        style.setFontSize(20, Unit.PX);
+        style.setPaddingBottom(20, Unit.PX);
+        style.setTextDecoration(TextDecoration.UNDERLINE);
+        style.setColor("blue");
+        add(title);
+        setCellHorizontalAlignment(title, HasHorizontalAlignment.ALIGN_CENTER);
 
-						});
-			}
-		});
-		button.setWidth("150px");
-		table.setWidget(row, 1, button);
-		row++;
+        FlexTable table = new FlexTable();
+        table.setCellSpacing(5);
+        add(table);
 
-		// Admin Login Btn
-		button = new Button("Admin Login");
-		button.ensureDebugId(ADMIN_LOGIN_BTN_ID);
-		button.addClickHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-				returnPanel.clear();
-				loginSvc.j_gwt_security_check("admin", "admin", false,
-						new AsyncCallback<Void>() {
-							ReturnValueCallback callback = new ReturnValueCallback();
+        int row = 0;
 
-							@Override
-							public void onFailure(Throwable caught) {
-								callback.onFailure(caught);
-							}
+        // Unrestricted RPC.
+        Label label = new Label("Unrestricted RPC (Should always succeed):");
+        Button button = new Button("Unrestricted RPC");
+        button.ensureDebugId(UNRESTRICTED_BTN_ID);
+        button.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(final ClickEvent event) {
+                returnPanel.clear();
+                mainSvc.unrestricted(new ReturnValueCallback());
+            }
+        });
 
-							@Override
-							public void onSuccess(Void result) {
-								callback.onSuccess("AdminLoginSuccess");
-							}
+        button.setWidth("150px");
+        table.setWidget(row, 0, label);
+        table.setWidget(row, 1, button);
+        row++;
 
-						});
-			}
-		});
-		button.setWidth("150px");
-		table.setWidget(row, 1, button);
-		row++;
+        // User Secured RPC.
+        label = new Label("User Secured RPC (Should only succeed if admin or user is logged in):");
+        button = new Button("User Secured RPC");
+        button.ensureDebugId(USER_SECURED_BTN_ID);
+        button.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(final ClickEvent event) {
+                returnPanel.clear();
+                mainSvc.userSecured(new ReturnValueCallback());
+            }
+        });
+        button.setWidth("150px");
+        table.setWidget(row, 0, label);
+        table.setWidget(row, 1, button);
+        row++;
 
-		// Logout Btn
-		button = new Button("Logout");
-		button.ensureDebugId(LOGOUT_BTN_ID);
-		button.addClickHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-				returnPanel.clear();
-				logoutSvc.j_gwt_security_logout(new AsyncCallback<Void>() {
-					ReturnValueCallback callback = new ReturnValueCallback();
+        // Admin Secured RPC.
+        label = new Label("Admin Secured RPC (Should only succeed if admin is logged in):");
+        button = new Button("Admin Secured RPC");
+        button.ensureDebugId(ADMIN_SECURED_BTN_ID);
+        button.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(final ClickEvent event) {
+                returnPanel.clear();
+                mainSvc.adminSecured(new ReturnValueCallback());
+            }
+        });
+        button.setWidth("150px");
+        table.setWidget(row, 0, label);
+        table.setWidget(row, 1, button);
+        row++;
 
-					@Override
-					public void onFailure(Throwable caught) {
-						callback.onFailure(caught);
-					}
+        // User Login Btn
+        button = new Button("User Login");
+        button.ensureDebugId(USER_LOGIN_BTN_ID);
+        button.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(final ClickEvent event) {
+                returnPanel.clear();
+                loginSvc.j_gwt_security_check("user", "user", false, new AsyncCallback<Void>() {
+                    ReturnValueCallback callback = new ReturnValueCallback();
 
-					@Override
-					public void onSuccess(Void result) {
-						callback.onSuccess("LogoutSuccess");
-					}
+                    @Override
+                    public void onFailure(final Throwable caught) {
+                        callback.onFailure(caught);
+                    }
 
-				});
-			}
-		});
-		button.setWidth("150px");
-		table.setWidget(row, 1, button);
-		row++;
+                    @Override
+                    public void onSuccess(final Void result) {
+                        callback.onSuccess("UserLoginSuccess");
+                    }
 
-		label = new Label("Return Value");
-		style = label.getElement().getStyle();
-		style.setFontSize(16, Unit.PX);
-		style.setPadding(20, Unit.PX);
-		style.setTextDecoration(TextDecoration.UNDERLINE);
-		add(label);
-		setCellHorizontalAlignment(label, HasHorizontalAlignment.ALIGN_CENTER);
+                });
+            }
+        });
+        button.setWidth("150px");
+        table.setWidget(row, 1, button);
+        row++;
 
-		returnPanel = new FlowPanel();
-		returnPanel.setSize("350px", "40px");
-		returnPanel.getElement().getStyle()
-				.setProperty("border", "1px solid black");
-		add(returnPanel);
-		setCellHorizontalAlignment(returnPanel,
-				HasHorizontalAlignment.ALIGN_CENTER);
-	}
+        // Admin Login Btn
+        button = new Button("Admin Login");
+        button.ensureDebugId(ADMIN_LOGIN_BTN_ID);
+        button.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(final ClickEvent event) {
+                returnPanel.clear();
+                loginSvc.j_gwt_security_check("admin", "admin", false, new AsyncCallback<Void>() {
+                    ReturnValueCallback callback = new ReturnValueCallback();
 
-	/**
-	 * @return the returnValue
-	 */
-	public Object getReturnValue() {
-		return returnValue;
-	}
+                    @Override
+                    public void onFailure(final Throwable caught) {
+                        callback.onFailure(caught);
+                    }
 
-	/**
-	 * @param returnValue
-	 *            the returnValue to set
-	 */
-	public void setReturnValue(Object returnValue) {
-		this.returnValue = returnValue;
-	}
+                    @Override
+                    public void onSuccess(final Void result) {
+                        callback.onSuccess("AdminLoginSuccess");
+                    }
+
+                });
+            }
+        });
+        button.setWidth("150px");
+        table.setWidget(row, 1, button);
+        row++;
+
+        // Logout Btn
+        button = new Button("Logout");
+        button.ensureDebugId(LOGOUT_BTN_ID);
+        button.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(final ClickEvent event) {
+                returnPanel.clear();
+                logoutSvc.j_gwt_security_logout(new AsyncCallback<Void>() {
+                    ReturnValueCallback callback = new ReturnValueCallback();
+
+                    @Override
+                    public void onFailure(final Throwable caught) {
+                        callback.onFailure(caught);
+                    }
+
+                    @Override
+                    public void onSuccess(final Void result) {
+                        callback.onSuccess("LogoutSuccess");
+                    }
+
+                });
+            }
+        });
+        button.setWidth("150px");
+        table.setWidget(row, 1, button);
+        row++;
+
+        label = new Label("Return Value");
+        style = label.getElement().getStyle();
+        style.setFontSize(16, Unit.PX);
+        style.setPadding(20, Unit.PX);
+        style.setTextDecoration(TextDecoration.UNDERLINE);
+        add(label);
+        setCellHorizontalAlignment(label, HasHorizontalAlignment.ALIGN_CENTER);
+
+        returnPanel = new FlowPanel();
+        returnPanel.setSize("350px", "40px");
+        returnPanel.getElement().getStyle().setProperty("border", "1px solid black");
+        add(returnPanel);
+        setCellHorizontalAlignment(returnPanel, HasHorizontalAlignment.ALIGN_CENTER);
+    }
+
+    /**
+     * @return the returnValue
+     */
+    public Object getReturnValue() {
+        return returnValue;
+    }
+
+    /**
+     * @param returnValue the returnValue to set
+     */
+    public void setReturnValue(final Object returnValue) {
+        this.returnValue = returnValue;
+    }
 
 }

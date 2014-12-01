@@ -1,6 +1,6 @@
 /**
  * $Id$
- * 
+ *
  * Copyright (c) 2014 Steven Jardine, All Rights Reserved.
  * Copyright (c) 2014 MJN Services, Inc., All Rights Reserved.
  */
@@ -18,28 +18,28 @@ import com.gwt.ss.test.client.MainService;
 @Service
 public class MainServiceImpl implements MainService {
 
-	/**
-	 * Default constructor.
-	 */
-	public MainServiceImpl() {
-		super();
-	}
+    /**
+     * Default constructor.
+     */
+    public MainServiceImpl() {
+        super();
+    }
 
-	@Override
-	public String unrestricted() {
-		return "unrestricted";
-	}
+    @Override
+    public String unrestricted() {
+        return "unrestricted";
+    }
 
-	@Override
-	@Secured("ROLE_USER")
-	public String userSecured() {
-		return "userSecured";
-	}
+    @Override
+    @Secured("ROLE_USER")
+    public String userSecured() {
+        return "userSecured";
+    }
 
-	@Override
-	@Secured("ROLE_ADMIN")
-	public String adminSecured() {
-		return "adminSecured";
-	}
+    @Override
+    @Secured("ROLE_ADMIN")
+    public String adminSecured() {
+        return "adminSecured";
+    }
 
 }

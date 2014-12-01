@@ -1,6 +1,6 @@
 /**
  * $Id$
- * 
+ *
  * Copyright (c) 2014 Steven Jardine, All Rights Reserved.
  * Copyright (c) 2014 MJN Services, Inc., All Rights Reserved.
  */
@@ -92,7 +92,7 @@ public class GwtSessionManagement implements ServletContextAware {
 
     /**
      * Do cs filter.
-     * 
+     *
      * @param pjp the pjp
      * @return the object
      * @throws Throwable the throwable
@@ -102,37 +102,37 @@ public class GwtSessionManagement implements ServletContextAware {
         HttpHolder holder = HttpHolder.getInstance(pjp);
         SessionInformation info = holder.getRequest().getSession(false) != null
                 && GwtResponseUtil.isGwt(holder.getRequest()) ? getSessionRegistry(getCSTarget(pjp))
-            .getSessionInformation(holder.getRequest().getSession(false).getId()) : null;
-        if (info != null) {
-            if (info.isExpired()) {
-                String msg = "Session is expired (Possibly do to multiple concurrent logins being attempted as the same user).";
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug(msg);
-                }
-                Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-                for (LogoutHandler handler : getLogoutHandlers(getCSTarget(pjp))) {
-                    handler.logout(holder.getRequest(), holder.getResponse(), auth);
-                }
-                GwtResponseUtil.processGwtException(servletContext, holder.getRequest(), holder.getResponse(),
-                    new SessionAuthenticationException(msg));
-                return null;
-            } else {
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("Session is not expired.");
-                }
-                // Non-expired - update last request date/time
-                info.refreshLastRequest();
-                getFilterChain(pjp).doFilter(holder.getRequest(), holder.getResponse());
-                return null;
-            }
-        } else {
-            return pjp.proceed();
-        }
+                        .getSessionInformation(holder.getRequest().getSession(false).getId()) : null;
+                        if (info != null) {
+                            if (info.isExpired()) {
+                                String msg = "Session is expired (Possibly do to multiple concurrent logins being attempted as the same user).";
+                                if (LOG.isDebugEnabled()) {
+                                    LOG.debug(msg);
+                                }
+                                Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+                                for (LogoutHandler handler : getLogoutHandlers(getCSTarget(pjp))) {
+                                    handler.logout(holder.getRequest(), holder.getResponse(), auth);
+                                }
+                                GwtResponseUtil.processGwtException(servletContext, holder.getRequest(), holder.getResponse(),
+                                    new SessionAuthenticationException(msg));
+                                return null;
+                            } else {
+                                if (LOG.isDebugEnabled()) {
+                                    LOG.debug("Session is not expired.");
+                                }
+                                // Non-expired - update last request date/time
+                                info.refreshLastRequest();
+                                getFilterChain(pjp).doFilter(holder.getRequest(), holder.getResponse());
+                                return null;
+                            }
+                        } else {
+                            return pjp.proceed();
+                        }
     }
 
     /**
      * Do sm filter.
-     * 
+     *
      * @param pjp the pjp
      * @return the object
      * @throws Throwable the throwable
@@ -206,7 +206,7 @@ public class GwtSessionManagement implements ServletContextAware {
 
     /**
      * Gets the CS target.
-     * 
+     *
      * @param pjp the pjp
      * @return the CS target
      */
@@ -219,7 +219,7 @@ public class GwtSessionManagement implements ServletContextAware {
 
     /**
      * Gets the filter chain.
-     * 
+     *
      * @param jp the jp
      * @return the filter chain
      */
@@ -228,7 +228,9 @@ public class GwtSessionManagement implements ServletContextAware {
             return null;
         } else {
             for (Object obj : jp.getArgs()) {
-                if (obj instanceof FilterChain) { return (FilterChain) obj; }
+                if (obj instanceof FilterChain) {
+                    return (FilterChain) obj;
+                }
             }
             return null;
         }
@@ -236,14 +238,14 @@ public class GwtSessionManagement implements ServletContextAware {
 
     /**
      * Gets the invalid session strategy.
-     * 
+     *
      * @param target the target
      * @return the invalid session strategy
      * @throws IllegalArgumentException the illegal argument exception
      * @throws IllegalAccessException the illegal access exception
      */
     private Object getInvalidSessionStrategy(final SessionManagementFilter target) throws IllegalArgumentException,
-            IllegalAccessException {
+    IllegalAccessException {
         if (invalidSessionStrategy == null) {
             try {
                 Field f = SessionManagementFilter.class.getDeclaredField("invalidSessionStrategy");
@@ -259,14 +261,14 @@ public class GwtSessionManagement implements ServletContextAware {
 
     /**
      * Gets the invalid session url.
-     * 
+     *
      * @param target the target
      * @return the invalid session url
      * @throws IllegalArgumentException the illegal argument exception
      * @throws IllegalAccessException the illegal access exception
      */
     private String getInvalidSessionUrl(final SessionManagementFilter target) throws IllegalArgumentException,
-            IllegalAccessException {
+    IllegalAccessException {
         if (invalidSessionUrl == null) {
             try {
                 Field f = SessionManagementFilter.class.getDeclaredField("invalidSessionUrl");
@@ -282,7 +284,7 @@ public class GwtSessionManagement implements ServletContextAware {
 
     /**
      * Gets the logout handlers.
-     * 
+     *
      * @param target the target
      * @return the logout handlers
      * @throws NoSuchFieldException the no such field exception
@@ -290,7 +292,7 @@ public class GwtSessionManagement implements ServletContextAware {
      * @throws IllegalAccessException the illegal access exception
      */
     private LogoutHandler[] getLogoutHandlers(final ConcurrentSessionFilter target) throws NoSuchFieldException,
-            IllegalArgumentException, IllegalAccessException {
+    IllegalArgumentException, IllegalAccessException {
         if (logoutHandlers == null) {
             Field f = ConcurrentSessionFilter.class.getDeclaredField("handlers");
             f.setAccessible(true);
@@ -301,7 +303,7 @@ public class GwtSessionManagement implements ServletContextAware {
 
     /**
      * Gets the security context repository.
-     * 
+     *
      * @param target the target
      * @return the security context repository
      * @throws NoSuchFieldException the no such field exception
@@ -320,7 +322,7 @@ public class GwtSessionManagement implements ServletContextAware {
 
     /**
      * Gets the session registry.
-     * 
+     *
      * @param target the target
      * @return the session registry
      * @throws NoSuchFieldException the no such field exception
@@ -328,7 +330,7 @@ public class GwtSessionManagement implements ServletContextAware {
      * @throws IllegalAccessException the illegal access exception
      */
     private SessionRegistry getSessionRegistry(final ConcurrentSessionFilter target) throws NoSuchFieldException,
-            IllegalArgumentException, IllegalAccessException {
+    IllegalArgumentException, IllegalAccessException {
         if (sessionRegistry == null) {
             Field f = ConcurrentSessionFilter.class.getDeclaredField("sessionRegistry");
             f.setAccessible(true);
@@ -339,7 +341,7 @@ public class GwtSessionManagement implements ServletContextAware {
 
     /**
      * Gets the SM target.
-     * 
+     *
      * @param pjp the pjp
      * @return the SM target
      */

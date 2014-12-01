@@ -1,6 +1,6 @@
 /**
  * $Id$
- * 
+ *
  * Copyright (c) 2014 Steven Jardine, All Rights Reserved.
  * Copyright (c) 2014 MJN Services, Inc., All Rights Reserved.
  */
@@ -18,7 +18,7 @@ public class LoginCancelException extends Exception {
 
     /**
      * Instantiates a new login cancel exception.
-     * 
+     *
      * @param cause the cause
      */
     public LoginCancelException(final Throwable cause) {
@@ -27,7 +27,7 @@ public class LoginCancelException extends Exception {
 
     /**
      * Instantiates a new login cancel exception.
-     * 
+     *
      * @param message the message
      * @param cause the cause
      */
@@ -37,7 +37,7 @@ public class LoginCancelException extends Exception {
 
     /**
      * Instantiates a new login cancel exception.
-     * 
+     *
      * @param message the message
      */
     public LoginCancelException(final String message) {
