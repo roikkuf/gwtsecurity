@@ -33,26 +33,26 @@ import com.gwt.ss.client.loginable.LoginableService;
  */
 public class LoginableGenerator extends Generator {
 
+    /** The class name. */
+    private String className;
+
     /** The context. */
     private GeneratorContext context;
-
-    /** The type name. */
-    private String typeName;
-
-    /** The service name. */
-    private String serviceName;
 
     /** The package name. */
     private String packageName;
 
-    /** The class name. */
-    private String className;
+    /** The service name. */
+    private String serviceName;
+
+    /** The service type. */
+    private JClassType serviceType;
 
     /** The source type. */
     private JClassType sourceType;
 
-    /** The service type. */
-    private JClassType serviceType;
+    /** The type name. */
+    private String typeName;
 
     /**
      * Format.
@@ -63,57 +63,6 @@ public class LoginableGenerator extends Generator {
      */
     private String format(final String s, final Object... args) {
         return String.format(s, args);
-    }
-
-    /**
-     * Validate.
-     *
-     * @param logger the logger
-     * @param typeName the type name
-     * @throws UnableToCompleteException the unable to complete exception
-     */
-    private void validate(final TreeLogger logger, final String typeName) throws UnableToCompleteException {
-        if (!typeName.endsWith("Async")) {
-            logger.log(TreeLogger.ERROR,
-                format("Asynchronous service's name must ends with \"Async\",Obviously \"%s\" doesn't", typeName));
-            throw new UnableToCompleteException();
-        }
-        TypeOracle typeOracle = this.context.getTypeOracle();
-        this.typeName = typeName;
-        try {
-            this.sourceType = typeOracle.getType(typeName);
-            if (this.sourceType.isInterface() == null) {
-                logger.log(TreeLogger.ERROR,
-                    format("%s is not an interface.", sourceType.getParameterizedQualifiedSourceName()), null);
-                throw new UnableToCompleteException();
-            }
-            JClassType loginableAsyncType = typeOracle.getType(LoginableAsync.class.getName());
-            if (!sourceType.getFlattenedSupertypeHierarchy().contains(loginableAsyncType)) {
-                logger.log(TreeLogger.ERROR, format("Type: %s not extends LoginableAsync", typeName));
-                throw new UnableToCompleteException();
-            }
-            this.packageName = this.sourceType.getPackage().getName();
-        } catch (NotFoundException ex) {
-            logger.log(TreeLogger.ERROR, format("validate %s fail", typeName), ex);
-            throw new UnableToCompleteException();
-        }
-        this.serviceName = typeName.substring(0, this.typeName.length() - 5);
-        this.serviceType = typeOracle.findType(serviceName);
-        if (serviceType == null) {
-            logger.log(TreeLogger.ERROR, format("Could not find remote service type : %s", serviceName));
-            throw new UnableToCompleteException();
-        }
-        if (this.serviceType.isInterface() == null) {
-            logger.log(TreeLogger.ERROR,
-                format("%s is not an interface.", serviceType.getParameterizedQualifiedSourceName()), null);
-            throw new UnableToCompleteException();
-        }
-        // Find Remote Service
-        JClassType remoteServiceType = typeOracle.findType(RemoteService.class.getName());
-        if (!serviceType.getFlattenedSupertypeHierarchy().contains(remoteServiceType)) {
-            logger.log(TreeLogger.ERROR, format("Type: %s not extends RemoteService", serviceName));
-            throw new UnableToCompleteException();
-        }
     }
 
     /** {@inheritDoc} */
@@ -166,8 +115,6 @@ public class LoginableGenerator extends Generator {
      * @param writer the writer
      */
     private void generateFields(final SourceWriter writer) {
-        // TODO: REMOVE AFTER TESTING: String serviceTypeName = this.typeName.substring(0,
-        // this.typeName.length() - 5);
         writer.println("private HasLoginHandler hasLoginHandler = null;");
         writer.println("private %s service = null;", this.typeName);
         writer.println();
@@ -196,23 +143,6 @@ public class LoginableGenerator extends Generator {
         writer.indentln("this.service = service;");
         writer.println("}");
         writer.println();
-    }
-
-    /**
-     * Generate methods.
-     *
-     * @param writer the writer
-     */
-    private void generateMethods(final SourceWriter writer) {
-        for (JMethod method : this.serviceType.getMethods()) {
-            generateMethod(writer, method);
-        }
-
-        for (JClassType parentType : this.serviceType.getImplementedInterfaces()) {
-            for (JMethod method : parentType.getMethods()) {
-                generateMethod(writer, method);
-            }
-        }
     }
 
     /**
@@ -291,5 +221,73 @@ public class LoginableGenerator extends Generator {
         writer.outdent();
         writer.println("}");
         writer.println();
+    }
+
+    /**
+     * Generate methods.
+     *
+     * @param writer the writer
+     */
+    private void generateMethods(final SourceWriter writer) {
+        for (JMethod method : this.serviceType.getMethods()) {
+            generateMethod(writer, method);
+        }
+
+        for (JClassType parentType : this.serviceType.getImplementedInterfaces()) {
+            for (JMethod method : parentType.getMethods()) {
+                generateMethod(writer, method);
+            }
+        }
+    }
+
+    /**
+     * Validate.
+     *
+     * @param logger the logger
+     * @param typeName the type name
+     * @throws UnableToCompleteException the unable to complete exception
+     */
+    private void validate(final TreeLogger logger, final String typeName) throws UnableToCompleteException {
+        if (!typeName.endsWith("Async")) {
+            logger.log(TreeLogger.ERROR,
+                format("Asynchronous service's name must ends with \"Async\",Obviously \"%s\" doesn't", typeName));
+            throw new UnableToCompleteException();
+        }
+        TypeOracle typeOracle = this.context.getTypeOracle();
+        this.typeName = typeName;
+        try {
+            this.sourceType = typeOracle.getType(typeName);
+            if (this.sourceType.isInterface() == null) {
+                logger.log(TreeLogger.ERROR,
+                    format("%s is not an interface.", sourceType.getParameterizedQualifiedSourceName()), null);
+                throw new UnableToCompleteException();
+            }
+            JClassType loginableAsyncType = typeOracle.getType(LoginableAsync.class.getName());
+            if (!sourceType.getFlattenedSupertypeHierarchy().contains(loginableAsyncType)) {
+                logger.log(TreeLogger.ERROR, format("Type: %s not extends LoginableAsync", typeName));
+                throw new UnableToCompleteException();
+            }
+            this.packageName = this.sourceType.getPackage().getName();
+        } catch (NotFoundException ex) {
+            logger.log(TreeLogger.ERROR, format("validate %s fail", typeName), ex);
+            throw new UnableToCompleteException();
+        }
+        this.serviceName = typeName.substring(0, typeName.lastIndexOf("Async"));
+        this.serviceType = typeOracle.findType(serviceName);
+        if (serviceType == null) {
+            logger.log(TreeLogger.ERROR, format("Could not find remote service type : %s", serviceName));
+            throw new UnableToCompleteException();
+        }
+        if (this.serviceType.isInterface() == null) {
+            logger.log(TreeLogger.ERROR,
+                format("%s is not an interface.", serviceType.getParameterizedQualifiedSourceName()), null);
+            throw new UnableToCompleteException();
+        }
+        // Find Remote Service
+        JClassType remoteServiceType = typeOracle.findType(RemoteService.class.getName());
+        if (!serviceType.getFlattenedSupertypeHierarchy().contains(remoteServiceType)) {
+            logger.log(TreeLogger.ERROR, format("Type: %s not extends RemoteService", serviceName));
+            throw new UnableToCompleteException();
+        }
     }
 }
