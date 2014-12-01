@@ -57,8 +57,8 @@
 		<maven.compiler.optimize>true</maven.compiler.optimize>
 
 		<!-- Other -->
-		<gwt.version>2.6.1</gwt.version>
-		<spring.version>4.1.0.RELEASE</spring.version>
+		<gwt.version>2.7.0</gwt.version>
+		<spring.version>4.1.2.RELEASE</spring.version>
 		<spring-security.version>3.2.5.RELEASE</spring-security.version>
 		<aspectj.version>1.7.4</aspectj.version>
 

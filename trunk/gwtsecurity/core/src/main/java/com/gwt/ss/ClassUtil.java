@@ -1,6 +1,6 @@
 /**
  * $Id$
- * 
+ *
  * Copyright (c) 2014 Steven Jardine, All Rights Reserved.
  * Copyright (c) 2014 MJN Services, Inc., All Rights Reserved.
  */
@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Utility class to find classes in a package.
- * 
+ *
  * @author Steven Jardine
  * @version $Rev$
  */
@@ -33,7 +33,7 @@ public final class ClassUtil {
     /**
      * Recursive method used to find all classes in a given directory and subdirs. Adapted from
      * http://snippets.dzone.com/posts/show/4831 and extended to support use of JAR files
-     * 
+     *
      * @param directory The base directory
      * @param packageName The package name for classes found inside the base directory
      * @return The classes
@@ -50,7 +50,7 @@ public final class ClassUtil {
                 while ((entry = zip.getNextEntry()) != null) {
                     if (entry.getName().endsWith(".class")) {
                         String className = entry.getName().replaceAll("[$].*", "").replaceAll("[.]class", "")
-                            .replace('/', '.');
+                                .replace('/', '.');
                         if (className.startsWith(packageName)) {
                             classes.add(className);
                         }
@@ -61,7 +61,9 @@ public final class ClassUtil {
             }
         }
         File dir = new File(directory);
-        if (!dir.exists()) { return classes; }
+        if (!dir.exists()) {
+            return classes;
+        }
         File[] files = dir.listFiles();
         for (File file : files) {
             if (file.isDirectory()) {
@@ -69,7 +71,7 @@ public final class ClassUtil {
                 classes.addAll(findClasses(file.getAbsolutePath(), packageName + "." + file.getName()));
             } else if (file.getName().endsWith(".class")) {
                 classes.add(packageName + '.'
-                        + file.getName().substring(0, file.getName().length() - ".class".length()));
+                    + file.getName().substring(0, file.getName().length() - ".class".length()));
             }
         }
         return classes;
@@ -79,7 +81,7 @@ public final class ClassUtil {
      * Scans all classes accessible from the context class loader which belong to the given package and
      * subpackages. Adapted from http://snippets.dzone.com/posts/show/4831 and extended to support use of JAR
      * files
-     * 
+     *
      * @param packageName The base package
      * @return The classes
      */

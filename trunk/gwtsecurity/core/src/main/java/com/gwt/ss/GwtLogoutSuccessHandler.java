@@ -1,6 +1,6 @@
 /**
  * $Id$
- * 
+ *
  * Copyright (c) 2014 Steven Jardine, All Rights Reserved.
  * Copyright (c) 2014 MJN Services, Inc., All Rights Reserved.
  */
@@ -50,7 +50,7 @@ public class GwtLogoutSuccessHandler implements LogoutSuccessHandler, Initializi
 
     /**
      * Gets the logout success url.
-     * 
+     *
      * @return the logout success url
      */
     public String getLogoutSuccessUrl() {
@@ -73,7 +73,7 @@ public class GwtLogoutSuccessHandler implements LogoutSuccessHandler, Initializi
 
     /**
      * Sets the logout success url.
-     * 
+     *
      * @param logoutSuccessUrl the new logout success url
      */
     public void setLogoutSuccessUrl(final String logoutSuccessUrl) {

@@ -1,6 +1,6 @@
 /**
  * $Id$
- * 
+ *
  * Copyright (c) 2014 Steven Jardine, All Rights Reserved.
  * Copyright (c) 2014 MJN Services, Inc., All Rights Reserved.
  */
@@ -20,7 +20,7 @@ public class LoginEvent extends GwtEvent<LoginHandler> {
 
     /**
      * Instantiates a new login event.
-     * 
+     *
      * @param succeeded <table style="padding-left:70px">
      *            <tr>
      *            <td>true meeas Login success, otherwise login is canceled.</td></td>
@@ -37,7 +37,7 @@ public class LoginEvent extends GwtEvent<LoginHandler> {
 
     /**
      * Checks if is canceled.
-     * 
+     *
      * @return true, if is canceled
      */
     public boolean isCanceled() {
@@ -46,7 +46,7 @@ public class LoginEvent extends GwtEvent<LoginHandler> {
 
     /**
      * Checks if is login successful.
-     * 
+     *
      * @return true, if is login successful
      */
     public boolean isLoginSuccessful() {
@@ -67,7 +67,7 @@ public class LoginEvent extends GwtEvent<LoginHandler> {
 
     /**
      * Gets the type.
-     * 
+     *
      * @return the type
      */
     public static Type<LoginHandler> getType() {

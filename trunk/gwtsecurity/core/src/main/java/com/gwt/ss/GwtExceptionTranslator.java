@@ -1,6 +1,6 @@
 /**
  * $Id$
- * 
+ *
  * Copyright (c) 2014 Steven Jardine, All Rights Reserved.
  * Copyright (c) 2014 MJN Services, Inc., All Rights Reserved.
  */
@@ -45,7 +45,7 @@ public class GwtExceptionTranslator implements ServletContextAware, ApplicationL
 
     /**
      * Do filter.
-     * 
+     *
      * @param pjp the pjp
      * @return the object
      * @throws Throwable the throwable

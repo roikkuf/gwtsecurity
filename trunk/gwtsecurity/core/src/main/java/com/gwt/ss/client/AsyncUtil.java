@@ -1,6 +1,6 @@
 /**
  * $Id$
- * 
+ *
  * Copyright (c) 2014 Steven Jardine, All Rights Reserved.
  * Copyright (c) 2014 MJN Services, Inc., All Rights Reserved.
  */
@@ -11,7 +11,7 @@ import com.google.gwt.user.client.rpc.ServiceDefTarget;
 
 /**
  * Common util methods for Async classes.
- * 
+ *
  * @author Steven Jardine
  * @version $Rev$
  * @param <T> the generic type
@@ -20,7 +20,7 @@ public abstract class AsyncUtil<T> {
 
     /**
      * Calc service entry point.
-     * 
+     *
      * @param processUrl the process url
      * @return the string
      */
@@ -66,7 +66,7 @@ public abstract class AsyncUtil<T> {
 
     /**
      * Default constructor.
-     * 
+     *
      * @param processUrl the process url
      */
     public AsyncUtil(final String processUrl) {
@@ -75,7 +75,7 @@ public abstract class AsyncUtil<T> {
 
     /**
      * Gets the instance.
-     * 
+     *
      * @return the instance
      */
     public T getInstance() {
@@ -88,7 +88,7 @@ public abstract class AsyncUtil<T> {
 
     /**
      * Gets the single instance of AsyncUtil.
-     * 
+     *
      * @param processUrl the process url.
      * @return a new instance.
      */
@@ -99,7 +99,7 @@ public abstract class AsyncUtil<T> {
 
     /**
      * Gets the process url.
-     * 
+     *
      * @return the process url
      */
     public String getProcessUrl() {
@@ -108,7 +108,7 @@ public abstract class AsyncUtil<T> {
 
     /**
      * Gets the simple name.
-     * 
+     *
      * @return the simple name
      */
     private String getSimpleName() {
@@ -125,14 +125,14 @@ public abstract class AsyncUtil<T> {
 
     /**
      * New instance.
-     * 
+     *
      * @return a new instance using GWT.create().
      */
     protected abstract T newInstance();
 
     /**
      * Sets the process url.
-     * 
+     *
      * @param processUrl the new process url
      */
     public void setProcessUrl(final String processUrl) {
@@ -147,7 +147,7 @@ public abstract class AsyncUtil<T> {
 
     /**
      * Sets the service entry point.
-     * 
+     *
      * @param instance the new service entry point
      */
     private void setServiceEntryPoint(final T instance) {

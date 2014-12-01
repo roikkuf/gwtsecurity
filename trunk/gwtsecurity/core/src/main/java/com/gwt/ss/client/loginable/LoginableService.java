@@ -1,6 +1,6 @@
 /**
  * $Id$
- * 
+ *
  * Copyright (c) 2014 Steven Jardine, All Rights Reserved.
  * Copyright (c) 2014 MJN Services, Inc., All Rights Reserved.
  */
@@ -9,8 +9,8 @@ package com.gwt.ss.client.loginable;
 /**
  * A wrapper(proxy) for asynchronous {@link com.google.gwt.user.client.rpc.RemoteService remoteService}
  * descended from {@link LoginableAsync LoginableAsync}.<br/>
- * 繼承自{@link LoginableAsync LoginableAsync}的非同步{@link com.google.gwt.user.client.rpc.RemoteService remoteService}
- * 的代理物件。 
+ * 繼承自{@link LoginableAsync LoginableAsync}的非同步{@link com.google.gwt.user.client.rpc.RemoteService
+ * remoteService} 的代理物件。
  *
  * @author Kent Yeh
  * @param <T> the generic type

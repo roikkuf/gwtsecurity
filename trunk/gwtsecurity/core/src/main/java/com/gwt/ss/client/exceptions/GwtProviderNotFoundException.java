@@ -1,6 +1,6 @@
 /**
  * $Id$
- * 
+ *
  * Copyright (c) 2014 Steven Jardine, All Rights Reserved.
  * Copyright (c) 2014 MJN Services, Inc., All Rights Reserved.
  */
@@ -25,7 +25,7 @@ public class GwtProviderNotFoundException extends GwtAuthenticationException {
 
     /**
      * Instantiates a new {@link GwtProviderNotFoundException}.
-     * 
+     *
      * @param message the message
      * @param cause the cause
      */
@@ -35,7 +35,7 @@ public class GwtProviderNotFoundException extends GwtAuthenticationException {
 
     /**
      * Instantiates a new {@link GwtProviderNotFoundException}.
-     * 
+     *
      * @param message the message
      */
     public GwtProviderNotFoundException(final String message) {
@@ -44,7 +44,7 @@ public class GwtProviderNotFoundException extends GwtAuthenticationException {
 
     /**
      * Instantiates a new {@link GwtProviderNotFoundException}.
-     * 
+     *
      * @param cause the cause
      */
     public GwtProviderNotFoundException(final Throwable cause) {

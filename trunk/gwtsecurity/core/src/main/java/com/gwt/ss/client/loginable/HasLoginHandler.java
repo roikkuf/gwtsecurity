@@ -1,6 +1,6 @@
 /**
  * $Id$
- * 
+ *
  * Copyright (c) 2014 Steven Jardine, All Rights Reserved.
  * Copyright (c) 2014 MJN Services, Inc., All Rights Reserved.
  */
@@ -36,7 +36,7 @@ public interface HasLoginHandler extends HasHandlers {
     /**
      * Accept {@link LoginHandler} to handle {@link LoginEvent}<br/>
      * 接受 {@link LoginHandler} 以處理 {@link LoginEvent}.
-     * 
+     *
      * @param handler the handler
      * @return the handler registration
      */

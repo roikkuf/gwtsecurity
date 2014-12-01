@@ -1,6 +1,6 @@
 /**
  * $Id$
- * 
+ *
  * Copyright (c) 2014 Steven Jardine, All Rights Reserved.
  * Copyright (c) 2014 MJN Services, Inc., All Rights Reserved.
  */
@@ -27,7 +27,7 @@ public class GwtSessionAuthenticationException extends GwtAuthenticationExceptio
 
     /**
      * Instantiates a new {@link GwtSessionAuthenticationException}.
-     * 
+     *
      * @param message the message
      */
     public GwtSessionAuthenticationException(final String message) {
@@ -36,7 +36,7 @@ public class GwtSessionAuthenticationException extends GwtAuthenticationExceptio
 
     /**
      * Instantiates a new {@link GwtSessionAuthenticationException}.
-     * 
+     *
      * @param message the message
      * @param cause the cause
      */
@@ -46,7 +46,7 @@ public class GwtSessionAuthenticationException extends GwtAuthenticationExceptio
 
     /**
      * Instantiates a new {@link GwtSessionAuthenticationException}.
-     * 
+     *
      * @param cause the cause
      */
     public GwtSessionAuthenticationException(final Throwable cause) {

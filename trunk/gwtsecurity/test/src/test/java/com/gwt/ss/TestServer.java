@@ -31,7 +31,9 @@ public class TestServer {
         @Override
         protected void doStart() throws Exception {
             super.doStart();
-            if (getUnavailableException() != null) { throw (Exception) getUnavailableException(); }
+            if (getUnavailableException() != null) {
+                throw (Exception) getUnavailableException();
+            }
         }
     }
 
@@ -98,7 +100,8 @@ public class TestServer {
                     for (File file : targetDir.listFiles(new FilenameFilter() {
                         @Override
                         public boolean accept(final File dir, final String name) {
-                            return name.startsWith("gwtsecurity-test-") && (name.endsWith("SNAPSHOT") || name.endsWith(".war"));
+                            return name.startsWith("gwtsecurity-test-")
+                                    && (name.endsWith("SNAPSHOT") || name.endsWith(".war"));
                         }
                     })) {
                         webappLocation = file.getAbsolutePath();

@@ -1,6 +1,6 @@
 /**
  * $Id$
- * 
+ *
  * Copyright (c) 2014 Steven Jardine, All Rights Reserved.
  * Copyright (c) 2014 MJN Services, Inc., All Rights Reserved.
  */
@@ -18,7 +18,7 @@ public class HttpHolder {
 
     /**
      * Gets the single instance of HttpHolder.
-     * 
+     *
      * @param jp the jp
      * @return single instance of HttpHolder
      */
@@ -51,7 +51,7 @@ public class HttpHolder {
 
     /**
      * Gets the request.
-     * 
+     *
      * @return the request
      */
     public HttpServletRequest getRequest() {
@@ -60,7 +60,7 @@ public class HttpHolder {
 
     /**
      * Gets the response.
-     * 
+     *
      * @return the response
      */
     public HttpServletResponse getResponse() {
@@ -69,7 +69,7 @@ public class HttpHolder {
 
     /**
      * Checks if is gwt.
-     * 
+     *
      * @return true, if is gwt
      */
     public boolean isGwt() {
@@ -78,7 +78,7 @@ public class HttpHolder {
 
     /**
      * Sets the request.
-     * 
+     *
      * @param request the new request
      */
     public void setRequest(final HttpServletRequest request) {
@@ -87,7 +87,7 @@ public class HttpHolder {
 
     /**
      * Sets the response.
-     * 
+     *
      * @param response the new response
      */
     public void setResponse(final HttpServletResponse response) {

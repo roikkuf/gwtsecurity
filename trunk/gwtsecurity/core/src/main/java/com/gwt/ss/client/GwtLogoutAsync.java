@@ -1,9 +1,10 @@
 /**
  * $Id$
- * 
+ *
  * Copyright (c) 2014 Steven Jardine, All Rights Reserved.
  * Copyright (c) 2014 MJN Services, Inc., All Rights Reserved.
  */
+// CHECKSTYLE:OFF
 package com.gwt.ss.client;
 
 import com.google.gwt.core.client.GWT;
@@ -30,7 +31,7 @@ public interface GwtLogoutAsync {
 
         /**
          * Gets the single instance of Util.
-         * 
+         *
          * @return single instance of Util
          */
         public static GwtLogoutAsync getInstance() {
@@ -49,7 +50,7 @@ public interface GwtLogoutAsync {
 
         /**
          * Gets the process url.
-         * 
+         *
          * @return the process url
          */
         public static String getProcessUrl() {
@@ -58,7 +59,7 @@ public interface GwtLogoutAsync {
 
         /**
          * Sets the process url.
-         * 
+         *
          * @param processUrl the new process url
          */
         public static void setProcessUrl(final String processUrl) {
@@ -74,11 +75,9 @@ public interface GwtLogoutAsync {
 
     }
 
-    // CHECKSTYLE:OFF
-
     /**
      * J_gwt_security_logout.
-     * 
+     *
      * @param callback the callback
      */
     void j_gwt_security_logout(AsyncCallback<Void> callback);

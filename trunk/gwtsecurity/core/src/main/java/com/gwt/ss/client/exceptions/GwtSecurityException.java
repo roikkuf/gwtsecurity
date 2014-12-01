@@ -1,6 +1,6 @@
 /**
  * $Id$
- * 
+ *
  * Copyright (c) 2014 Steven Jardine, All Rights Reserved.
  * Copyright (c) 2014 MJN Services, Inc., All Rights Reserved.
  */
@@ -32,7 +32,7 @@ public class GwtSecurityException extends RuntimeException implements IsSerializ
 
     /**
      * Instantiates a new {@link GwtSecurityException}.
-     * 
+     *
      * @param message the message
      */
     public GwtSecurityException(final String message) {
@@ -41,7 +41,7 @@ public class GwtSecurityException extends RuntimeException implements IsSerializ
 
     /**
      * Instantiates a new {@link GwtSecurityException}.
-     * 
+     *
      * @param message the message
      * @param cause the cause
      */
@@ -51,7 +51,7 @@ public class GwtSecurityException extends RuntimeException implements IsSerializ
 
     /**
      * Instantiates a new {@link GwtSecurityException}.
-     * 
+     *
      * @param cause the cause
      */
     public GwtSecurityException(final Throwable cause) {
@@ -60,7 +60,7 @@ public class GwtSecurityException extends RuntimeException implements IsSerializ
 
     /**
      * Gets the authenticated user.
-     * 
+     *
      * @return the authenticated user
      */
     public String getAuthenticatedUser() {
@@ -69,7 +69,7 @@ public class GwtSecurityException extends RuntimeException implements IsSerializ
 
     /**
      * Checks if is authenticated.
-     * 
+     *
      * @return true, if is authenticated
      */
     public boolean isAuthenticated() {
@@ -78,7 +78,7 @@ public class GwtSecurityException extends RuntimeException implements IsSerializ
 
     /**
      * Sets the authenticated.
-     * 
+     *
      * @param authenticated the new authenticated
      */
     public void setAuthenticated(final boolean authenticated) {
@@ -87,7 +87,7 @@ public class GwtSecurityException extends RuntimeException implements IsSerializ
 
     /**
      * Sets the authenticated user.
-     * 
+     *
      * @param authenticatedUser the new authenticated user
      */
     public void setAuthenticatedUser(final String authenticatedUser) {

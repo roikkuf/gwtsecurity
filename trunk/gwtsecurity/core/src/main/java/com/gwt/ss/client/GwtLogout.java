@@ -1,9 +1,10 @@
 /**
  * $Id$
- * 
+ *
  * Copyright (c) 2014 Steven Jardine, All Rights Reserved.
  * Copyright (c) 2014 MJN Services, Inc., All Rights Reserved.
  */
+// CHECKSTYLE:OFF
 package com.gwt.ss.client;
 
 import com.google.gwt.user.client.rpc.RemoteService;
@@ -22,8 +23,6 @@ import com.google.gwt.user.client.rpc.RemoteService;
  * {@link GwtLogoutAsync.Util#getInstance() GwtLogoutAsync.Util.getInstance}
  */
 public interface GwtLogout extends RemoteService {
-
-    // CHECKSTYLE:OFF
 
     /**
      * J_gwt_security_logout.

@@ -1,6 +1,6 @@
 /**
  * $Id$
- * 
+ *
  * Copyright (c) 2014 Steven Jardine, All Rights Reserved.
  * Copyright (c) 2014 MJN Services, Inc., All Rights Reserved.
  */
@@ -30,7 +30,7 @@ public interface GwtLoginAsync {
 
         /**
          * Gets the single instance of Util.
-         * 
+         *
          * @return single instance of Util
          */
         public static GwtLoginAsync getInstance() {
@@ -49,7 +49,7 @@ public interface GwtLoginAsync {
 
         /**
          * Gets the process url.
-         * 
+         *
          * @return the process url
          */
         public static String getProcessUrl() {
@@ -58,7 +58,7 @@ public interface GwtLoginAsync {
 
         /**
          * Sets the process url.
-         * 
+         *
          * @param processUrl the new process url
          */
         public static void setProcessUrl(final String processUrl) {
@@ -78,7 +78,7 @@ public interface GwtLoginAsync {
 
     /**
      * J_gwt_security_check.
-     * 
+     *
      * @param username the username
      * @param password the password
      * @param rememberMe the remember me
@@ -88,7 +88,7 @@ public interface GwtLoginAsync {
 
     /**
      * J_gwt_security_check.
-     * 
+     *
      * @param username the username
      * @param password the password
      * @param rememberMe the remember me

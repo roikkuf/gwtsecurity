@@ -60,7 +60,7 @@ public class ITGwtSecurity extends TestCase {
                 }
             }
         }
-        assertNotNull(cdl);
+        assertNotNull("ChromeDriver not found!", cdl);
         assertTrue(new File(cdl).isFile());
         System.setProperty("webdriver.chrome.driver", cdl);
         driver = new ChromeDriver();

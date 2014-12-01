@@ -1,6 +1,6 @@
 /**
  * $Id$
- * 
+ *
  * Copyright (c) 2014 Steven Jardine, All Rights Reserved.
  * Copyright (c) 2014 MJN Services, Inc., All Rights Reserved.
  */
@@ -25,13 +25,12 @@ import com.gwt.ss.client.loginable.LoginableService;
 
 /**
  * Proxy generator for {@link com.gwt.ss.client.loginable.LoginableAsync LoginableAsync}
- * 
+ *
  * Thanks to Steven Jardine steven.j...@gmail.com http://code.google.com/u/@UhVVQ1JZAxVEXgF4/ for providing
  * debuging and patch.
- * 
+ *
  * @author Kent Yeh
  */
-// CHECKSTYLE:OFF
 public class LoginableGenerator extends Generator {
 
     /** The context. */
@@ -57,7 +56,7 @@ public class LoginableGenerator extends Generator {
 
     /**
      * Format.
-     * 
+     *
      * @param s the s
      * @param args the args
      * @return the string
@@ -68,7 +67,7 @@ public class LoginableGenerator extends Generator {
 
     /**
      * Validate.
-     * 
+     *
      * @param logger the logger
      * @param typeName the type name
      * @throws UnableToCompleteException the unable to complete exception
@@ -130,12 +129,14 @@ public class LoginableGenerator extends Generator {
 
     /**
      * Generate class.
-     * 
+     *
      * @param logger the logger
      */
     private void generateClass(final TreeLogger logger) {
         PrintWriter printWriter = context.tryCreate(logger, this.packageName, this.className);
-        if (printWriter == null) { return; }
+        if (printWriter == null) {
+            return;
+        }
         ClassSourceFileComposerFactory composer = new ClassSourceFileComposerFactory(this.packageName, this.className);
         composer.addImport("com.google.gwt.core.client.GWT");
         composer.addImport("com.google.gwt.core.client.Scheduler");
@@ -161,11 +162,12 @@ public class LoginableGenerator extends Generator {
 
     /**
      * Generate fields.
-     * 
+     *
      * @param writer the writer
      */
     private void generateFields(final SourceWriter writer) {
-        String serviceTypeName = this.typeName.substring(0, this.typeName.length() - 5);
+        // TODO: REMOVE AFTER TESTING: String serviceTypeName = this.typeName.substring(0,
+        // this.typeName.length() - 5);
         writer.println("private HasLoginHandler hasLoginHandler = null;");
         writer.println("private %s service = null;", this.typeName);
         writer.println();
@@ -183,7 +185,7 @@ public class LoginableGenerator extends Generator {
         writer.println("public %s getRemoteService(){", this.typeName);
         writer.indent();
         writer.println("if(this.service ==null){");
-        writer.indentln("this.service = (%s) GWT.create(%s.class);", this.typeName, serviceTypeName);
+        writer.indentln("this.service = (%s) GWT.create(%s.class);", this.typeName, this.serviceName);
         writer.println("}");
         writer.println("return this.service;");
         writer.outdent();
@@ -198,7 +200,7 @@ public class LoginableGenerator extends Generator {
 
     /**
      * Generate methods.
-     * 
+     *
      * @param writer the writer
      */
     private void generateMethods(final SourceWriter writer) {
@@ -215,7 +217,7 @@ public class LoginableGenerator extends Generator {
 
     /**
      * Generate method.
-     * 
+     *
      * @param writer the writer
      * @param method the method
      */
