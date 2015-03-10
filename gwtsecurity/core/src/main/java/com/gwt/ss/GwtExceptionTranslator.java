@@ -35,13 +35,13 @@ import org.springframework.web.context.ServletContextAware;
 public class GwtExceptionTranslator implements ServletContextAware, ApplicationListener<AuthorizationFailureEvent> {
 
     /** The http holder. */
-    private static ThreadLocal<HttpHolder> httpHolder = new InheritableThreadLocal<HttpHolder>();
+    protected static ThreadLocal<HttpHolder> httpHolder = new InheritableThreadLocal<HttpHolder>();
 
     /** The Constant LOG. */
     protected static final Logger LOG = LoggerFactory.getLogger(GwtExceptionTranslator.class);
 
     /** The servlet context. */
-    private ServletContext servletContext;
+    protected ServletContext servletContext;
 
     /**
      * Do filter.
@@ -57,15 +57,11 @@ public class GwtExceptionTranslator implements ServletContextAware, ApplicationL
             LOG.debug("Capture of " + (holder.isGwt() ? "Gwt" : "Non Gwt") + " ExceptionTranslationFilter.doFilter!"
                     + " with " + holder.getRequest().getRequestURI());
         }
-        if (holder.isGwt()) {
-            httpHolder.set(holder);
-            try {
-                return pjp.proceed();
-            } finally {
-                httpHolder.remove();
-            }
-        } else {
+        httpHolder.set(holder);
+        try {
             return pjp.proceed();
+        } finally {
+            httpHolder.remove();
         }
     }
 
@@ -77,7 +73,7 @@ public class GwtExceptionTranslator implements ServletContextAware, ApplicationL
                 event.getAccessDeniedException());
         }
         HttpHolder holder = httpHolder.get();
-        if (holder != null && holder.isGwt()) {
+        if (holder.isGwt()) {
             GwtResponseUtil.processGwtException(servletContext, holder.getRequest(), holder.getResponse(),
                 event.getAccessDeniedException());
         }
